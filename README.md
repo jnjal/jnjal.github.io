@@ -1,1 +1,0 @@
-# jnjal.github.io
