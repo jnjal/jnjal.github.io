@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>پورتفولیو | درباره</title>
+  <meta name="description" content="درباره من و مسیر حرفه‌ای" />
+  <meta property="og:title" content="درباره" />
+  <meta property="og:description" content="ارزش‌ها و مسیر" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="stain stain-1" aria-hidden="true"></div>
+  <div class="stain stain-2" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">[نام من]</a>
+      <nav class="nav">
+        <a href="index.html" data-page="index">خانه</a>
+        <a href="about.html" data-page="about">درباره</a>
+        <a href="projects.html" data-page="projects">پروژه‌ها</a>
+        <a href="blog.html" data-page="blog">وبلاگ</a>
+        <a href="contact.html" data-page="contact">تماس</a>
+      </nav>
+      <button class="cmd-btn" id="openPalette" aria-label="بازکردن پالِت">Ctrl + K</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container reveal about-hero">
+      <img class="avatar" src="assets/img/avatar.svg" alt="آواتار" />
+      <div>
+        <h1>درباره من</h1>
+        <p class="lead">[عنوان] با تمرکز بر طراحی تجربه‌های آرام، واضح و کاربردی. هدفم ساده‌سازی مسیر کاربر و ساخت رابط‌های پایدار است.</p>
+        <div class="value-list">
+          <div>
+            <h3>ارزش‌ها</h3>
+            <p class="muted">سادگی، دقت، و احترام به زمان کاربر.</p>
+          </div>
+          <div>
+            <h3>تمرکز</h3>
+            <p class="muted">تجربه کاربری، طراحی تعاملی و توسعه فرانت‌اند.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container reveal">
+      <h2>مسیر حرفه‌ای</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <span class="dot"></span>
+          <div>
+            <h3>شروع مسیر</h3>
+            <p class="muted">تمرین روی پروژه‌های شخصی و یادگیری عمیق طراحی.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="dot"></span>
+          <div>
+            <h3>همکاری با تیم‌ها</h3>
+            <p class="muted">طراحی سیستم‌ها و ساخت رابط‌های یکپارچه.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <span class="dot"></span>
+          <div>
+            <h3>تمرکز بر محصول</h3>
+            <p class="muted">خلق تجربه‌هایی که به رشد محصول کمک می‌کنند.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container reveal">
+      <h2>فرآیند کاری</h2>
+      <div class="process">
+        <div class="process-step">Discover</div>
+        <div class="process-step">Design</div>
+        <div class="process-step">Build</div>
+        <div class="process-step">Deliver</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p>[نام من] — [عنوان]</p>
+        <p class="muted">[email]</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com" target="_blank" rel="noreferrer">گیت‌هاب</a>
+        <a href="https://linkedin.com" target="_blank" rel="noreferrer">لینکدین</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="palette" id="palette" aria-hidden="true">
+    <div class="palette-panel">
+      <input type="text" id="paletteInput" placeholder="جستجو..." />
+      <div class="palette-list" id="paletteList"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

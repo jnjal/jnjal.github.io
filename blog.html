@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>پورتفولیو | وبلاگ</title>
+  <meta name="description" content="یادداشت‌های وبلاگ" />
+  <meta property="og:title" content="وبلاگ" />
+  <meta property="og:description" content="یادداشت‌های خواندنی" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <div class="stain stain-1" aria-hidden="true"></div>
+  <div class="stain stain-2" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">[نام من]</a>
+      <nav class="nav">
+        <a href="index.html" data-page="index">خانه</a>
+        <a href="about.html" data-page="about">درباره</a>
+        <a href="projects.html" data-page="projects">پروژه‌ها</a>
+        <a href="blog.html" data-page="blog">وبلاگ</a>
+        <a href="contact.html" data-page="contact">تماس</a>
+      </nav>
+      <button class="cmd-btn" id="openPalette" aria-label="بازکردن پالِت">Ctrl + K</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section container reveal">
+      <h1>وبلاگ</h1>
+      <p class="lead">یادداشت‌هایی درباره طراحی، توسعه و تجربه کاربری.</p>
+      <div class="blog-controls">
+        <input class="input" id="blogSearch" type="text" placeholder="جستجو..." />
+        <div class="tags" id="blogTags"></div>
+      </div>
+      <div class="grid cards" id="blogList"></div>
+      <div class="pagination" id="blogPagination"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <p>[نام من] — [عنوان]</p>
+        <p class="muted">[email]</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com" target="_blank" rel="noreferrer">گیت‌هاب</a>
+        <a href="https://linkedin.com" target="_blank" rel="noreferrer">لینکدین</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="palette" id="palette" aria-hidden="true">
+    <div class="palette-panel">
+      <input type="text" id="paletteInput" placeholder="جستجو..." />
+      <div class="palette-list" id="paletteList"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
