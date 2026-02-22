@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پورتفولیو | طراح خلاق</title>
+    
+    <!-- فونت وزیر -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+    
+    <!-- فونت آیکون (Font Awesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* پس‌زمینه متحرک با ذرات */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            animation: float 6s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-10px) translateX(-10px); }
+            75% { transform: translateY(10px) translateX(5px); }
+        }
+
+        /* کانتینر اصلی */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* هدر با افکت شیشه‌ای */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, #fff, transparent);
+            border-radius: 2px;
+        }
+
+        /* وضعیت آنلاین خلاقانه */
+        .status-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .status-dot.online {
+            background: #4ade80;
+            box-shadow: 0 0 20px #4ade80;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.busy {
+            background: #fbbf24;
+            box-shadow: 0 0 20px #fbbf24;
+        }
+
+        .status-dot.offline {
+            background: #9ca3af;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+        }
+
+        .status-text {
+            color: white;
+            font-weight: 500;
+        }
+
+        /* گرید اصلی */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* کارت‌های خلاقانه */
+        .creative-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .creative-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .creative-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .creative-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* کارت Spotify */
+        .spotify-card {
+            grid-column: span 6;
+            background: linear-gradient(135deg, #1DB954 0%, #1ed760 100%);
+        }
+
+        .now-playing {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .album-art {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin 4s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .album-art.playing {
+            animation-play-state: running;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .song-info {
+            color: white;
+        }
+
+        .song-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .artist-name {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* بخش نظرات با طراحی خاص */
+        .comments-section {
+            grid-column: span 6;
+        }
+
+        .comments-slider {
+            margin-top: 1.5rem;
+            position: relative;
+        }
+
+        .comment-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .comment-card::after {
+            content: '"';
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.1);
+            font-family: serif;
+        }
+
+        .comment-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .comment-name {
+            color: white;
+            font-weight: 600;
+        }
+
+        .comment-date {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+        }
+
+        .comment-text {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+        }
+
+        /* فرم تماس سه بعدی */
+        .contact-form {
+            grid-column: span 12;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: white;
+            font-family: 'Vazir', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        textarea.form-input {
+            border-radius: 30px;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            grid-column: span 2;
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-family: 'Vazir', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(102, 126, 234, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .submit-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        }
+
+        /* نشانگر تایپ */
+        .typing-indicator {
+            display: flex;
+            gap: 0.3rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            width: fit-content;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-10px); opacity: 1; }
+        }
+
+        /* ریسپانسیو */
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            
+            .grid { grid-template-columns: 1fr; }
+            
+            .spotify-card,
+            .comments-section,
+            .contact-form { grid-column: span 1; }
+            
+            .contact-form { grid-template-columns: 1fr; }
+            
+            .form-group.full-width { grid-column: span 1; }
+            
+            .glass-header { flex-direction: column; gap: 1rem; }
+        }
+
+        /* انیمیشن‌های ورود */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* دکمه‌های اجتماعی */
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) rotate(360deg);
+            background: white;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <!-- ذرات پس‌زمینه -->
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <!-- هدر با وضعیت -->
+        <header class="glass-header fade-in-up">
+            <div class="logo">
+                علی رضایی
+                <span style="font-size: 1rem; display: block; opacity: 0.8;">طراح و توسعه‌دهنده خلاق</span>
+            </div>
+            
+            <div class="status-wrapper">
+                <div class="status-dot online" id="statusDot"></div>
+                <span class="status-text" id="statusText">آنلاین و آماده پروژه</span>
+            </div>
+        </header>
+
+        <!-- گرید اصلی -->
+        <div class="grid">
+            <!-- کارت Spotify -->
+            <div class="creative-card spotify-card fade-in-up" style="animation-delay: 0.2s;">
+                <i class="fab fa-spotify" style="font-size: 2rem; color: white; margin-bottom: 1rem;"></i>
+                <h3 style="color: white; margin-bottom: 1rem;">در حال پخش</h3>
+                <div class="now-playing" id="spotifyWidget">
+                    <div class="album-art playing" id="albumArt">
+                        <i class="fas fa-music" style="font-size: 2rem; color: white;"></i>
+                    </div>
+                    <div class="song-info">
+                        <div class="song-name" id="songName">Blinding Lights</div>
+                        <div class="artist-name" id="artistName">The Weeknd</div>
+                        <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+                            <span style="color: rgba(255,255,255,0.8);">●</span>
+                            <span style="color: rgba(255,255,255,0.6);">●●</span>
+                            <span style="color: rgba(255,255,255,0.4);">●●</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بخش نظرات -->
+            <div class="creative-card comments-section fade-in-up" style="animation-delay: 0.3s;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="color: white;">نظرات کاربران</h3>
+                    <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">آپدیت ۲۴ ساعته</span>
+                </div>
+                
+                <div class="comments-slider" id="commentsList">
+                    <!-- کامنت نمونه -->
+                    <div class="comment-card">
+                        <div class="comment-header">
+                            <div class="comment-avatar">س</div>
+                            <div>
+                                <div class="comment-name">سارا محمدی</div>
+                                <div class="comment-date">۲ روز پیش</div>
+                            </div>
+                        </div>
+                        <div class="comment-text">
+                            طراحی فوق‌العاده‌ای داری! واقعا لذت بردم از کارهات.
+                        </div>
+                    </div>
+                    
+                    <div class="comment-card">
+                        <div class="comment-header">
+                            <div class="comment-avatar">ع</div>
+                            <div>
+                                <div class="comment-name">علی کریمی</div>
+                                <div class="comment-date">۵ روز پیش</div>
+                            </div>
+                        </div>
+                        <div class="comment-text">
+                            پروژه‌ای که برام انجام دادی عالی بود. دقیقا همون چیزی بود که میخواستم.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- فرم ارسال نظر -->
+                <form style="margin-top: 2rem;" id="commentForm">
+                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                        <input type="text" placeholder="نام شما" class="form-input" style="flex: 1;" required>
+                    </div>
+                    <textarea placeholder="نظر شما..." class="form-input" style="margin-bottom: 1rem;" required></textarea>
+                    
+                    <!-- نشانگر تایپ (مخفی بصورت پیش‌فرض) -->
+                    <div class="typing-indicator" style="display: none;" id="typingIndicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" style="background: rgba(255,255,255,0.2); color: white;">
+                        ارسال نظر
+                        <i class="fas fa-paper-plane" style="margin-right: 0.5rem;"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- فرم تماس (تمام عرض) -->
+            <div class="creative-card fade-in-up" style="grid-column: span 12; animation-delay: 0.4s;">
+                <h3 style="color: white; margin-bottom: 2rem;">ارتباط با من</h3>
+                
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" class="form-input" placeholder="نام و نام خانوادگی" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-input" placeholder="ایمیل" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <textarea class="form-input" placeholder="پیام شما..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        ارسال پیام به تلگرام
+                        <i class="fab fa-telegram" style="margin-right: 0.5rem;"></i>
+                    </button>
+                </form>
+
+                <!-- لینک‌های اجتماعی -->
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ایجاد ذرات پس‌زمینه
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 10 + 5;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.background = `rgba(255, 255, 255, ${Math.random() * 0.3})`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // تغییر وضعیت آنلاین (برای تست)
+        function changeStatus(status) {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            
+            dot.className = 'status-dot ' + status;
+            
+            switch(status) {
+                case 'online':
+                    text.textContent = 'آنلاین و آماده پروژه';
+                    break;
+                case 'busy':
+                    text.textContent = 'مشغول روی پروژه';
+                    break;
+                case 'offline':
+                    text.textContent = 'فعلا در دسترس نیستم';
+                    break;
+            }
+        }
+
+        // افکت تایپ برای فرم نظر
+        const commentInput = document.querySelector('#commentForm textarea');
+        const typingIndicator = document.getElementById('typingIndicator');
+        
+        if (commentInput) {
+            let typingTimer;
+            commentInput.addEventListener('input', () => {
+                typingIndicator.style.display = 'flex';
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(() => {
+                    typingIndicator.style.display = 'none';
+                }, 1000);
+            });
+        }
+
+        // اینتراکشن با فرم تماس
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'در حال ارسال <i class="fas fa-spinner fa-spin"></i>';
+            
+            setTimeout(() => {
+                btn.innerHTML = 'ارسال شد ✓';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }, 1500);
+        });
+
+        // شبیه‌سازی آپدیت Spotify
+        function updateSpotify() {
+            const songs = [
+                { song: 'Blinding Lights', artist: 'The Weeknd' },
+                { song: 'As It Was', artist: 'Harry Styles' },
+                { song: 'Flowers', artist: 'Miley Cyrus' },
+                { song: 'Cruel Summer', artist: 'Taylor Swift' },
+                { song: 'Vampire', artist: 'Olivia Rodrigo' }
+            ];
+            
+            const randomSong = songs[Math.floor(Math.random() * songs.length)];
+            document.getElementById('songName').textContent = randomSong.song;
+            document.getElementById('artistName').textContent = randomSong.artist;
+        }
+
+        // آپدیت هر ۳۰ ثانیه
+        setInterval(updateSpotify, 30000);
+
+        // اجرا در شروع
+        createParticles();
+
+        // تست وضعیت‌های مختلف (می‌تونی کامنت کنی)
+        setTimeout(() => changeStatus('busy'), 10000);
+        setTimeout(() => changeStatus('online'), 20000);
+    </script>
+</body>
+</html>
