@@ -1,1037 +1,605 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پورتفولیوی خلاق | علی رضایی</title>
-    <!-- فونت وزیر -->
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
-    <!-- فونت آیکن Font Awesome 6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>PortfoEfe - Branding & Design Portfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         body {
-            font-family: 'Vazir', sans-serif;
-            background: #0f0f1a;
-            color: #fff;
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+            color: #ffffff;
             overflow-x: hidden;
         }
 
-        /* کانتینر اصلی */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 30px;
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
 
-        /* هدر */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 30px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 40px;
-        }
-
-        .nav-menu a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: 0.3s;
-            font-size: 1.1rem;
-            position: relative;
-        }
-
-        .nav-menu a::after {
-            content: '';
+        /* Abstract Background Effects */
+        .smoke-bg {
             position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0%;
-            height: 2px;
-            background: linear-gradient(90deg, #a18cd1, #fbc2eb);
-            transition: 0.3s;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0) 70%);
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+            animation: float 10s infinite ease-in-out;
         }
 
-        .nav-menu a:hover::after {
-            width: 100%;
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0, 0) scale(1); }
         }
 
-        /* وضعیت در دسترس */
-        .status-section {
-            margin-top: 80px;
-            text-align: center;
+        .animate-fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
         }
 
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.05);
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(10px);
-            padding: 10px 30px;
-            border-radius: 50px;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .status-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #4ade80;
-            box-shadow: 0 0 20px #4ade80;
-            animation: pulse 2s infinite;
+        .bw-img {
+            filter: grayscale(100%);
+            transition: filter 0.3s ease, transform 0.5s ease;
         }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(74,222,128,0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(74,222,128,0); }
-            100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
-        }
-
-        .status-text {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #fff;
-        }
-
-        .slogan {
-            font-size: 4rem;
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 40px;
-            background: linear-gradient(135deg, #fff, #a0a0c0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 100px;
-        }
-
-        .btn {
-            padding: 16px 40px;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: 0.3s;
-            font-size: 1.1rem;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-            color: #0f0f1a;
-            box-shadow: 0 10px 30px -10px #a18cd1;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px -10px #a18cd1;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid rgba(255,255,255,0.2);
-            color: #fff;
-        }
-
-        .btn-outline:hover {
-            border-color: #a18cd1;
-            background: rgba(255,255,255,0.02);
-            transform: translateY(-5px);
-        }
-
-        /* گالری */
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 50px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            right: 0;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #a18cd1, #fbc2eb);
-            border-radius: 2px;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
-        .gallery-item {
-            position: relative;
-            border-radius: 30px;
-            overflow: hidden;
-            aspect-ratio: 1/1;
-            cursor: pointer;
-            transition: 0.5s;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.5s;
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .gallery-item::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .gallery-item:hover::after {
-            opacity: 1;
-        }
-
-        .gallery-btn-wrapper {
-            text-align: center;
-            margin-bottom: 120px;
-        }
-
-        .btn-gallery {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px 50px;
-            border-radius: 50px;
-            color: #fff;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-
-        .btn-gallery:hover {
-            background: rgba(255,255,255,0.08);
-            border-color: #a18cd1;
-        }
-
-        /* درباره من */
-        .about-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            margin-bottom: 120px;
-            align-items: center;
-        }
-
-        .about-image {
-            border-radius: 40px;
-            overflow: hidden;
-            box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255,255,255,0.1);
-            transition: 0.5s;
-        }
-
-        .about-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .about-image:hover {
-            transform: scale(1.02);
-        }
-
-        .about-content {
-            padding-right: 20px;
-        }
-
-        .about-name {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            background: linear-gradient(135deg, #fff, #c0c0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .about-bio {
-            font-size: 1.2rem;
-            color: #b0b0d0;
-            margin-bottom: 30px;
-            line-height: 1.8;
-        }
-
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 40px;
-        }
-
-        .skill-tag {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-
-        .skill-tag:hover {
-            border-color: #a18cd1;
-            background: rgba(161,140,209,0.1);
-            transform: translateY(-3px);
-        }
-
-        .work-history {
-            color: #d0d0f0;
-            font-size: 1.1rem;
-            border-right: 3px solid #a18cd1;
-            padding-right: 20px;
-        }
-
-        .work-history p {
-            margin-bottom: 10px;
-        }
-
-        /* آخرین کارها (اسکرول افقی) */
-        .latest-works {
-            margin-bottom: 120px;
-        }
-
-        .scroll-x {
-            display: flex;
-            gap: 25px;
-            overflow-x: auto;
-            padding: 20px 0 40px;
-            scrollbar-width: thin;
-            scrollbar-color: #a18cd1 #1a1a2e;
-        }
-
-        .scroll-x::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .scroll-x::-webkit-scrollbar-track {
-            background: #1a1a2e;
-            border-radius: 10px;
-        }
-
-        .scroll-x::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-            border-radius: 10px;
-        }
-
-        .work-card {
-            min-width: 320px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 30px;
-            padding: 25px;
-            backdrop-filter: blur(5px);
-            transition: 0.3s;
-        }
-
-        .work-card:hover {
-            border-color: #a18cd1;
-            transform: translateY(-10px);
-        }
-
-        .work-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 20px;
-            margin-bottom: 20px;
-        }
-
-        .work-card h4 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-        }
-
-        .work-card p {
-            color: #b0b0d0;
-        }
-
-        /* سرویس‌ها */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
-            margin-bottom: 120px;
-        }
-
-        .service-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 30px;
-            padding: 40px 30px;
-            text-align: center;
-            transition: 0.3s;
-            backdrop-filter: blur(5px);
-        }
-
-        .service-card:hover {
-            border-color: #a18cd1;
-            transform: translateY(-10px);
-            background: rgba(161,140,209,0.05);
-        }
-
-        .service-card i {
-            font-size: 3rem;
-            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 25px;
-        }
-
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .service-card p {
-            color: #b0b0d0;
-            line-height: 1.7;
-        }
-
-        /* نظرات (اسلایدر محو شونده) */
-        .testimonials {
-            margin-bottom: 120px;
-            position: relative;
-        }
-
-        .testimonials-wrapper {
-            display: flex;
-            gap: 30px;
-            overflow-x: auto;
-            padding: 30px 0;
-            mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
-            -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
-        }
-
-        .testimonial-card {
-            min-width: 380px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 40px;
-            padding: 30px;
-            backdrop-filter: blur(5px);
-        }
-
-        .testimonial-card p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 20px;
-            color: #e0e0ff;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-
-        .author-info h5 {
-            font-size: 1.1rem;
-        }
-
-        .author-info span {
-            color: #a0a0c0;
-            font-size: 0.9rem;
-        }
-
-        /* آمار */
-        .stats {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 120px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 80px;
-            padding: 50px 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 3.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #c0c0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-        }
-
-        .stat-label {
-            font-size: 1.2rem;
-            color: #b0b0d0;
-        }
-
-        /* فرم تماس */
-        .contact-form {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 60px;
-            padding: 60px;
-            margin-bottom: 120px;
-            backdrop-filter: blur(10px);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 30px;
-        }
-
-        .form-group.full {
-            grid-column: span 2;
-        }
-
-        .form-input {
-            width: 100%;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 60px;
-            padding: 18px 30px;
-            font-family: 'Vazir', sans-serif;
-            font-size: 1rem;
-            color: #fff;
-            transition: 0.3s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #a18cd1;
-            background: rgba(255,255,255,0.05);
-        }
-
-        .form-input::placeholder {
-            color: #8080a0;
-        }
-
-        textarea.form-input {
-            border-radius: 40px;
-            resize: vertical;
-            min-height: 150px;
-        }
-
-        .contact-btn {
-            grid-column: span 2;
-            text-align: center;
-        }
-
-        /* FAQ's */
-        .faq-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-            margin-bottom: 120px;
-        }
-
-        .faq-item {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 40px;
-            padding: 30px;
-            transition: 0.3s;
-        }
-
-        .faq-item:hover {
-            border-color: #a18cd1;
-        }
-
-        .faq-question {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .faq-question i {
-            color: #a18cd1;
-            transition: 0.3s;
-        }
-
-        .faq-answer {
-            color: #b0b0d0;
-            line-height: 1.8;
-        }
-
-        /* فوتر */
-        .footer {
-            background: rgba(0,0,0,0.3);
-            border-top: 1px solid rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
-            padding: 80px 0 30px;
-            margin-top: 80px;
-        }
-
-        .footer-top {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .footer-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(255,255,255,0.03);
-            padding: 15px 40px;
-            border-radius: 60px;
-            margin-bottom: 40px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .footer-slogan {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 40px;
-            background: linear-gradient(135deg, #fff, #a0a0d0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .footer-btn {
-            display: inline-block;
-            padding: 18px 60px;
-            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
-            border-radius: 60px;
-            color: #0f0f1a;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.2rem;
-            transition: 0.3s;
-            margin-bottom: 60px;
-        }
-
-        .footer-btn:hover {
+        
+        .group:hover .bw-img {
+            filter: grayscale(0%);
             transform: scale(1.05);
-            box-shadow: 0 20px 40px rgba(161,140,209,0.4);
         }
 
-        .social-links {
-            display: flex;
-            gap: 25px;
-            justify-content: center;
-            margin-bottom: 80px;
+        /* Text selection color */
+        ::selection {
+            background: #ffffff;
+            color: #000000;
         }
 
-        .social-link {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 1.6rem;
-            transition: 0.3s;
-            text-decoration: none;
+        details > summary {
+            list-style: none;
         }
-
-        .social-link:hover {
-            border-color: #a18cd1;
-            transform: translateY(-8px) rotate(360deg);
-            background: rgba(161,140,209,0.1);
-        }
-
-        .footer-bottom {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            color: #8080a0;
-            font-size: 1rem;
-        }
-
-        .footer-email {
-            color: #fff;
-            text-decoration: none;
-            border-bottom: 1px dashed #a18cd1;
-        }
-
-        .designed-by {
-            color: #a18cd1;
-            font-weight: 600;
-        }
-
-        /* متفرقه */
-        .spacer {
-            height: 50px;
-        }
-
-        /* responsive */
-        @media (max-width: 1024px) {
-            .gallery-grid { grid-template-columns: repeat(2,1fr); }
-            .services-grid { grid-template-columns: repeat(2,1fr); }
-        }
-
-        @media (max-width: 768px) {
-            .header { flex-direction: column; gap: 20px; }
-            .nav-menu { gap: 20px; }
-            .slogan { font-size: 2.5rem; }
-            .about-section { grid-template-columns: 1fr; }
-            .form-grid { grid-template-columns: 1fr; }
-            .form-group.full { grid-column: span 1; }
-            .faq-grid { grid-template-columns: 1fr; }
-            .stats { flex-direction: column; gap: 40px; border-radius: 40px; }
-            .footer-bottom { flex-direction: column; gap: 20px; }
+        details > summary::-webkit-details-marker {
+            display: none;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <!-- هدر -->
-        <header class="header">
-            <div class="logo">علی رضایی</div>
-            <nav class="nav-menu">
-                <a href="#">خانه</a>
-                <a href="#">پروژه‌ها</a>
-                <a href="#">درباره</a>
-                <a href="#">تماس</a>
-            </nav>
-        </header>
+<body class="relative">
 
-        <!-- وضعیت و شعار -->
-        <section class="status-section">
-            <div class="status-badge">
-                <span class="status-dot"></span>
-                <span class="status-text">آماده همکاری و پروژه‌های جدید</span>
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 top-0 left-0 border-b border-white/5 bg-black/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold tracking-tight flex items-center gap-2">
+                <i class="fa-solid fa-layer-group"></i> PortfoEfe
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+                <a href="#services" class="hover:text-white transition-colors">Services</a>
+                <a href="#projects" class="hover:text-white transition-colors">Projects</a>
+                <a href="#testimonials" class="hover:text-white transition-colors">Testimonials</a>
+                <a href="#contact" class="hover:text-white transition-colors">Contact</a>
             </div>
-            <h1 class="slogan">خلاقیت را با<br>مینیمالیسم تجربه کنید</h1>
-            <div class="button-group">
-                <a href="#" class="btn btn-primary">مشاهده پروژه‌ها</a>
-                <a href="#" class="btn btn-outline">ارتباط با من</a>
-            </div>
-        </section>
 
-        <!-- گالری پروژه‌ها -->
-        <section>
-            <h2 class="section-title">گالری پروژه‌ها</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item"><img src="https://picsum.photos/600/600?random=1" alt="project"></div>
-                <div class="gallery-item"><img src="https://picsum.photos/600/600?random=2" alt="project"></div>
-                <div class="gallery-item"><img src="https://picsum.photos/600/600?random=3" alt="project"></div>
-                <div class="gallery-item"><img src="https://picsum.photos/600/600?random=4" alt="project"></div>
-            </div>
-            <div class="gallery-btn-wrapper">
-                <a href="#" class="btn-gallery">مشاهده گالری کامل <i class="fas fa-arrow-left"></i></a>
-            </div>
-        </section>
+            <a href="#" class="hidden md:flex items-center gap-2 px-4 py-2 border border-white/20 rounded-full text-xs font-semibold hover:bg-white hover:text-black transition-all">
+                <i class="fa-solid fa-arrow-right"></i> Get Template
+            </a>
 
-        <!-- درباره من -->
-        <section class="about-section">
-            <div class="about-image">
-                <img src="https://picsum.photos/800/1000?random=5" alt="علی رضایی">
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-white text-xl" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black border-t border-white/10 p-4 absolute w-full">
+            <div class="flex flex-col gap-4 text-center">
+                <a href="#services" class="text-gray-300 hover:text-white">Services</a>
+                <a href="#projects" class="text-gray-300 hover:text-white">Projects</a>
+                <a href="#testimonials" class="text-gray-300 hover:text-white">Testimonials</a>
+                <a href="#contact" class="text-gray-300 hover:text-white">Contact</a>
             </div>
-            <div class="about-content">
-                <h2 class="about-name">علی رضایی</h2>
-                <p class="about-bio">طراح و توسعه‌دهنده فرانت‌اند با ۶ سال تجربه در خلق تجربه‌های کاربری منحصربه‌فرد. عاشق کد تمیز و طراحی مینیمال.</p>
-                <div class="skills">
-                    <span class="skill-tag">HTML</span>
-                    <span class="skill-tag">CSS</span>
-                    <span class="skill-tag">JavaScript</span>
-                    <span class="skill-tag">PHP</span>
-                    <span class="skill-tag">WordPress</span>
-                    <span class="skill-tag">Figma</span>
-                    <span class="skill-tag">Photoshop</span>
-                    <span class="skill-tag">Python</span>
-                </div>
-                <div class="work-history">
-                    <p>🔹 ۲۰۱۸ - ۲۰۲۰: توسعه‌دهنده فرانت‌اند در استودیوی خلاق شفق</p>
-                    <p>🔹 ۲۰۲۰ - ۲۰۲۳: طراح رابط کاربری در آژانس دیجیتال پویش</p>
-                    <p>🔹 ۲۰۲۳ - اکنون: فریلنسر و همکار با استارتاپ‌های بین‌المللی</p>
-                </div>
-            </div>
-        </section>
+        </div>
+    </nav>
 
-        <!-- آخرین کارها (اسکرول افقی) -->
-        <section class="latest-works">
-            <h2 class="section-title">آخرین کارها</h2>
-            <div class="scroll-x">
-                <div class="work-card">
-                    <img src="https://picsum.photos/400/300?random=10" alt="work">
-                    <h4>اپلیکیشن فروشگاهی</h4>
-                    <p>طراحی رابط کاربری با فیگما و پیاده‌سازی با React</p>
-                </div>
-                <div class="work-card">
-                    <img src="https://picsum.photos/400/300?random=11" alt="work">
-                    <h4>وبسایت شرکتی</h4>
-                    <p>طراحی مدرن با وردپرس و المان‌های سفارشی</p>
-                </div>
-                <div class="work-card">
-                    <img src="https://picsum.photos/400/300?random=12" alt="work">
-                    <h4>داشبورد مدیریت</h4>
-                    <p>صفحات تحلیلی با چارت‌های تعاملی</p>
-                </div>
-                <div class="work-card">
-                    <img src="https://picsum.photos/400/300?random=13" alt="work">
-                    <h4>لندینگ پیج محصول</h4>
-                    <p>تمرکز بر تبدیل و تجربه کاربری روان</p>
-                </div>
-                <div class="work-card">
-                    <img src="https://picsum.photos/400/300?random=14" alt="work">
-                    <h4>اپلیکیشن موبایل</h4>
-                    <p>طراحی UI/UX برای استارتاپ فین‌تک</p>
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-20 overflow-hidden min-h-screen flex flex-col justify-center items-center text-center px-6">
+        <!-- Abstract Bg -->
+        <div class="smoke-bg w-[600px] h-[600px] top-[-200px] left-[calc(50%-300px)] opacity-60"></div>
+        <div class="smoke-bg w-[500px] h-[500px] bottom-0 right-[-100px] opacity-40"></div>
+
+        <div class="relative z-10 max-w-4xl mx-auto animate-fade-in-up">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] uppercase tracking-wider mb-6">
+                <span class="w-1.5 h-1.5 rounded-full bg-white"></span> Crafting Unique Brand Identities
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-semibold leading-tight mb-6 tracking-tight">
+                Branding that you <br/> need <span class="italic font-light text-gray-400">Indeed</span>
+            </h1>
+            
+            <p class="text-gray-400 max-w-lg mx-auto mb-10 text-sm md:text-base">
+                Elevate your brand with custom identity and packaging design. Showcase your story through bold visuals and strategic design solutions.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#contact" class="px-8 py-3 bg-white text-black rounded-full font-medium hover:bg-gray-200 transition-colors text-sm">
+                    Get Started Now
+                </a>
+                <a href="#projects" class="px-8 py-3 border border-white/20 rounded-full font-medium hover:bg-white/10 transition-colors text-sm">
+                    See Projects
+                </a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-xs text-gray-500">
+            <span>Scroll Down</span>
+            <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
+        </div>
+        
+        <!-- Clients Bar -->
+        <div class="mt-20 flex flex-wrap justify-center gap-8 md:gap-16 text-gray-500 text-sm font-medium uppercase tracking-widest border-t border-white/5 pt-8 w-full max-w-6xl">
+            <span class="flex items-center gap-2"><i class="fa-solid fa-asterisk text-[10px]"></i> Asterisk</span>
+            <span class="flex items-center gap-2"><i class="fa-brands fa-fort-awesome text-[10px]"></i> Fooks</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-circle-notch text-[10px]"></i> Opal</span>
+            <span class="flex items-center gap-2"><i class="fa-solid fa-moon text-[10px]"></i> Dune</span>
+        </div>
+    </header>
+
+    <!-- Projects Grid -->
+    <section id="projects" class="py-20 px-4 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 auto-rows-[300px] md:auto-rows-[400px]">
+            <!-- Item 1: Large Left -->
+            <div class="group relative overflow-hidden rounded-xl bg-gray-900 md:col-span-4 cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1616469829941-c7200edec809?q=80&w=1000&auto=format&fit=crop" alt="Project 1" class="w-full h-full object-cover bw-img">
+                <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="text-xs bg-black/50 backdrop-blur px-3 py-1 rounded-full">View Case Study ↗</span>
                 </div>
             </div>
-        </section>
-
-        <!-- سرویس‌ها -->
-        <section>
-            <h2 class="section-title">خدماتی که ارائه می‌دم</h2>
-            <div class="services-grid">
-                <div class="service-card">
-                    <i class="fas fa-laptop-code"></i>
-                    <h3>طراحی سایت</h3>
-                    <p>وبسایت‌های ریسپانسیو و مدرن با آخرین تکنولوژی‌ها</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-mobile-alt"></i>
-                    <h3>طراحی اپلیکیشن</h3>
-                    <p>تجربه کاربری روان برای موبایل و تبلت</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-paint-brush"></i>
-                    <h3>هویت بصری</h3>
-                    <p>لوگو، برندینگ و طراحی گرافیک</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>سئو و بهینه‌سازی</h3>
-                    <p>بهبود رتبه سایت در موتورهای جستجو</p>
+            
+            <!-- Item 2: Large Center -->
+            <div class="group relative overflow-hidden rounded-xl bg-gray-900 md:col-span-4 cursor-pointer">
+                 <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?q=80&w=1000&auto=format&fit=crop" alt="Project 2" class="w-full h-full object-cover bw-img">
+                 <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="text-xs bg-black/50 backdrop-blur px-3 py-1 rounded-full">View Case Study ↗</span>
                 </div>
             </div>
-        </section>
 
-        <!-- نظرات (اسلایدر محو) -->
-        <section class="testimonials">
-            <h2 class="section-title">نظرات کارفرماها</h2>
-            <div class="testimonials-wrapper">
-                <div class="testimonial-card">
-                    <p>“علی واقعاً حرفه‌ای و خلاقانه کار می‌کنه. تحویل به موقع و کیفیت بالا از ویژگی‌های بارز کارشه.”</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">م</div>
-                        <div class="author-info">
-                            <h5>محمد احمدی</h5>
-                            <span>مدیر استارتاپ آنلاین</span>
+            <!-- Item 3: Large Right -->
+            <div class="group relative overflow-hidden rounded-xl bg-gray-900 md:col-span-4 cursor-pointer">
+                 <img src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=1000&auto=format&fit=crop" alt="Project 3" class="w-full h-full object-cover bw-img">
+                 <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="text-xs bg-black/50 backdrop-blur px-3 py-1 rounded-full">View Case Study ↗</span>
+                </div>
+            </div>
+
+             <!-- Row 2 -->
+            <!-- Item 4 -->
+            <div class="group relative overflow-hidden rounded-xl bg-gray-900 md:col-span-3 cursor-pointer">
+                 <img src="https://images.unsplash.com/photo-1595348020949-87cdfbb44174?q=80&w=1000&auto=format&fit=crop" alt="Project 4" class="w-full h-full object-cover bw-img">
+            </div>
+
+            <!-- Item 5: Wide -->
+            <div class="group relative overflow-hidden rounded-xl bg-gray-900 md:col-span-6 cursor-pointer">
+                 <img src="https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?q=80&w=1000&auto=format&fit=crop" alt="Project 5" class="w-full h-full object-cover bw-img">
+                 <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span class="text-xs bg-black/50 backdrop-blur px-3 py-1 rounded-full">View Case Study ↗</span>
+                </div>
+            </div>
+
+            <!-- Item 6 -->
+            <div class="group relative overflow-hidden rounded-xl bg-gray-900 md:col-span-3 cursor-pointer">
+                 <img src="https://images.unsplash.com/photo-1615397349754-c52046152ef3?q=80&w=1000&auto=format&fit=crop" alt="Project 6" class="w-full h-full object-cover bw-img">
+            </div>
+        </div>
+        
+        <div class="flex justify-center mt-12 gap-4">
+            <button class="px-6 py-2 bg-white text-black rounded-full text-sm font-semibold hover:bg-gray-200">All Projects</button>
+            <button class="px-6 py-2 border border-white/20 rounded-full text-sm font-semibold hover:bg-white/10">Book a Free Call</button>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-20 bg-[#0A0A0A]">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+            <div>
+                <h2 class="text-4xl md:text-5xl font-semibold mb-6">Meet Meily</h2>
+                <p class="text-gray-400 mb-8 leading-relaxed text-sm md:text-base">
+                    I'm Meily, a passionate Brand Identity & Package Designer based in Tokyo. I specialize in crafting bold visual identities and packaging that captivate and inspire, blending creativity with strategy to elevate brands.
+                </p>
+                
+                <div class="flex flex-wrap gap-2 mb-10">
+                    <span class="px-3 py-1 border border-white/10 rounded-full text-xs text-gray-300">Product Design</span>
+                    <span class="px-3 py-1 border border-white/10 rounded-full text-xs text-gray-300">Brand Identity Design</span>
+                    <span class="px-3 py-1 border border-white/10 rounded-full text-xs text-gray-300">UX Design</span>
+                    <span class="px-3 py-1 border border-white/10 rounded-full text-xs text-gray-300">Branding</span>
+                    <span class="px-3 py-1 border border-white/10 rounded-full text-xs text-gray-300">Figma</span>
+                </div>
+
+                <!-- Experience Table -->
+                <div class="space-y-4 text-xs md:text-sm">
+                    <div class="flex justify-between border-b border-white/5 pb-2">
+                        <span class="text-gray-400">Freelance</span>
+                        <span class="font-medium">Brand & Art Dir</span>
+                        <span class="text-gray-500">Currently</span>
+                    </div>
+                    <div class="flex justify-between border-b border-white/5 pb-2">
+                        <span class="text-gray-400">Brand Designer</span>
+                        <span class="font-medium">UrbanFit Studio</span>
+                        <span class="text-gray-500">2023-24</span>
+                    </div>
+                    <div class="flex justify-between border-b border-white/5 pb-2">
+                        <span class="text-gray-400">Package Designer</span>
+                        <span class="font-medium">GreenX Studio</span>
+                        <span class="text-gray-500">2020-22</span>
+                    </div>
+                </div>
+                
+                <div class="mt-8 flex items-center gap-2 text-sm text-gray-400 cursor-pointer hover:text-white">
+                    <span>Recent Works</span> <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </div>
+            
+            <div class="relative">
+                <div class="aspect-[4/5] overflow-hidden rounded-xl">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop" alt="Meily" class="w-full h-full object-cover bw-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-16">
+            <div class="order-2 md:order-1 h-full">
+                <div class="rounded-xl overflow-hidden h-full max-h-[600px] relative">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1000&auto=format&fit=crop" alt="Process" class="w-full h-full object-cover bw-img opacity-80">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                </div>
+            </div>
+            
+            <div class="order-1 md:order-2 flex flex-col justify-center">
+                <div class="mb-2 text-xs text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                    <span class="w-1 h-1 bg-white rounded-full"></span> Design Process
+                </div>
+                <h2 class="text-5xl font-semibold mb-4">Process</h2>
+                <p class="text-gray-400 mb-8 text-sm max-w-md">
+                    Crafting bold visuals that inspire and elevate brands with thought process.
+                </p>
+                <div class="flex gap-4 mb-10">
+                     <button class="px-4 py-2 border border-white/20 rounded-full text-xs hover:bg-white hover:text-black transition-colors">Book a Free Call</button>
+                     <button class="px-4 py-2 border border-white/20 rounded-full text-xs hover:bg-white hover:text-black transition-colors">See Projects</button>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="group border-l border-white/10 pl-6 hover:border-white transition-colors duration-300">
+                        <div class="text-xs text-gray-500 mb-1">01</div>
+                        <h3 class="text-xl font-medium mb-2 group-hover:text-white text-gray-200">Define Your Vision</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed">Find the perfect plan tailored to your needs, offering the right balance of features, flexibility, and value.</p>
+                    </div>
+                     <div class="group border-l border-white/10 pl-6 hover:border-white transition-colors duration-300">
+                        <div class="text-xs text-gray-500 mb-1">02</div>
+                        <h3 class="text-xl font-medium mb-2 group-hover:text-white text-gray-200">Submit Your Request</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed">Easily submit your design requirements through our private design portal, ensuring seamless process.</p>
+                    </div>
+                     <div class="group border-l border-white/10 pl-6 hover:border-white transition-colors duration-300">
+                        <div class="text-xs text-gray-500 mb-1">03</div>
+                        <h3 class="text-xl font-medium mb-2 group-hover:text-white text-gray-200">Project Delivered</h3>
+                        <p class="text-sm text-gray-500 leading-relaxed">As a dedicated freelancer, ensure your project is completed with precision and delivered within 2-3 days.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-zinc-950/50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div>
+                     <div class="mb-2 text-xs text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                        <span class="w-1 h-1 bg-white rounded-full"></span> Design Services
+                    </div>
+                    <h2 class="text-5xl font-semibold mb-4">Services</h2>
+                    <p class="text-gray-400 mb-8 max-w-md text-sm">
+                        Helping businesses standout with brand identity packaging that captivates and converts effectively.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        <button class="px-4 py-2 bg-white/5 rounded-full text-xs border border-white/10 hover:bg-white hover:text-black transition-all">Product Design</button>
+                        <button class="px-4 py-2 bg-transparent rounded-full text-xs border border-white/10 text-gray-400 hover:text-white">Brand Identity Design</button>
+                        <button class="px-4 py-2 bg-transparent rounded-full text-xs border border-white/10 text-gray-400 hover:text-white">Branding</button>
+                    </div>
+                    
+                    <div class="flex gap-4 mb-12">
+                         <button class="px-5 py-2 border border-white/20 rounded-full text-xs font-medium hover:bg-white hover:text-black transition-colors">Book a Free Call</button>
+                         <button class="px-5 py-2 border border-white/20 rounded-full text-xs font-medium hover:bg-white hover:text-black transition-colors">See Projects</button>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <!-- Service Card 1 -->
+                        <div class="glass-card p-6 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+                            <i class="fa-solid fa-fingerprint text-xl mb-4 text-gray-400 group-hover:text-white"></i>
+                            <h3 class="text-lg font-medium mb-2">Brand Identity</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed">Creating unique, memorable brand identities that resonate with your audience.</p>
+                        </div>
+                        <!-- Service Card 2 -->
+                        <div class="glass-card p-6 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+                            <i class="fa-solid fa-pen-nib text-xl mb-4 text-gray-400 group-hover:text-white"></i>
+                            <h3 class="text-lg font-medium mb-2">Brand Design</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed">Designing sleek, impactful packaging that not only looks stunning but also connects.</p>
+                        </div>
+                        <!-- Service Card 3 -->
+                        <div class="glass-card p-6 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+                            <i class="fa-solid fa-box-open text-xl mb-4 text-gray-400 group-hover:text-white"></i>
+                            <h3 class="text-lg font-medium mb-2">Package Design</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed">Bringing your brand to life through high-fidelity product mockups.</p>
+                        </div>
+                         <!-- Service Card 4 -->
+                        <div class="glass-card p-6 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+                            <i class="fa-solid fa-laptop text-xl mb-4 text-gray-400 group-hover:text-white"></i>
+                            <h3 class="text-lg font-medium mb-2">Mockup Design</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed">Tailored design mockups that align perfectly with your brand's aesthetic.</p>
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
-                    <p>“از همکاری با علی لذت بردم. دقیقاً چیزی که میخواستم رو پیاده‌سازی کرد و حتی بهتر.”</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">س</div>
-                        <div class="author-info">
-                            <h5>سارا کریمی</h5>
-                            <span>فریلنسر دیزاینر</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p>“سرعت عمل و دقت علی مثال‌زدنیه. پروژه ما رو تو کوتاه‌ترین زمان به بهترین شکل انجام داد.”</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">ر</div>
-                        <div class="author-info">
-                            <h5>رضا نادری</h5>
-                            <span>کارآفرین</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card">
-                    <p>“طراحی فوق‌العاده و کدنویسی تمیز. قطعاً دوباره باهاش کار خواهم کرد.”</p>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">ن</div>
-                        <div class="author-info">
-                            <h5>نیما حسینی</h5>
-                            <span>توسعه‌دهنده بک‌اند</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- آمار -->
-        <section class="stats">
-            <div class="stat-item">
-                <div class="stat-number">۶+</div>
-                <div class="stat-label">سال تجربه</div>
+                <div class="hidden lg:block relative h-full min-h-[500px] rounded-2xl overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1629198688000-71f23e745b6e?q=80&w=1000&auto=format&fit=crop" alt="Services Image" class="w-full h-full object-cover bw-img absolute inset-0">
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-number">۱۰۰%</div>
-                <div class="stat-label">رضایت کارفرماها</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">۴۲</div>
-                <div class="stat-label">پروژه موفق</div>
-            </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- فرم تماس -->
-        <section class="contact-form">
-            <h2 class="section-title" style="margin-bottom: 40px;">ارتباط با من</h2>
-            <form>
-                <div class="form-grid">
-                    <div class="form-group">
-                        <input type="text" class="form-input" placeholder="نام و نام خانوادگی">
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-input" placeholder="ایمیل">
-                    </div>
-                    <div class="form-group full">
-                        <textarea class="form-input" placeholder="پیام شما..."></textarea>
-                    </div>
-                    <div class="contact-btn">
-                        <button type="submit" class="btn btn-primary" style="font-size: 1.2rem;">ارسال پیام</button>
-                    </div>
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="grid lg:grid-cols-3 gap-8 items-end mb-16">
+            <div class="lg:col-span-1">
+                 <div class="rounded-xl overflow-hidden h-[300px] relative">
+                     <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover bw-img" alt="Office">
+                     <div class="absolute inset-0 bg-black/40"></div>
+                 </div>
+            </div>
+            <div class="lg:col-span-2 pl-0 lg:pl-10">
+                 <div class="mb-2 text-xs text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                    <span class="w-1 h-1 bg-white rounded-full"></span> Reviews
                 </div>
-            </form>
-        </section>
+                <h2 class="text-4xl md:text-5xl font-semibold mb-6">Client Reviews</h2>
+                <p class="text-gray-400 mb-8 max-w-lg text-sm">
+                    Real feedback from clients who trusted my design expertise to elevate their brands successfully.
+                </p>
+                <div class="flex gap-4">
+                     <button class="px-5 py-2 border border-white/20 rounded-full text-xs font-medium hover:bg-white hover:text-black transition-colors">Book a Free Call</button>
+                     <button class="px-5 py-2 border border-white/20 rounded-full text-xs font-medium hover:bg-white hover:text-black transition-colors">See Services</button>
+                </div>
+            </div>
+        </div>
 
-        <!-- FAQ's -->
-        <section>
-            <h2 class="section-title">سوالات متداول</h2>
-            <div class="faq-grid">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        چگونه می‌توانم پروژه بدهم؟ <i class="fas fa-plus-circle"></i>
-                    </div>
-                    <div class="faq-answer">
-                        از طریق فرم تماس یا ایمیل می‌تونید پروژه رو ارسال کنید. معمولاً کمتر از ۲۴ ساعت پاسخ می‌دم.
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Review 1 -->
+            <div class="bg-[#0F0F0F] p-8 rounded-xl border border-white/5">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-10 h-10 rounded-full grayscale">
+                    <div>
+                        <h4 class="text-sm font-semibold">Richards Johnson</h4>
+                        <p class="text-[10px] text-gray-500">Creative Director, Leaf Designer</p>
                     </div>
                 </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        هزینه طراحی سایت چقدره؟ <i class="fas fa-plus-circle"></i>
-                    </div>
-                    <div class="faq-answer">
-                        بستگی به پیچیدگی پروژه داره. پس از مشاوره اولیه و دریافت جزئیات، قیمت منصفانه پیشنهاد می‌دم.
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        آیا پشتیبانی بعد از تحویل دارید؟ <i class="fas fa-plus-circle"></i>
-                    </div>
-                    <div class="faq-answer">
-                        بله، یک ماه پشتیبانی رایگان و پس از آن با تعرفه مناسب همراه شما هستم.
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">
-                        چه مدت زمان برای تحویل پروژه نیاز است؟ <i class="fas fa-plus-circle"></i>
-                    </div>
-                    <div class="faq-answer">
-                        پروژه‌های ساده ۱ تا ۲ هفته، پروژه‌های پیچیده تا ۱ ماه زمان می‌بره.
-                    </div>
+                <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                    "Working with Meily was a seamless experience. Her ability to merge creativity with functionality resulted in designs that not only looked stunning but also drove meaningful engagement."
+                </p>
+                <div class="text-yellow-500 text-xs flex gap-1">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
             </div>
-        </section>
-    </div>
 
-    <!-- فوتر -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-status">
-                    <span class="status-dot"></span>
-                    <span class="status-text">در دسترس برای پروژه‌های جدید</span>
+            <!-- Review 2 -->
+            <div class="bg-[#0F0F0F] p-8 rounded-xl border border-white/5">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-10 h-10 rounded-full grayscale">
+                    <div>
+                        <h4 class="text-sm font-semibold">Jane Lee</h4>
+                        <p class="text-[10px] text-gray-500">CEO of GreenEarth</p>
+                    </div>
                 </div>
-                <div class="footer-slogan">بیا یه چیز باحال<br>با هم بسازیم</div>
-                <a href="#" class="footer-btn">شروع همکاری</a>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                    "Meily's strategic approach to design brought our brand vision to life. The packaging and brand elements she developed elevated our aesthetic."
+                </p>
+                <div class="text-yellow-500 text-xs flex gap-1">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <div>© ۲۰۲۶ تمام حقوق محفوظ است</div>
-                <div><a href="mailto:ali@example.com" class="footer-email">ali@example.com</a></div>
-                <div>طراحی شده توسط <span class="designed-by">علی رضایی</span></div>
+
+             <!-- Review 3 -->
+            <div class="bg-[#0F0F0F] p-8 rounded-xl border border-white/5">
+                <div class="flex items-center gap-4 mb-6">
+                    <img src="https://randomuser.me/api/portraits/men/85.jpg" alt="User" class="w-10 h-10 rounded-full grayscale">
+                    <div>
+                        <h4 class="text-sm font-semibold">Jona Carter</h4>
+                        <p class="text-[10px] text-gray-500">Founder of EcoLux</p>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed mb-4">
+                    "Every project Meily touches turns into a perfect blend of design and purpose. She crafted packaging that reflected our eco-friendly mission."
+                </p>
+                <div class="text-yellow-500 text-xs flex gap-1">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
             </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 mt-16 border-t border-b border-white/10 py-10">
+            <div class="text-center border-r border-white/10">
+                <div class="text-3xl font-bold mb-1">180+</div>
+                <div class="text-xs text-gray-500 uppercase">Design projects completed</div>
+            </div>
+            <div class="text-center border-r border-white/10">
+                <div class="text-3xl font-bold mb-1">96%</div>
+                <div class="text-xs text-gray-500 uppercase">Client satisfaction rate</div>
+            </div>
+            <div class="text-center">
+                <div class="text-3xl font-bold mb-1">15+</div>
+                <div class="text-xs text-gray-500 uppercase">Years of experience</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-16">
+            <div>
+                 <div class="mb-2 text-xs text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                    <span class="w-1 h-1 bg-white rounded-full"></span> FAQs
+                </div>
+                <h2 class="text-5xl font-semibold mb-6">Answers</h2>
+                <p class="text-gray-400 mb-10 text-sm">Find answers to common questions about my design process, services etc...</p>
+                
+                <div class="rounded-xl overflow-hidden h-[300px]">
+                    <img src="https://images.unsplash.com/photo-1587575494201-11fe74d90d38?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover bw-img" alt="FAQ Image">
+                </div>
+                <div class="flex gap-4 mt-8">
+                     <button class="px-4 py-2 border border-white/20 rounded-full text-xs text-gray-400 hover:text-white">Product Design</button>
+                     <button class="px-4 py-2 border border-white/20 rounded-full text-xs text-gray-400 hover:text-white">Brand Identity Design</button>
+                     <button class="px-4 py-2 border border-white/20 rounded-full text-xs text-gray-400 hover:text-white">Branding</button>
+                </div>
+                 <button class="mt-8 px-6 py-3 border border-white/20 rounded-full text-xs font-medium hover:bg-white hover:text-black transition-colors">Book a Free Call</button>
+            </div>
+            
+            <div class="space-y-4">
+                <details class="group bg-[#0A0A0A] border border-white/5 rounded-lg open:bg-white/5 transition-all">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer p-6">
+                        <span class="text-sm">What services do you provide?</span>
+                        <span class="transition group-open:rotate-45"><i class="fa-solid fa-plus text-xs"></i></span>
+                    </summary>
+                    <div class="text-gray-400 text-xs px-6 pb-6 leading-relaxed">
+                        I specialize in brand identity and packaging design, with experience in web design, UI/UX, and broader brand experiences.
+                    </div>
+                </details>
+
+                 <details class="group bg-[#0A0A0A] border border-white/5 rounded-lg open:bg-white/5 transition-all">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer p-6">
+                        <span class="text-sm">How do I start working with you?</span>
+                        <span class="transition group-open:rotate-45"><i class="fa-solid fa-plus text-xs"></i></span>
+                    </summary>
+                    <div class="text-gray-400 text-xs px-6 pb-6 leading-relaxed">
+                        Simply book a free call or send an email. We will discuss your needs and see if we are a good fit.
+                    </div>
+                </details>
+                
+                <details class="group bg-[#0A0A0A] border border-white/5 rounded-lg open:bg-white/5 transition-all">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer p-6">
+                        <span class="text-sm">What design tools do you use?</span>
+                        <span class="transition group-open:rotate-45"><i class="fa-solid fa-plus text-xs"></i></span>
+                    </summary>
+                    <div class="text-gray-400 text-xs px-6 pb-6 leading-relaxed">
+                        I primarily use the Adobe Creative Suite (Illustrator, Photoshop, InDesign) and Figma for digital products.
+                    </div>
+                </details>
+                
+                 <details class="group bg-[#0A0A0A] border border-white/5 rounded-lg open:bg-white/5 transition-all">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer p-6">
+                        <span class="text-sm">How long does a project take?</span>
+                        <span class="transition group-open:rotate-45"><i class="fa-solid fa-plus text-xs"></i></span>
+                    </summary>
+                    <div class="text-gray-400 text-xs px-6 pb-6 leading-relaxed">
+                        Timelines vary depending on scope, but a typical branding project takes 2-4 weeks.
+                    </div>
+                </details>
+
+                <details class="group bg-[#0A0A0A] border border-white/5 rounded-lg open:bg-white/5 transition-all">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer p-6">
+                        <span class="text-sm">Do you provide revisions?</span>
+                        <span class="transition group-open:rotate-45"><i class="fa-solid fa-plus text-xs"></i></span>
+                    </summary>
+                    <div class="text-gray-400 text-xs px-6 pb-6 leading-relaxed">
+                        Yes, I include 2-3 rounds of revisions to ensure the final design meets your expectations.
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / Footer -->
+    <footer id="contact" class="relative py-32 px-6 overflow-hidden flex flex-col items-center justify-center text-center">
+        <!-- Abstract Bg -->
+        <div class="smoke-bg w-[800px] h-[400px] bottom-[-100px] left-[calc(50%-400px)] opacity-30"></div>
+
+        <div class="relative z-10">
+             <div class="mb-4 text-xs text-gray-500 uppercase tracking-widest inline-block border border-white/10 px-3 py-1 rounded-full">
+                Available for Work
+            </div>
+            
+            <h2 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight max-w-3xl mx-auto">
+                Curious about what we can <br/> create together? Let's <br/> bring something extraordinary to life!
+            </h2>
+            
+            <button class="mt-8 px-8 py-3 bg-white text-black rounded-full font-semibold hover:bg-gray-200 transition-colors">
+                Book a Free Call
+            </button>
+            
+            <div class="flex gap-8 mt-16 justify-center text-xl text-gray-400">
+                <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-behance"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-dribbble"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-6 w-full px-6 flex justify-between text-[10px] text-gray-600 uppercase">
+             <span>© 2024 PortfoEfe</span>
+             <span class="hidden md:inline">Design in France</span>
+             <span>All rights reserved.</span>
+        </div>
+        
+        <div class="fixed bottom-6 right-6 z-50">
+             <button class="bg-white text-black px-4 py-2 rounded-full text-xs font-bold shadow-lg hover:scale-105 transition-transform">
+                Edit Template
+             </button>
         </div>
     </footer>
 
     <script>
-        // تغییر وضعیت آنلاین (نمونه)
-        const statusDot = document.querySelector('.status-dot');
-        const statusText = document.querySelector('.status-text');
-        // می‌توان بعداً با API تغییر داد
-        // فقط برای نمونه انیمیشن
-        setInterval(() => {
-            // شبیه‌سازی تغییر وضعیت هر ۱۰ ثانیه (اختیاری)
-        }, 10000);
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // FAQ Interaction - close others when one opens
+        const details = document.querySelectorAll("details");
+        details.forEach((targetDetail) => {
+            targetDetail.addEventListener("click", () => {
+                details.forEach((detail) => {
+                    if (detail !== targetDetail) {
+                        detail.removeAttribute("open");
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
