@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پورتفولیو | طراح خلاق</title>
-    
+    <title>پورتفولیوی خلاق | علی رضایی</title>
     <!-- فونت وزیر -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
-    
-    <!-- فونت آیکون (Font Awesome) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <!-- فونت آیکن Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -20,561 +17,996 @@
 
         body {
             font-family: 'Vazir', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 2rem;
-            position: relative;
+            background: #0f0f1a;
+            color: #fff;
+            line-height: 1.6;
             overflow-x: hidden;
-        }
-
-        /* پس‌زمینه متحرک با ذرات */
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        .particle {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            animation: float 6s infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-20px) translateX(10px); }
-            50% { transform: translateY(-10px) translateX(-10px); }
-            75% { transform: translateY(10px) translateX(5px); }
         }
 
         /* کانتینر اصلی */
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            position: relative;
-            z-index: 1;
+            padding: 0 30px;
         }
 
-        /* هدر با افکت شیشه‌ای */
-        .glass-header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            padding: 1.5rem 2rem;
-            margin-bottom: 2rem;
+        /* هدر */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         .logo {
             font-size: 1.8rem;
             font-weight: 700;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 1.1rem;
             position: relative;
         }
 
-        .logo::after {
+        .nav-menu a::after {
             content: '';
             position: absolute;
             bottom: -5px;
             left: 0;
-            width: 50%;
-            height: 3px;
-            background: linear-gradient(90deg, #fff, transparent);
-            border-radius: 2px;
+            width: 0%;
+            height: 2px;
+            background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+            transition: 0.3s;
         }
 
-        /* وضعیت آنلاین خلاقانه */
-        .status-wrapper {
-            display: flex;
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        /* وضعیت در دسترس */
+        .status-section {
+            margin-top: 80px;
+            text-align: center;
+        }
+
+        .status-badge {
+            display: inline-flex;
             align-items: center;
-            gap: 1rem;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 0.8rem 1.5rem;
+            gap: 10px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 10px 30px;
             border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 30px;
         }
 
         .status-dot {
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            position: relative;
-        }
-
-        .status-dot.online {
             background: #4ade80;
             box-shadow: 0 0 20px #4ade80;
             animation: pulse 2s infinite;
         }
 
-        .status-dot.busy {
-            background: #fbbf24;
-            box-shadow: 0 0 20px #fbbf24;
-        }
-
-        .status-dot.offline {
-            background: #9ca3af;
-        }
-
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(74,222,128,0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(74,222,128,0); }
+            100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
         }
 
         .status-text {
-            color: white;
+            font-size: 1.2rem;
             font-weight: 500;
+            color: #fff;
         }
 
-        /* گرید اصلی */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 1.5rem;
+        .slogan {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #fff, #a0a0c0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        /* کارت‌های خلاقانه */
-        .creative-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            padding: 2rem;
-            transition: all 0.3s ease;
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 100px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+            color: #0f0f1a;
+            box-shadow: 0 10px 30px -10px #a18cd1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px #a18cd1;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.2);
+            color: #fff;
+        }
+
+        .btn-outline:hover {
+            border-color: #a18cd1;
+            background: rgba(255,255,255,0.02);
+            transform: translateY(-5px);
+        }
+
+        /* گالری */
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 50px;
             position: relative;
-            overflow: hidden;
+            display: inline-block;
         }
 
-        .creative-card::before {
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+            border-radius: 2px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #fff, transparent);
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+            opacity: 0;
+            transition: 0.3s;
         }
 
-        .creative-card:hover::before {
-            transform: translateX(100%);
+        .gallery-item:hover::after {
+            opacity: 1;
         }
 
-        .creative-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        .gallery-btn-wrapper {
+            text-align: center;
+            margin-bottom: 120px;
         }
 
-        /* کارت Spotify */
-        .spotify-card {
-            grid-column: span 6;
-            background: linear-gradient(135deg, #1DB954 0%, #1ed760 100%);
-        }
-
-        .now-playing {
-            display: flex;
+        .btn-gallery {
+            display: inline-flex;
             align-items: center;
-            gap: 1.5rem;
-            margin-top: 1rem;
+            gap: 10px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 50px;
+            border-radius: 50px;
+            color: #fff;
+            text-decoration: none;
+            transition: 0.3s;
         }
 
-        .album-art {
-            width: 80px;
-            height: 80px;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
+        .btn-gallery:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: #a18cd1;
+        }
+
+        /* درباره من */
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 120px;
             align-items: center;
-            justify-content: center;
-            animation: spin 4s linear infinite;
-            animation-play-state: paused;
         }
 
-        .album-art.playing {
-            animation-play-state: running;
+        .about-image {
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.5s;
         }
 
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
-        .song-info {
-            color: white;
+        .about-image:hover {
+            transform: scale(1.02);
         }
 
-        .song-name {
+        .about-content {
+            padding-right: 20px;
+        }
+
+        .about-name {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, #c0c0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .about-bio {
             font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
+            color: #b0b0d0;
+            margin-bottom: 30px;
+            line-height: 1.8;
         }
 
-        .artist-name {
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .skill-tag {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
             font-size: 0.9rem;
-            opacity: 0.9;
+            transition: 0.3s;
         }
 
-        /* بخش نظرات با طراحی خاص */
-        .comments-section {
-            grid-column: span 6;
+        .skill-tag:hover {
+            border-color: #a18cd1;
+            background: rgba(161,140,209,0.1);
+            transform: translateY(-3px);
         }
 
-        .comments-slider {
-            margin-top: 1.5rem;
-            position: relative;
+        .work-history {
+            color: #d0d0f0;
+            font-size: 1.1rem;
+            border-right: 3px solid #a18cd1;
+            padding-right: 20px;
         }
 
-        .comment-card {
-            background: rgba(255, 255, 255, 0.15);
+        .work-history p {
+            margin-bottom: 10px;
+        }
+
+        /* آخرین کارها (اسکرول افقی) */
+        .latest-works {
+            margin-bottom: 120px;
+        }
+
+        .scroll-x {
+            display: flex;
+            gap: 25px;
+            overflow-x: auto;
+            padding: 20px 0 40px;
+            scrollbar-width: thin;
+            scrollbar-color: #a18cd1 #1a1a2e;
+        }
+
+        .scroll-x::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .scroll-x::-webkit-scrollbar-track {
+            background: #1a1a2e;
+            border-radius: 10px;
+        }
+
+        .scroll-x::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+            border-radius: 10px;
+        }
+
+        .work-card {
+            min-width: 320px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 30px;
+            padding: 25px;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+        }
+
+        .work-card:hover {
+            border-color: #a18cd1;
+            transform: translateY(-10px);
+        }
+
+        .work-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
             border-radius: 20px;
-            padding: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .work-card h4 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .work-card p {
+            color: #b0b0d0;
+        }
+
+        /* سرویس‌ها */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 120px;
+        }
+
+        .service-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 30px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .service-card:hover {
+            border-color: #a18cd1;
+            transform: translateY(-10px);
+            background: rgba(161,140,209,0.05);
+        }
+
+        .service-card i {
+            font-size: 3rem;
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 25px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: #b0b0d0;
+            line-height: 1.7;
+        }
+
+        /* نظرات (اسلایدر محو شونده) */
+        .testimonials {
+            margin-bottom: 120px;
             position: relative;
         }
 
-        .comment-card::after {
-            content: '"';
-            position: absolute;
-            bottom: 10px;
-            left: 20px;
-            font-size: 4rem;
-            color: rgba(255, 255, 255, 0.1);
-            font-family: serif;
+        .testimonials-wrapper {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding: 30px 0;
+            mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
         }
 
-        .comment-header {
+        .testimonial-card {
+            min-width: 380px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 40px;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+        }
+
+        .testimonial-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #e0e0ff;
+        }
+
+        .testimonial-author {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            gap: 15px;
         }
 
-        .comment-avatar {
-            width: 40px;
-            height: 40px;
+        .author-avatar {
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 1.2rem;
         }
 
-        .comment-name {
-            color: white;
-            font-weight: 600;
+        .author-info h5 {
+            font-size: 1.1rem;
         }
 
-        .comment-date {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.8rem;
+        .author-info span {
+            color: #a0a0c0;
+            font-size: 0.9rem;
         }
 
-        .comment-text {
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 1.6;
+        /* آمار */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 120px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 80px;
+            padding: 50px 20px;
+            backdrop-filter: blur(10px);
         }
 
-        /* فرم تماس سه بعدی */
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #c0c0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: #b0b0d0;
+        }
+
+        /* فرم تماس */
         .contact-form {
-            grid-column: span 12;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 60px;
+            padding: 60px;
+            margin-bottom: 120px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
+            gap: 30px;
         }
 
         .form-group {
-            position: relative;
+            margin-bottom: 30px;
         }
 
-        .form-group.full-width {
+        .form-group.full {
             grid-column: span 2;
         }
 
         .form-input {
             width: 100%;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            color: white;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 60px;
+            padding: 18px 30px;
             font-family: 'Vazir', sans-serif;
-            transition: all 0.3s ease;
+            font-size: 1rem;
+            color: #fff;
+            transition: 0.3s;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #fff;
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            border-color: #a18cd1;
+            background: rgba(255,255,255,0.05);
         }
 
         .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
+            color: #8080a0;
         }
 
         textarea.form-input {
-            border-radius: 30px;
+            border-radius: 40px;
             resize: vertical;
-            min-height: 120px;
+            min-height: 150px;
         }
 
-        .submit-btn {
+        .contact-btn {
             grid-column: span 2;
-            background: white;
-            color: #667eea;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-family: 'Vazir', sans-serif;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            text-align: center;
         }
 
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(102, 126, 234, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+        /* FAQ's */
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 120px;
         }
 
-        .submit-btn:hover::before {
-            width: 300px;
-            height: 300px;
+        .faq-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 40px;
+            padding: 30px;
+            transition: 0.3s;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        .faq-item:hover {
+            border-color: #a18cd1;
         }
 
-        /* نشانگر تایپ */
-        .typing-indicator {
+        .faq-question {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
             display: flex;
-            gap: 0.3rem;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            width: fit-content;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
+        .faq-question i {
+            color: #a18cd1;
+            transition: 0.3s;
         }
 
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
-            30% { transform: translateY(-10px); opacity: 1; }
+        .faq-answer {
+            color: #b0b0d0;
+            line-height: 1.8;
         }
 
-        /* ریسپانسیو */
-        @media (max-width: 768px) {
-            body { padding: 1rem; }
-            
-            .grid { grid-template-columns: 1fr; }
-            
-            .spotify-card,
-            .comments-section,
-            .contact-form { grid-column: span 1; }
-            
-            .contact-form { grid-template-columns: 1fr; }
-            
-            .form-group.full-width { grid-column: span 1; }
-            
-            .glass-header { flex-direction: column; gap: 1rem; }
+        /* فوتر */
+        .footer {
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            padding: 80px 0 30px;
+            margin-top: 80px;
         }
 
-        /* انیمیشن‌های ورود */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .footer-top {
+            text-align: center;
+            margin-bottom: 80px;
         }
 
-        .fade-in-up {
-            animation: fadeInUp 0.6s ease forwards;
+        .footer-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,255,255,0.03);
+            padding: 15px 40px;
+            border-radius: 60px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        /* دکمه‌های اجتماعی */
+        .footer-slogan {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #fff, #a0a0d0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-btn {
+            display: inline-block;
+            padding: 18px 60px;
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+            border-radius: 60px;
+            color: #0f0f1a;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            margin-bottom: 60px;
+        }
+
+        .footer-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(161,140,209,0.4);
+        }
+
         .social-links {
             display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
+            gap: 25px;
+            justify-content: center;
+            margin-bottom: 80px;
         }
 
         .social-link {
-            width: 45px;
-            height: 45px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #fff;
+            font-size: 1.6rem;
+            transition: 0.3s;
             text-decoration: none;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .social-link:hover {
-            transform: translateY(-5px) rotate(360deg);
-            background: white;
-            color: #667eea;
+            border-color: #a18cd1;
+            transform: translateY(-8px) rotate(360deg);
+            background: rgba(161,140,209,0.1);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: #8080a0;
+            font-size: 1rem;
+        }
+
+        .footer-email {
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px dashed #a18cd1;
+        }
+
+        .designed-by {
+            color: #a18cd1;
+            font-weight: 600;
+        }
+
+        /* متفرقه */
+        .spacer {
+            height: 50px;
+        }
+
+        /* responsive */
+        @media (max-width: 1024px) {
+            .gallery-grid { grid-template-columns: repeat(2,1fr); }
+            .services-grid { grid-template-columns: repeat(2,1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 20px; }
+            .nav-menu { gap: 20px; }
+            .slogan { font-size: 2.5rem; }
+            .about-section { grid-template-columns: 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full { grid-column: span 1; }
+            .faq-grid { grid-template-columns: 1fr; }
+            .stats { flex-direction: column; gap: 40px; border-radius: 40px; }
+            .footer-bottom { flex-direction: column; gap: 20px; }
         }
     </style>
 </head>
 <body>
-    <!-- ذرات پس‌زمینه -->
-    <div class="particles" id="particles"></div>
-
     <div class="container">
-        <!-- هدر با وضعیت -->
-        <header class="glass-header fade-in-up">
-            <div class="logo">
-                علی رضایی
-                <span style="font-size: 1rem; display: block; opacity: 0.8;">طراح و توسعه‌دهنده خلاق</span>
-            </div>
-            
-            <div class="status-wrapper">
-                <div class="status-dot online" id="statusDot"></div>
-                <span class="status-text" id="statusText">آنلاین و آماده پروژه</span>
-            </div>
+        <!-- هدر -->
+        <header class="header">
+            <div class="logo">علی رضایی</div>
+            <nav class="nav-menu">
+                <a href="#">خانه</a>
+                <a href="#">پروژه‌ها</a>
+                <a href="#">درباره</a>
+                <a href="#">تماس</a>
+            </nav>
         </header>
 
-        <!-- گرید اصلی -->
-        <div class="grid">
-            <!-- کارت Spotify -->
-            <div class="creative-card spotify-card fade-in-up" style="animation-delay: 0.2s;">
-                <i class="fab fa-spotify" style="font-size: 2rem; color: white; margin-bottom: 1rem;"></i>
-                <h3 style="color: white; margin-bottom: 1rem;">در حال پخش</h3>
-                <div class="now-playing" id="spotifyWidget">
-                    <div class="album-art playing" id="albumArt">
-                        <i class="fas fa-music" style="font-size: 2rem; color: white;"></i>
+        <!-- وضعیت و شعار -->
+        <section class="status-section">
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span class="status-text">آماده همکاری و پروژه‌های جدید</span>
+            </div>
+            <h1 class="slogan">خلاقیت را با<br>مینیمالیسم تجربه کنید</h1>
+            <div class="button-group">
+                <a href="#" class="btn btn-primary">مشاهده پروژه‌ها</a>
+                <a href="#" class="btn btn-outline">ارتباط با من</a>
+            </div>
+        </section>
+
+        <!-- گالری پروژه‌ها -->
+        <section>
+            <h2 class="section-title">گالری پروژه‌ها</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="https://picsum.photos/600/600?random=1" alt="project"></div>
+                <div class="gallery-item"><img src="https://picsum.photos/600/600?random=2" alt="project"></div>
+                <div class="gallery-item"><img src="https://picsum.photos/600/600?random=3" alt="project"></div>
+                <div class="gallery-item"><img src="https://picsum.photos/600/600?random=4" alt="project"></div>
+            </div>
+            <div class="gallery-btn-wrapper">
+                <a href="#" class="btn-gallery">مشاهده گالری کامل <i class="fas fa-arrow-left"></i></a>
+            </div>
+        </section>
+
+        <!-- درباره من -->
+        <section class="about-section">
+            <div class="about-image">
+                <img src="https://picsum.photos/800/1000?random=5" alt="علی رضایی">
+            </div>
+            <div class="about-content">
+                <h2 class="about-name">علی رضایی</h2>
+                <p class="about-bio">طراح و توسعه‌دهنده فرانت‌اند با ۶ سال تجربه در خلق تجربه‌های کاربری منحصربه‌فرد. عاشق کد تمیز و طراحی مینیمال.</p>
+                <div class="skills">
+                    <span class="skill-tag">HTML</span>
+                    <span class="skill-tag">CSS</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">PHP</span>
+                    <span class="skill-tag">WordPress</span>
+                    <span class="skill-tag">Figma</span>
+                    <span class="skill-tag">Photoshop</span>
+                    <span class="skill-tag">Python</span>
+                </div>
+                <div class="work-history">
+                    <p>🔹 ۲۰۱۸ - ۲۰۲۰: توسعه‌دهنده فرانت‌اند در استودیوی خلاق شفق</p>
+                    <p>🔹 ۲۰۲۰ - ۲۰۲۳: طراح رابط کاربری در آژانس دیجیتال پویش</p>
+                    <p>🔹 ۲۰۲۳ - اکنون: فریلنسر و همکار با استارتاپ‌های بین‌المللی</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- آخرین کارها (اسکرول افقی) -->
+        <section class="latest-works">
+            <h2 class="section-title">آخرین کارها</h2>
+            <div class="scroll-x">
+                <div class="work-card">
+                    <img src="https://picsum.photos/400/300?random=10" alt="work">
+                    <h4>اپلیکیشن فروشگاهی</h4>
+                    <p>طراحی رابط کاربری با فیگما و پیاده‌سازی با React</p>
+                </div>
+                <div class="work-card">
+                    <img src="https://picsum.photos/400/300?random=11" alt="work">
+                    <h4>وبسایت شرکتی</h4>
+                    <p>طراحی مدرن با وردپرس و المان‌های سفارشی</p>
+                </div>
+                <div class="work-card">
+                    <img src="https://picsum.photos/400/300?random=12" alt="work">
+                    <h4>داشبورد مدیریت</h4>
+                    <p>صفحات تحلیلی با چارت‌های تعاملی</p>
+                </div>
+                <div class="work-card">
+                    <img src="https://picsum.photos/400/300?random=13" alt="work">
+                    <h4>لندینگ پیج محصول</h4>
+                    <p>تمرکز بر تبدیل و تجربه کاربری روان</p>
+                </div>
+                <div class="work-card">
+                    <img src="https://picsum.photos/400/300?random=14" alt="work">
+                    <h4>اپلیکیشن موبایل</h4>
+                    <p>طراحی UI/UX برای استارتاپ فین‌تک</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- سرویس‌ها -->
+        <section>
+            <h2 class="section-title">خدماتی که ارائه می‌دم</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>طراحی سایت</h3>
+                    <p>وبسایت‌های ریسپانسیو و مدرن با آخرین تکنولوژی‌ها</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>طراحی اپلیکیشن</h3>
+                    <p>تجربه کاربری روان برای موبایل و تبلت</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-paint-brush"></i>
+                    <h3>هویت بصری</h3>
+                    <p>لوگو، برندینگ و طراحی گرافیک</p>
+                </div>
+                <div class="service-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>سئو و بهینه‌سازی</h3>
+                    <p>بهبود رتبه سایت در موتورهای جستجو</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- نظرات (اسلایدر محو) -->
+        <section class="testimonials">
+            <h2 class="section-title">نظرات کارفرماها</h2>
+            <div class="testimonials-wrapper">
+                <div class="testimonial-card">
+                    <p>“علی واقعاً حرفه‌ای و خلاقانه کار می‌کنه. تحویل به موقع و کیفیت بالا از ویژگی‌های بارز کارشه.”</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">م</div>
+                        <div class="author-info">
+                            <h5>محمد احمدی</h5>
+                            <span>مدیر استارتاپ آنلاین</span>
+                        </div>
                     </div>
-                    <div class="song-info">
-                        <div class="song-name" id="songName">Blinding Lights</div>
-                        <div class="artist-name" id="artistName">The Weeknd</div>
-                        <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
-                            <span style="color: rgba(255,255,255,0.8);">●</span>
-                            <span style="color: rgba(255,255,255,0.6);">●●</span>
-                            <span style="color: rgba(255,255,255,0.4);">●●</span>
+                </div>
+                <div class="testimonial-card">
+                    <p>“از همکاری با علی لذت بردم. دقیقاً چیزی که میخواستم رو پیاده‌سازی کرد و حتی بهتر.”</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">س</div>
+                        <div class="author-info">
+                            <h5>سارا کریمی</h5>
+                            <span>فریلنسر دیزاینر</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p>“سرعت عمل و دقت علی مثال‌زدنیه. پروژه ما رو تو کوتاه‌ترین زمان به بهترین شکل انجام داد.”</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">ر</div>
+                        <div class="author-info">
+                            <h5>رضا نادری</h5>
+                            <span>کارآفرین</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p>“طراحی فوق‌العاده و کدنویسی تمیز. قطعاً دوباره باهاش کار خواهم کرد.”</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">ن</div>
+                        <div class="author-info">
+                            <h5>نیما حسینی</h5>
+                            <span>توسعه‌دهنده بک‌اند</span>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- بخش نظرات -->
-            <div class="creative-card comments-section fade-in-up" style="animation-delay: 0.3s;">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <h3 style="color: white;">نظرات کاربران</h3>
-                    <span style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">آپدیت ۲۴ ساعته</span>
-                </div>
-                
-                <div class="comments-slider" id="commentsList">
-                    <!-- کامنت نمونه -->
-                    <div class="comment-card">
-                        <div class="comment-header">
-                            <div class="comment-avatar">س</div>
-                            <div>
-                                <div class="comment-name">سارا محمدی</div>
-                                <div class="comment-date">۲ روز پیش</div>
-                            </div>
-                        </div>
-                        <div class="comment-text">
-                            طراحی فوق‌العاده‌ای داری! واقعا لذت بردم از کارهات.
-                        </div>
-                    </div>
-                    
-                    <div class="comment-card">
-                        <div class="comment-header">
-                            <div class="comment-avatar">ع</div>
-                            <div>
-                                <div class="comment-name">علی کریمی</div>
-                                <div class="comment-date">۵ روز پیش</div>
-                            </div>
-                        </div>
-                        <div class="comment-text">
-                            پروژه‌ای که برام انجام دادی عالی بود. دقیقا همون چیزی بود که میخواستم.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- فرم ارسال نظر -->
-                <form style="margin-top: 2rem;" id="commentForm">
-                    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                        <input type="text" placeholder="نام شما" class="form-input" style="flex: 1;" required>
-                    </div>
-                    <textarea placeholder="نظر شما..." class="form-input" style="margin-bottom: 1rem;" required></textarea>
-                    
-                    <!-- نشانگر تایپ (مخفی بصورت پیش‌فرض) -->
-                    <div class="typing-indicator" style="display: none;" id="typingIndicator">
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn" style="background: rgba(255,255,255,0.2); color: white;">
-                        ارسال نظر
-                        <i class="fas fa-paper-plane" style="margin-right: 0.5rem;"></i>
-                    </button>
-                </form>
+        <!-- آمار -->
+        <section class="stats">
+            <div class="stat-item">
+                <div class="stat-number">۶+</div>
+                <div class="stat-label">سال تجربه</div>
             </div>
+            <div class="stat-item">
+                <div class="stat-number">۱۰۰%</div>
+                <div class="stat-label">رضایت کارفرماها</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">۴۲</div>
+                <div class="stat-label">پروژه موفق</div>
+            </div>
+        </section>
 
-            <!-- فرم تماس (تمام عرض) -->
-            <div class="creative-card fade-in-up" style="grid-column: span 12; animation-delay: 0.4s;">
-                <h3 style="color: white; margin-bottom: 2rem;">ارتباط با من</h3>
-                
-                <form class="contact-form" id="contactForm">
+        <!-- فرم تماس -->
+        <section class="contact-form">
+            <h2 class="section-title" style="margin-bottom: 40px;">ارتباط با من</h2>
+            <form>
+                <div class="form-grid">
                     <div class="form-group">
-                        <input type="text" class="form-input" placeholder="نام و نام خانوادگی" required>
+                        <input type="text" class="form-input" placeholder="نام و نام خانوادگی">
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-input" placeholder="ایمیل" required>
+                        <input type="email" class="form-input" placeholder="ایمیل">
                     </div>
-                    <div class="form-group full-width">
-                        <textarea class="form-input" placeholder="پیام شما..." required></textarea>
+                    <div class="form-group full">
+                        <textarea class="form-input" placeholder="پیام شما..."></textarea>
                     </div>
-                    <button type="submit" class="submit-btn">
-                        ارسال پیام به تلگرام
-                        <i class="fab fa-telegram" style="margin-right: 0.5rem;"></i>
-                    </button>
-                </form>
+                    <div class="contact-btn">
+                        <button type="submit" class="btn btn-primary" style="font-size: 1.2rem;">ارسال پیام</button>
+                    </div>
+                </div>
+            </form>
+        </section>
 
-                <!-- لینک‌های اجتماعی -->
+        <!-- FAQ's -->
+        <section>
+            <h2 class="section-title">سوالات متداول</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        چگونه می‌توانم پروژه بدهم؟ <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        از طریق فرم تماس یا ایمیل می‌تونید پروژه رو ارسال کنید. معمولاً کمتر از ۲۴ ساعت پاسخ می‌دم.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        هزینه طراحی سایت چقدره؟ <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        بستگی به پیچیدگی پروژه داره. پس از مشاوره اولیه و دریافت جزئیات، قیمت منصفانه پیشنهاد می‌دم.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        آیا پشتیبانی بعد از تحویل دارید؟ <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        بله، یک ماه پشتیبانی رایگان و پس از آن با تعرفه مناسب همراه شما هستم.
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        چه مدت زمان برای تحویل پروژه نیاز است؟ <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <div class="faq-answer">
+                        پروژه‌های ساده ۱ تا ۲ هفته، پروژه‌های پیچیده تا ۱ ماه زمان می‌بره.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- فوتر -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">در دسترس برای پروژه‌های جدید</span>
+                </div>
+                <div class="footer-slogan">بیا یه چیز باحال<br>با هم بسازیم</div>
+                <a href="#" class="footer-btn">شروع همکاری</a>
                 <div class="social-links">
                     <a href="#" class="social-link"><i class="fab fa-github"></i></a>
                     <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
@@ -583,103 +1015,23 @@
                     <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
                 </div>
             </div>
+            <div class="footer-bottom">
+                <div>© ۲۰۲۶ تمام حقوق محفوظ است</div>
+                <div><a href="mailto:ali@example.com" class="footer-email">ali@example.com</a></div>
+                <div>طراحی شده توسط <span class="designed-by">علی رضایی</span></div>
+            </div>
         </div>
-    </div>
+    </footer>
 
     <script>
-        // ایجاد ذرات پس‌زمینه
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                const size = Math.random() * 10 + 5;
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                particle.style.background = `rgba(255, 255, 255, ${Math.random() * 0.3})`;
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // تغییر وضعیت آنلاین (برای تست)
-        function changeStatus(status) {
-            const dot = document.getElementById('statusDot');
-            const text = document.getElementById('statusText');
-            
-            dot.className = 'status-dot ' + status;
-            
-            switch(status) {
-                case 'online':
-                    text.textContent = 'آنلاین و آماده پروژه';
-                    break;
-                case 'busy':
-                    text.textContent = 'مشغول روی پروژه';
-                    break;
-                case 'offline':
-                    text.textContent = 'فعلا در دسترس نیستم';
-                    break;
-            }
-        }
-
-        // افکت تایپ برای فرم نظر
-        const commentInput = document.querySelector('#commentForm textarea');
-        const typingIndicator = document.getElementById('typingIndicator');
-        
-        if (commentInput) {
-            let typingTimer;
-            commentInput.addEventListener('input', () => {
-                typingIndicator.style.display = 'flex';
-                clearTimeout(typingTimer);
-                typingTimer = setTimeout(() => {
-                    typingIndicator.style.display = 'none';
-                }, 1000);
-            });
-        }
-
-        // اینتراکشن با فرم تماس
-        const contactForm = document.getElementById('contactForm');
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = 'در حال ارسال <i class="fas fa-spinner fa-spin"></i>';
-            
-            setTimeout(() => {
-                btn.innerHTML = 'ارسال شد ✓';
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                }, 2000);
-            }, 1500);
-        });
-
-        // شبیه‌سازی آپدیت Spotify
-        function updateSpotify() {
-            const songs = [
-                { song: 'Blinding Lights', artist: 'The Weeknd' },
-                { song: 'As It Was', artist: 'Harry Styles' },
-                { song: 'Flowers', artist: 'Miley Cyrus' },
-                { song: 'Cruel Summer', artist: 'Taylor Swift' },
-                { song: 'Vampire', artist: 'Olivia Rodrigo' }
-            ];
-            
-            const randomSong = songs[Math.floor(Math.random() * songs.length)];
-            document.getElementById('songName').textContent = randomSong.song;
-            document.getElementById('artistName').textContent = randomSong.artist;
-        }
-
-        // آپدیت هر ۳۰ ثانیه
-        setInterval(updateSpotify, 30000);
-
-        // اجرا در شروع
-        createParticles();
-
-        // تست وضعیت‌های مختلف (می‌تونی کامنت کنی)
-        setTimeout(() => changeStatus('busy'), 10000);
-        setTimeout(() => changeStatus('online'), 20000);
+        // تغییر وضعیت آنلاین (نمونه)
+        const statusDot = document.querySelector('.status-dot');
+        const statusText = document.querySelector('.status-text');
+        // می‌توان بعداً با API تغییر داد
+        // فقط برای نمونه انیمیشن
+        setInterval(() => {
+            // شبیه‌سازی تغییر وضعیت هر ۱۰ ثانیه (اختیاری)
+        }, 10000);
     </script>
 </body>
 </html>
