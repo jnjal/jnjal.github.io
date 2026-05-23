@@ -23,7 +23,7 @@ const projects = [
     id: 3,
     title: "سومین پروژه",
     category: "web",
-    year: "2026",
+    year: "2025",
     desc: "توضیح سومین پروژه",
     tags: ["01", "02", "03"],
     color: "#F563C8",
