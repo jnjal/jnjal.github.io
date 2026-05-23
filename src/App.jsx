@@ -1,0 +1,406 @@
+import { useState, useEffect, useRef } from "react";
+
+const projects = [
+  {
+    id: 1,
+    title: "اولین پروژه",
+    category: "Design",
+    year: "2026",
+    desc: "توضیح اولین پروژه",
+    tags: ["01", "02", "03"],
+    color: "#C8F563",
+  },
+  {
+    id: 2,
+    title: "دومین پروژه",
+    category: "Design",
+    year: "2026",
+    desc: "توضیح دومین پروژه",
+    tags: ["01", "02", "03"],
+    color: "#63C8F5",
+  },
+  {
+    id: 3,
+    title: "سومین پروژه",
+    category: "web",
+    year: "2026",
+    desc: "توضیح سومین پروژه",
+    tags: ["01", "02", "03"],
+    color: "#F563C8",
+  },
+];
+
+const skills = [
+  { name: "User Research", level: 95 },
+  { name: "Figma / Prototyping", level: 100 },
+  { name: "Design Systems", level: 95 },
+  { name: "Interaction Design", level: 90 },
+  { name: "Usability Testing", level: 85 },
+  { name: "Motion Design", level: 80 },
+];
+
+const tools = ["Figma", "Framer", "Notion", "Maze", "Hotjar", "Miro", "Principle", "Zeplin", "Wordpress",];
+
+function useInView(threshold = 0.15) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, inView];
+}
+
+function AnimatedBar({ level, color, inView }) {
+  return (
+    <div style={{ background: "#1a1a1a", borderRadius: 4, height: 6, overflow: "hidden" }}>
+      <div style={{
+        height: "100%", borderRadius: 4,
+        background: color,
+        width: inView ? `${level}%` : "0%",
+        transition: "width 1.2s cubic-bezier(0.4,0,0.2,1)",
+      }} />
+    </div>
+  );
+}
+
+function Cursor() {
+  const [pos, setPos] = useState({ x: -100, y: -100 });
+  const [hov, setHov] = useState(false);
+  useEffect(() => {
+    const move = (e) => setPos({ x: e.clientX, y: e.clientY });
+    const over = (e) => setHov(e.target.closest("a,button,[data-hover]") !== null);
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseover", over);
+    return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseover", over); };
+  }, []);
+  return (
+    <>
+      <div style={{
+        position: "fixed", top: 0, left: 0, pointerEvents: "none", zIndex: 9999,
+        width: hov ? 40 : 12, height: hov ? 40 : 12,
+        borderRadius: "50%", background: hov ? "transparent" : "#C8F563",
+        border: hov ? "2px solid #C8F563" : "none",
+        transform: `translate(${pos.x - (hov ? 20 : 6)}px, ${pos.y - (hov ? 20 : 6)}px)`,
+        transition: "width 0.2s, height 0.2s, background 0.2s, border 0.2s",
+        mixBlendMode: "difference",
+      }} />
+    </>
+  );
+}
+
+export default function Portfolio() {
+  const [active, setActive] = useState("home");
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [sent, setSent] = useState(false);
+  const [heroRef, heroIn] = useInView(0.1);
+  const [skillRef, skillIn] = useInView(0.2);
+  const [projRef, projIn] = useInView(0.1);
+
+  const navItems = [
+    { id: "home", label: "من" },
+    { id: "projects", label: "پروژه‌ها" },
+    { id: "skills", label: "مهارت‌ها" },
+    { id: "contact", label: "تماس" },
+  ];
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setActive(id);
+  };
+
+  const handleSubmit = () => {
+    if (formData.name && formData.email && formData.message) {
+      setSent(true);
+      setFormData({ name: "", email: "", message: "" });
+    }
+  };
+
+  return (
+    <div style={{
+      background: "#0a0a0a", color: "#e8e8e8", minHeight: "100vh",
+      fontFamily: "'Vazirmatn', 'IBM Plex Mono', monospace",
+      direction: "rtl", overflowX: "hidden", cursor: "none",
+    }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #C8F563; border-radius: 2px; }
+        html { scroll-behavior: smooth; }
+        .fade-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+        .fade-up.d1 { transition-delay: 0.1s; }
+        .fade-up.d2 { transition-delay: 0.25s; }
+        .fade-up.d3 { transition-delay: 0.4s; }
+        .fade-up.d4 { transition-delay: 0.55s; }
+        .proj-card:hover .proj-overlay { opacity: 1 !important; }
+        .proj-card:hover { transform: translateY(-8px) !important; }
+        .tag { padding: 4px 10px; border: 1px solid #333; border-radius: 100px; font-size: 11px; color: #888; letter-spacing: 0.5px; }
+        .tool-pill { padding: 8px 16px; border: 1px solid #222; border-radius: 100px; font-size: 13px; color: #aaa; transition: all 0.2s; cursor: default; }
+        .tool-pill:hover { border-color: #C8F563; color: #C8F563; }
+        input, textarea { outline: none; resize: none; font-family: inherit; direction: rtl; }
+        input::placeholder, textarea::placeholder { color: #444; }
+        .nav-link { position: relative; cursor: pointer; padding: 6px 0; font-size: 14px; color: #666; transition: color 0.2s; letter-spacing: 0.5px; }
+        .nav-link.active, .nav-link:hover { color: #C8F563; }
+        .nav-link.active::after { content: ''; position: absolute; bottom: 0; right: 0; left: 0; height: 2px; background: #C8F563; border-radius: 2px; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+        @keyframes grain { 0%,100%{transform:translate(0,0)} 25%{transform:translate(1px,-1px)} 50%{transform:translate(-1px,1px)} 75%{transform:translate(1px,1px)} }
+      `}</style>
+
+      <Cursor />
+
+      {/* Grain overlay */}
+      <div style={{
+        position: "fixed", inset: 0, pointerEvents: "none", zIndex: 1,
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E")`,
+        opacity: 0.4,
+      }} />
+
+      {/* Nav */}
+      <nav style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+        padding: "20px 48px", display: "flex", justifyContent: "space-between", alignItems: "center",
+        background: "linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, transparent 100%)",
+        backdropFilter: "blur(12px)",
+      }}>
+        <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 13, color: "#C8F563", letterSpacing: 2 }}>
+          ✦ جنجال
+        </div>
+        <div style={{ display: "flex", gap: 32 }}>
+          {navItems.map(n => (
+            <span key={n.id} className={`nav-link ${active === n.id ? "active" : ""}`} onClick={() => scrollTo(n.id)} data-hover>
+              {n.label}
+            </span>
+          ))}
+        </div>
+        <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#444", letterSpacing: 1 }}>
+          UI/UX DESIGNER
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section id="home" ref={heroRef} style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "0 48px", position: "relative" }}>
+        {/* Background accent */}
+        <div style={{
+          position: "absolute", top: "20%", left: "10%",
+          width: 500, height: 500, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(200,245,99,0.06) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }} />
+        <div style={{
+          position: "absolute", bottom: "10%", right: "5%",
+          width: 300, height: 300, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(99,200,245,0.04) 0%, transparent 70%)",
+          pointerEvents: "none",
+        }} />
+
+        <div style={{ maxWidth: 900, paddingTop: 80 }}>
+          <div className={`fade-up ${heroIn ? "visible" : ""}`} style={{ fontFamily: "'IBM Plex Mono'", fontSize: 12, color: "#C8F563", letterSpacing: 4, marginBottom: 24, textTransform: "uppercase" }}>
+            ✦ در دسترس برای پروژه‌های جدید
+          </div>
+
+          <h1 className={`fade-up d1 ${heroIn ? "visible" : ""}`} style={{ fontSize: "clamp(52px, 8vw, 96px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 8, fontStyle: "italic" }}>
+            طراح
+          </h1>
+          <h1 className={`fade-up d1 ${heroIn ? "visible" : ""}`} style={{ fontSize: "clamp(52px, 8vw, 96px)", fontWeight: 900, lineHeight: 1.05, color: "#C8F563", marginBottom: 8, fontStyle: "italic" }}>
+            رابط کاربری
+          </h1>
+          <h1 className={`fade-up d1 ${heroIn ? "visible" : ""}`} style={{ fontSize: "clamp(52px, 8vw, 96px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 8, fontStyle: "italic" }}>
+            و تجربه
+          </h1>
+
+          <p className={`fade-up d2 ${heroIn ? "visible" : ""}`} style={{ fontSize: 18, color: "#777", maxWidth: 520, lineHeight: 1.8, marginBottom: 48 }}>
+            من محصولات دیجیتالی می‌سازم که نه فقط زیبا به نظر می‌رسند، بلکه واقعاً کار می‌کنند — با تمرکز بر مرکز طراحی.
+          </p>
+
+          <div className={`fade-up d3 ${heroIn ? "visible" : ""}`} style={{ display: "flex", gap: 16, alignItems: "center" }}>
+            <button data-hover onClick={() => scrollTo("projects")} style={{
+              padding: "14px 32px", background: "#C8F563", color: "#0a0a0a",
+              border: "none", borderRadius: 100, fontSize: 14, fontWeight: 700,
+              cursor: "none", fontFamily: "inherit", transition: "all 0.3s",
+              letterSpacing: 0.5,
+            }}
+              onMouseEnter={e => e.target.style.transform = "scale(1.05)"}
+              onMouseLeave={e => e.target.style.transform = "scale(1)"}>
+              مشاهده پروژه‌ها ←
+            </button>
+            <button data-hover onClick={() => scrollTo("contact")} style={{
+              padding: "14px 32px", background: "transparent", color: "#e8e8e8",
+              border: "1px solid #333", borderRadius: 100, fontSize: 14,
+              cursor: "none", fontFamily: "inherit", transition: "all 0.3s",
+            }}
+              onMouseEnter={e => { e.target.style.borderColor = "#C8F563"; e.target.style.color = "#C8F563"; }}
+              onMouseLeave={e => { e.target.style.borderColor = "#333"; e.target.style.color = "#e8e8e8"; }}>
+              تماس با من
+            </button>
+          </div>
+
+          <div className={`fade-up d4 ${heroIn ? "visible" : ""}`} style={{ display: "flex", gap: 48, marginTop: 80, paddingTop: 48, borderTop: "1px solid #1a1a1a" }}>
+            {[["2+", "سال تجربه"], ["3+", "پروژه تحویل‌شده"], ["100٪", "رضایت مشتریان"]].map(([n, l]) => (
+              <div key={l}>
+                <div style={{ fontSize: 36, fontWeight: 900, color: "#C8F563", fontFamily: "'IBM Plex Mono'" }}>{n}</div>
+                <div style={{ fontSize: 13, color: "#555", marginTop: 4 }}>{l}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Projects */}
+      <section id="projects" ref={projRef} style={{ padding: "120px 48px" }}>
+        <div className={`fade-up ${projIn ? "visible" : ""}`} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 64 }}>
+          <div>
+            <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#555", letterSpacing: 4, marginBottom: 12 }}>02 — PROJECTS</div>
+            <h2 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 900 }}>پروژه‌های برگزیده</h2>
+          </div>
+          <div style={{ fontSize: 13, color: "#555" }}>مشاهده همه ↗</div>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 24 }}>
+          {projects.map((p, i) => (
+            <div key={p.id} data-hover className={`proj-card fade-up d${i % 4 + 1} ${projIn ? "visible" : ""}`}
+              style={{
+                background: "#111", borderRadius: 20, overflow: "hidden", position: "relative",
+                transition: "transform 0.4s cubic-bezier(0.4,0,0.2,1)", cursor: "none",
+                border: "1px solid #1a1a1a",
+              }}>
+              {/* Card top */}
+              <div style={{ height: 180, background: `linear-gradient(135deg, #151515 0%, #0d0d0d 100%)`, position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <div style={{ width: 80, height: 80, borderRadius: "50%", background: `${p.color}18`, border: `1px solid ${p.color}40`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <div style={{ width: 40, height: 40, borderRadius: "50%", background: `${p.color}30` }} />
+                </div>
+                <div style={{ position: "absolute", top: 16, left: 16, fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#444" }}>{p.year}</div>
+                <div style={{ position: "absolute", top: 16, right: 16, padding: "4px 12px", background: `${p.color}15`, border: `1px solid ${p.color}30`, borderRadius: 100, fontSize: 11, color: p.color }}>{p.category}</div>
+                {/* Hover overlay */}
+                <div className="proj-overlay" style={{ position: "absolute", inset: 0, background: `${p.color}10`, opacity: 0, transition: "opacity 0.3s", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontSize: 24 }}>↗</span>
+                </div>
+              </div>
+              <div style={{ padding: 24 }}>
+                <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>{p.title}</h3>
+                <p style={{ fontSize: 14, color: "#666", lineHeight: 1.7, marginBottom: 16 }}>{p.desc}</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {p.tags.map(t => <span key={t} className="tag">{t}</span>)}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Skills */}
+      <section id="skills" ref={skillRef} style={{ padding: "120px 48px", background: "#080808" }}>
+        <div className={`fade-up ${skillIn ? "visible" : ""}`} style={{ marginBottom: 64 }}>
+          <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#555", letterSpacing: 4, marginBottom: 12 }}>03 — SKILLS</div>
+          <h2 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 900 }}>مهارت‌ها و ابزارها</h2>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80 }}>
+          <div>
+            <h3 style={{ fontSize: 16, color: "#555", marginBottom: 32, letterSpacing: 1 }}>تخصص‌های اصلی</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+              {skills.map((s, i) => (
+                <div key={s.name} className={`fade-up d${i % 4 + 1} ${skillIn ? "visible" : ""}`}>
+                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+                    <span style={{ fontSize: 15 }}>{s.name}</span>
+                    <span style={{ fontFamily: "'IBM Plex Mono'", fontSize: 12, color: "#C8F563" }}>{s.level}%</span>
+                  </div>
+                  <AnimatedBar level={s.level} color="#C8F563" inView={skillIn} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 style={{ fontSize: 16, color: "#555", marginBottom: 32, letterSpacing: 1 }}>ابزارهای کاری</h3>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+              {tools.map(t => <span key={t} className="tool-pill">{t}</span>)}
+            </div>
+            <div style={{ marginTop: 48, padding: 32, background: "#111", borderRadius: 20, border: "1px solid #1a1a1a" }}>
+              <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#C8F563", letterSpacing: 3, marginBottom: 16 }}>APPROACH</div>
+              <p style={{ fontSize: 15, color: "#666", lineHeight: 1.9 }}>
+                طراحی برای من یعنی حل مسئله با زبان بصری. هر پروژه با تحقیق کاربری شروع می‌شه و با آزمون دقیق به اتمام می‌رسه.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact */}
+      <section id="contact" style={{ padding: "120px 48px" }}>
+        <div style={{ maxWidth: 640, margin: "0 auto" }}>
+          <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#555", letterSpacing: 4, marginBottom: 12, textAlign: "center" }}>04 — CONTACT</div>
+          <h2 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 900, textAlign: "center", marginBottom: 16 }}>بیا باهم کار کنیم</h2>
+          <p style={{ textAlign: "center", color: "#555", fontSize: 16, lineHeight: 1.7, marginBottom: 56 }}>
+            پروژه جدید داری؟ ایده‌ای تو ذهنته؟ دوست دارم بشنوم.
+          </p>
+
+          {sent ? (
+            <div style={{ textAlign: "center", padding: 48, background: "#111", borderRadius: 20, border: "1px solid #C8F56340" }}>
+              <div style={{ fontSize: 48, marginBottom: 16 }}>✦</div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: "#C8F563", marginBottom: 8 }}>پیام دریافت شد!</div>
+              <div style={{ color: "#555" }}>به زودی باهات تماس می‌گیرم.</div>
+              <button onClick={() => setSent(false)} data-hover style={{ marginTop: 24, padding: "10px 24px", background: "transparent", border: "1px solid #333", borderRadius: 100, color: "#888", cursor: "none", fontFamily: "inherit", fontSize: 13 }}>
+                ارسال پیام دیگه
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              {[
+                { key: "name", placeholder: "اسمت چیه؟", type: "input" },
+                { key: "email", placeholder: "ایمیلت چیه؟", type: "input" },
+                { key: "message", placeholder: "پروژه‌ات رو توضیح بده...", type: "textarea" },
+              ].map(f => {
+                const commonStyle = {
+                  width: "100%", padding: "16px 20px",
+                  background: "#111", border: "1px solid #1a1a1a",
+                  borderRadius: 14, color: "#e8e8e8", fontSize: 15,
+                  fontFamily: "inherit", direction: "rtl",
+                  transition: "border-color 0.2s",
+                };
+                return f.type === "textarea" ? (
+                  <textarea key={f.key} rows={5} placeholder={f.placeholder} value={formData[f.key]}
+                    onChange={e => setFormData(p => ({ ...p, [f.key]: e.target.value }))}
+                    style={commonStyle}
+                    onFocus={e => e.target.style.borderColor = "#C8F563"}
+                    onBlur={e => e.target.style.borderColor = "#1a1a1a"} />
+                ) : (
+                  <input key={f.key} type="text" placeholder={f.placeholder} value={formData[f.key]}
+                    onChange={e => setFormData(p => ({ ...p, [f.key]: e.target.value }))}
+                    style={commonStyle}
+                    onFocus={e => e.target.style.borderColor = "#C8F563"}
+                    onBlur={e => e.target.style.borderColor = "#1a1a1a"} />
+                );
+              })}
+              <button data-hover onClick={handleSubmit} style={{
+                padding: "16px", background: "#C8F563", color: "#0a0a0a",
+                border: "none", borderRadius: 14, fontSize: 15, fontWeight: 700,
+                cursor: "none", fontFamily: "inherit", marginTop: 8,
+                transition: "all 0.3s",
+              }}
+                onMouseEnter={e => e.target.style.opacity = "0.9"}
+                onMouseLeave={e => e.target.style.opacity = "1"}>
+                ارسال پیام ✦
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer style={{ padding: "32px 48px", borderTop: "1px solid #111", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#333" }}>© 2026 — UI/UX/Web DESIGNER</div>
+        <div style={{ display: "flex", gap: 24 }}>
+          {["Dribbble", "Behance", "LinkedIn"].map(s => (
+            <span key={s} data-hover style={{ fontSize: 12, color: "#444", cursor: "none", transition: "color 0.2s" }}
+              onMouseEnter={e => e.target.style.color = "#C8F563"}
+              onMouseLeave={e => e.target.style.color = "#444"}>{s}</span>
+          ))}
+        </div>
+      </footer>
+    </div>
+  );
+}
