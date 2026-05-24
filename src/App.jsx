@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const WORKER_URL = "CONTACT_API";
+const WORKER_URL = "https://portfolio.tnugos.workers.dev/";
 
 const projects = [
   {
