@@ -13,3 +13,5 @@
 - `main` — this file only
 - `dev` — source code
 - `gh-pages` — production build (auto-deployed)
+## 📄 License
+© 2026 jnjal — [MIT License](LICENSE)
