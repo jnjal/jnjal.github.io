@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const WORKER_URL = "https://portfolio.tnugos.workers.dev/";
+const FORM_API = "CONTACT_API";
 
 const projects = [
   {
@@ -125,7 +125,7 @@ export default function Portfolio() {
     setSending(true);
     setError("");
     try {
-      const res = await fetch(WORKER_URL, {
+      const res = await fetch(FORM_API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
