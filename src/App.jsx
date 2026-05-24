@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
+const WORKER_URL = "https://portfolio.tnugos.workers.dev/"; // آدرس Cloudflare Worker خودت رو اینجا بذار
+
 const projects = [
   {
     id: 1,
@@ -94,6 +96,7 @@ export default function Portfolio() {
   const [active, setActive] = useState("home");
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const [heroRef, heroIn] = useInView(0.1);
   const [skillRef, skillIn] = useInView(0.2);
   const [projRef, projIn] = useInView(0.1);
@@ -108,12 +111,32 @@ export default function Portfolio() {
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setActive(id);
+    setMenuOpen(false);
   };
 
-  const handleSubmit = () => {
-    if (formData.name && formData.email && formData.message) {
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSubmit = async () => {
+    if (!formData.name || !formData.email || !formData.message) {
+      setError("لطفاً همه فیلدها رو پر کن");
+      return;
+    }
+    setSending(true);
+    setError("");
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) throw new Error();
       setSent(true);
       setFormData({ name: "", email: "", message: "" });
+    } catch {
+      setError("خطا در ارسال، دوباره تلاش کن");
+    } finally {
+      setSending(false);
     }
   };
 
@@ -146,8 +169,32 @@ export default function Portfolio() {
         .nav-link { position: relative; cursor: pointer; padding: 6px 0; font-size: 14px; color: #666; transition: color 0.2s; letter-spacing: 0.5px; }
         .nav-link.active, .nav-link:hover { color: #C8F563; }
         .nav-link.active::after { content: ''; position: absolute; bottom: 0; right: 0; left: 0; height: 2px; background: #C8F563; border-radius: 2px; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+        .hamburger span { display: block; width: 24px; height: 2px; background: #e8e8e8; transition: all 0.3s; border-radius: 2px; }
+        .mobile-menu { display: none; }
+        .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+        .hero-buttons { display: flex; gap: 16px; align-items: center; }
+        .hero-stats { display: flex; gap: 48px; margin-top: 80px; padding-top: 48px; border-top: 1px solid #1a1a1a; }
+        .section-pad { padding: 120px 48px; }
+        .nav-pad { padding: 20px 48px; }
+        .footer-pad { padding: 32px 48px; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
         @keyframes grain { 0%,100%{transform:translate(0,0)} 25%{transform:translate(1px,-1px)} 50%{transform:translate(-1px,1px)} 75%{transform:translate(1px,1px)} }
+        @media (max-width: 768px) {
+          .hamburger { display: flex; }
+          .desktop-nav { display: none !important; }
+          .desktop-logo { display: none !important; }
+          .mobile-menu { display: flex; flex-direction: column; gap: 0; position: fixed; top: 64px; right: 0; left: 0; background: rgba(10,10,10,0.98); backdrop-filter: blur(20px); border-bottom: 1px solid #1a1a1a; z-index: 99; padding: 8px 0; }
+          .mobile-menu .nav-link { padding: 16px 24px; font-size: 16px; border-bottom: 1px solid #111; }
+          .mobile-menu .nav-link.active::after { display: none; }
+          .skills-grid { grid-template-columns: 1fr; gap: 48px; }
+          .hero-buttons { flex-direction: column; align-items: stretch; }
+          .hero-buttons button { text-align: center; }
+          .hero-stats { gap: 24px; flex-wrap: wrap; }
+          .section-pad { padding: 80px 20px; }
+          .nav-pad { padding: 16px 20px; }
+          .footer-pad { padding: 24px 20px; flex-direction: column; gap: 16px; text-align: center; }
+        }
       `}</style>
 
       <Cursor />
@@ -162,27 +209,42 @@ export default function Portfolio() {
       {/* Nav */}
       <nav style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-        padding: "20px 48px", display: "flex", justifyContent: "space-between", alignItems: "center",
         background: "linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, transparent 100%)",
         backdropFilter: "blur(12px)",
       }}>
-        <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 13, color: "#C8F563", letterSpacing: 2 }}>
-          ✦ جنجال
+        <div className="nav-pad" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 13, color: "#C8F563", letterSpacing: 2 }}>
+            ✦ جنجال
+          </div>
+          <div className="desktop-nav" style={{ display: "flex", gap: 32 }}>
+            {navItems.map(n => (
+              <span key={n.id} className={`nav-link ${active === n.id ? "active" : ""}`} onClick={() => scrollTo(n.id)} data-hover>
+                {n.label}
+              </span>
+            ))}
+          </div>
+          <div className="desktop-logo" style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#444", letterSpacing: 1 }}>
+            UI/UX DESIGNER
+          </div>
+          <div className="hamburger" onClick={() => setMenuOpen(o => !o)} data-hover>
+            <span style={{ transform: menuOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
+            <span style={{ opacity: menuOpen ? 0 : 1 }} />
+            <span style={{ transform: menuOpen ? "rotate(-45deg) translate(5px, -5px)" : "none" }} />
+          </div>
         </div>
-        <div style={{ display: "flex", gap: 32 }}>
-          {navItems.map(n => (
-            <span key={n.id} className={`nav-link ${active === n.id ? "active" : ""}`} onClick={() => scrollTo(n.id)} data-hover>
-              {n.label}
-            </span>
-          ))}
-        </div>
-        <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#444", letterSpacing: 1 }}>
-          UI/UX DESIGNER
-        </div>
+        {menuOpen && (
+          <div className="mobile-menu">
+            {navItems.map(n => (
+              <span key={n.id} className={`nav-link ${active === n.id ? "active" : ""}`} onClick={() => scrollTo(n.id)}>
+                {n.label}
+              </span>
+            ))}
+          </div>
+        )}
       </nav>
 
       {/* Hero */}
-      <section id="home" ref={heroRef} style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "0 48px", position: "relative" }}>
+      <section id="home" ref={heroRef} className="section-pad" style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", paddingTop: 0, paddingBottom: 0 }}>
         {/* Background accent */}
         <div style={{
           position: "absolute", top: "20%", left: "10%",
@@ -216,7 +278,7 @@ export default function Portfolio() {
             من محصولات دیجیتالی می‌سازم که نه فقط زیبا به نظر می‌رسند، بلکه واقعاً کار می‌کنند — با تمرکز بر مرکز طراحی.
           </p>
 
-          <div className={`fade-up d3 ${heroIn ? "visible" : ""}`} style={{ display: "flex", gap: 16, alignItems: "center" }}>
+          <div className={`fade-up d3 hero-buttons ${heroIn ? "visible" : ""}`}>
             <button data-hover onClick={() => scrollTo("projects")} style={{
               padding: "14px 32px", background: "#C8F563", color: "#0a0a0a",
               border: "none", borderRadius: 100, fontSize: 14, fontWeight: 700,
@@ -238,7 +300,7 @@ export default function Portfolio() {
             </button>
           </div>
 
-          <div className={`fade-up d4 ${heroIn ? "visible" : ""}`} style={{ display: "flex", gap: 48, marginTop: 80, paddingTop: 48, borderTop: "1px solid #1a1a1a" }}>
+          <div className={`fade-up d4 hero-stats ${heroIn ? "visible" : ""}`}>
             {[["2+", "سال تجربه"], ["3+", "پروژه تحویل‌شده"], ["100٪", "رضایت مشتریان"]].map(([n, l]) => (
               <div key={l}>
                 <div style={{ fontSize: 36, fontWeight: 900, color: "#C8F563", fontFamily: "'IBM Plex Mono'" }}>{n}</div>
@@ -250,7 +312,7 @@ export default function Portfolio() {
       </section>
 
       {/* Projects */}
-      <section id="projects" ref={projRef} style={{ padding: "120px 48px" }}>
+      <section id="projects" ref={projRef} className="section-pad">
         <div className={`fade-up ${projIn ? "visible" : ""}`} style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 64 }}>
           <div>
             <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#555", letterSpacing: 4, marginBottom: 12 }}>02 — PROJECTS</div>
@@ -292,13 +354,13 @@ export default function Portfolio() {
       </section>
 
       {/* Skills */}
-      <section id="skills" ref={skillRef} style={{ padding: "120px 48px", background: "#080808" }}>
+      <section id="skills" ref={skillRef} className="section-pad" style={{ background: "#080808" }}>
         <div className={`fade-up ${skillIn ? "visible" : ""}`} style={{ marginBottom: 64 }}>
           <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#555", letterSpacing: 4, marginBottom: 12 }}>03 — SKILLS</div>
           <h2 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 900 }}>مهارت‌ها و ابزارها</h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80 }}>
+        <div className="skills-grid">
           <div>
             <h3 style={{ fontSize: 16, color: "#555", marginBottom: 32, letterSpacing: 1 }}>تخصص‌های اصلی</h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
@@ -330,7 +392,7 @@ export default function Portfolio() {
       </section>
 
       {/* Contact */}
-      <section id="contact" style={{ padding: "120px 48px" }}>
+      <section id="contact" className="section-pad">
         <div style={{ maxWidth: 640, margin: "0 auto" }}>
           <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#555", letterSpacing: 4, marginBottom: 12, textAlign: "center" }}>04 — CONTACT</div>
           <h2 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 900, textAlign: "center", marginBottom: 16 }}>بیا باهم کار کنیم</h2>
@@ -375,15 +437,16 @@ export default function Portfolio() {
                     onBlur={e => e.target.style.borderColor = "#1a1a1a"} />
                 );
               })}
-              <button data-hover onClick={handleSubmit} style={{
-                padding: "16px", background: "#C8F563", color: "#0a0a0a",
+              {error && <div style={{ color: "#ff6b6b", fontSize: 13, textAlign: "center" }}>{error}</div>}
+              <button data-hover onClick={handleSubmit} disabled={sending} style={{
+                padding: "16px", background: sending ? "#555" : "#C8F563", color: "#0a0a0a",
                 border: "none", borderRadius: 14, fontSize: 15, fontWeight: 700,
-                cursor: "none", fontFamily: "inherit", marginTop: 8,
-                transition: "all 0.3s",
+                cursor: sending ? "not-allowed" : "none", fontFamily: "inherit", marginTop: 8,
+                transition: "all 0.3s", opacity: sending ? 0.7 : 1,
               }}
-                onMouseEnter={e => e.target.style.opacity = "0.9"}
-                onMouseLeave={e => e.target.style.opacity = "1"}>
-                ارسال پیام ✦
+                onMouseEnter={e => { if (!sending) e.target.style.opacity = "0.9"; }}
+                onMouseLeave={e => { if (!sending) e.target.style.opacity = "1"; }}>
+                {sending ? "در حال ارسال..." : "ارسال پیام ✦"}
               </button>
             </div>
           )}
@@ -391,7 +454,7 @@ export default function Portfolio() {
       </section>
 
       {/* Footer */}
-      <footer style={{ padding: "32px 48px", borderTop: "1px solid #111", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <footer className="footer-pad" style={{ borderTop: "1px solid #111", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#333" }}>© 2026 — UI/UX/Web DESIGNER</div>
         <div style={{ display: "flex", gap: 24 }}>
           {["Dribbble", "Behance", "LinkedIn"].map(s => (
