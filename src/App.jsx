@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const WORKER_URL = "https://portfolio.tnugos.workers.dev/"; // آدرس Cloudflare Worker خودت رو اینجا بذار
+const WORKER_URL = "https://portfolio.tnugos.workers.dev/";
 
 const projects = [
   {
@@ -224,7 +224,7 @@ export default function Portfolio() {
             ))}
           </div>
           <div className="desktop-logo" style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#444", letterSpacing: 1 }}>
-            UI/UX DESIGNER
+            UI/UX/Web DESIGNER
           </div>
           <div className="hamburger" onClick={() => setMenuOpen(o => !o)} data-hover>
             <span style={{ transform: menuOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
