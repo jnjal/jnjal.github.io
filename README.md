@@ -1,6 +1,6 @@
 # 👤 jnjal.github.io
 
-> Personal portfolio website — UI/UX Designer
+> Personal portfolio website — FRONTEND DEVELOPER
 
 ## 🔗 Live
 [jnjal.github.io](https://jnjal.github.io)
