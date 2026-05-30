@@ -5,29 +5,32 @@ const WORKER_URL = "https://portfolio.tnugos.workers.dev/";
 const projects = [
   {
     id: 1,
-    title: "اولین پروژه",
-    category: "Design",
+    title: "پورتفولیو شخصی",
+    category: "Frontend",
     year: "2026",
-    desc: "توضیح اولین پروژه",
-    tags: ["01", "02", "03"],
+    desc: "طراحی و توسعه پورتفولیو شخصی با React و Vite، دپلوی روی GitHub Pages و Cloudflare Pages با CI/CD خودکار",
+    tags: ["React", "Vite", "CSS"],
+    link: "https://jnjal.github.io",
     color: "#C8F563",
   },
   {
     id: 2,
-    title: "دومین پروژه",
-    category: "Design",
+    title: "پروژه دوم",
+    category: "React",
     year: "2026",
-    desc: "توضیح دومین پروژه",
-    tags: ["01", "02", "03"],
+    desc: "توضیح پروژه دوم خودت رو اینجا بنویس",
+    tags: ["React", "Next.js", "Tailwind"],
+    link: "#",
     color: "#63C8F5",
   },
   {
     id: 3,
-    title: "سومین پروژه",
-    category: "web",
+    title: "پروژه سوم",
+    category: "Next.js",
     year: "2025",
-    desc: "توضیح سومین پروژه",
-    tags: ["01", "02", "03"],
+    desc: "توضیح پروژه سوم خودت رو اینجا بنویس",
+    tags: ["Next.js", "TypeScript", "CSS"],
+    link: "#",
     color: "#F563C8",
   },
 ];
@@ -35,9 +38,9 @@ const projects = [
 const skills = [
   { name: "React", level: 90 },
   { name: "Next.js", level: 85 },
-  { name: "HTML", level: 98 },
-  { name: "CSS", level: 95 },
   { name: "JavaScript", level: 88 },
+  { name: "HTML & CSS", level: 97 },
+  { name: "Git & GitHub", level: 85 },
 ];
 
 const tools = ["React", "Next.js", "TypeScript", "Tailwind", "Git", "Figma", "Vite", "Vercel", "Cloudflare", "VS Code"];
@@ -69,25 +72,26 @@ function AnimatedBar({ level, color, inView }) {
 function Cursor() {
   const [pos, setPos] = useState({ x: -100, y: -100 });
   const [hov, setHov] = useState(false);
+  const isMobile = window.matchMedia("(pointer: coarse)").matches;
   useEffect(() => {
+    if (isMobile) return;
     const move = (e) => setPos({ x: e.clientX, y: e.clientY });
     const over = (e) => setHov(e.target.closest("a,button,[data-hover]") !== null);
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseover", over);
     return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseover", over); };
   }, []);
+  if (isMobile) return null;
   return (
-    <>
-      <div style={{
-        position: "fixed", top: 0, left: 0, pointerEvents: "none", zIndex: 9999,
-        width: hov ? 40 : 12, height: hov ? 40 : 12,
-        borderRadius: "50%", background: hov ? "transparent" : "#C8F563",
-        border: hov ? "2px solid #C8F563" : "none",
-        transform: `translate(${pos.x - (hov ? 20 : 6)}px, ${pos.y - (hov ? 20 : 6)}px)`,
-        transition: "width 0.2s, height 0.2s, background 0.2s, border 0.2s",
-        mixBlendMode: "difference",
-      }} />
-    </>
+    <div style={{
+      position: "fixed", top: 0, left: 0, pointerEvents: "none", zIndex: 9999,
+      width: hov ? 40 : 12, height: hov ? 40 : 12,
+      borderRadius: "50%", background: hov ? "transparent" : "#C8F563",
+      border: hov ? "2px solid #C8F563" : "none",
+      transform: `translate(${pos.x - (hov ? 20 : 6)}px, ${pos.y - (hov ? 20 : 6)}px)`,
+      transition: "width 0.2s, height 0.2s, background 0.2s, border 0.2s",
+      mixBlendMode: "difference",
+    }} />
   );
 }
 
@@ -96,6 +100,8 @@ export default function Portfolio() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const [heroRef, heroIn] = useInView(0.1);
   const [skillRef, skillIn] = useInView(0.2);
   const [projRef, projIn] = useInView(0.1);
@@ -113,12 +119,14 @@ export default function Portfolio() {
     setMenuOpen(false);
   };
 
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState("");
-
   const handleSubmit = async () => {
     if (!formData.name || !formData.email || !formData.message) {
       setError("لطفاً همه فیلدها رو پر کن");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError("ایمیل معتبر وارد کن");
       return;
     }
     setSending(true);
@@ -158,6 +166,7 @@ export default function Portfolio() {
         .fade-up.d2 { transition-delay: 0.25s; }
         .fade-up.d3 { transition-delay: 0.4s; }
         .fade-up.d4 { transition-delay: 0.55s; }
+        .proj-card { transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); }
         .proj-card:hover .proj-overlay { opacity: 1 !important; }
         .proj-card:hover { transform: translateY(-8px) !important; }
         .tag { padding: 4px 10px; border: 1px solid #333; border-radius: 100px; font-size: 11px; color: #888; letter-spacing: 0.5px; }
@@ -177,8 +186,7 @@ export default function Portfolio() {
         .section-pad { padding: 120px 48px; }
         .nav-pad { padding: 20px 48px; }
         .footer-pad { padding: 32px 48px; }
-        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-        @keyframes grain { 0%,100%{transform:translate(0,0)} 25%{transform:translate(1px,-1px)} 50%{transform:translate(-1px,1px)} 75%{transform:translate(1px,1px)} }
+        @media (pointer: coarse) { * { cursor: auto !important; } }
         @media (max-width: 768px) {
           .hamburger { display: flex; }
           .desktop-nav { display: none !important; }
@@ -223,7 +231,7 @@ export default function Portfolio() {
             ))}
           </div>
           <div className="desktop-logo" style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#444", letterSpacing: 1 }}>
-            UI/UX/Web DESIGNER
+            FRONTEND DEVELOPER
           </div>
           <div className="hamburger" onClick={() => setMenuOpen(o => !o)} data-hover>
             <span style={{ transform: menuOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
@@ -244,19 +252,8 @@ export default function Portfolio() {
 
       {/* Hero */}
       <section id="home" ref={heroRef} className="section-pad" style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", paddingTop: 0, paddingBottom: 0 }}>
-        {/* Background accent */}
-        <div style={{
-          position: "absolute", top: "20%", left: "10%",
-          width: 500, height: 500, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(200,245,99,0.06) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }} />
-        <div style={{
-          position: "absolute", bottom: "10%", right: "5%",
-          width: 300, height: 300, borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(99,200,245,0.04) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }} />
+        <div style={{ position: "absolute", top: "20%", left: "10%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(200,245,99,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "10%", right: "5%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,200,245,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div style={{ maxWidth: 900, paddingTop: 80 }}>
           <div className={`fade-up ${heroIn ? "visible" : ""}`} style={{ fontFamily: "'IBM Plex Mono'", fontSize: 12, color: "#C8F563", letterSpacing: 4, marginBottom: 24, textTransform: "uppercase" }}>
@@ -264,25 +261,24 @@ export default function Portfolio() {
           </div>
 
           <h1 className={`fade-up d1 ${heroIn ? "visible" : ""}`} style={{ fontSize: "clamp(52px, 8vw, 96px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 8, fontStyle: "italic" }}>
-            طراح
+            توسعه‌دهنده
           </h1>
           <h1 className={`fade-up d1 ${heroIn ? "visible" : ""}`} style={{ fontSize: "clamp(52px, 8vw, 96px)", fontWeight: 900, lineHeight: 1.05, color: "#C8F563", marginBottom: 8, fontStyle: "italic" }}>
-            رابط کاربری
+            فرانت‌اند
           </h1>
-          <h1 className={`fade-up d1 ${heroIn ? "visible" : ""}`} style={{ fontSize: "clamp(52px, 8vw, 96px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 8, fontStyle: "italic" }}>
-            و تجربه
+          <h1 className={`fade-up d1 ${heroIn ? "visible" : ""}`} style={{ fontSize: "clamp(52px, 8vw, 96px)", fontWeight: 900, lineHeight: 1.05, marginBottom: 40, fontStyle: "italic" }}>
+            و وب
           </h1>
 
           <p className={`fade-up d2 ${heroIn ? "visible" : ""}`} style={{ fontSize: 18, color: "#777", maxWidth: 520, lineHeight: 1.8, marginBottom: 48 }}>
-            من محصولات دیجیتالی می‌سازم که نه فقط زیبا به نظر می‌رسند، بلکه واقعاً کار می‌کنند — با تمرکز بر مرکز طراحی.
+            رابط‌های کاربری سریع، زیبا و قابل نگهداری می‌سازم — با React و Next.js، با تمرکز بر تجربه کاربر و کد تمیز.
           </p>
 
           <div className={`fade-up d3 hero-buttons ${heroIn ? "visible" : ""}`}>
             <button data-hover onClick={() => scrollTo("projects")} style={{
               padding: "14px 32px", background: "#C8F563", color: "#0a0a0a",
               border: "none", borderRadius: 100, fontSize: 14, fontWeight: 700,
-              cursor: "none", fontFamily: "inherit", transition: "all 0.3s",
-              letterSpacing: 0.5,
+              cursor: "none", fontFamily: "inherit", transition: "all 0.3s", letterSpacing: 0.5,
             }}
               onMouseEnter={e => e.target.style.transform = "scale(1.05)"}
               onMouseLeave={e => e.target.style.transform = "scale(1)"}>
@@ -300,7 +296,7 @@ export default function Portfolio() {
           </div>
 
           <div className={`fade-up d4 hero-stats ${heroIn ? "visible" : ""}`}>
-            {[["2+", "سال تجربه"], ["3+", "پروژه تحویل‌شده"], ["100٪", "رضایت مشتریان"]].map(([n, l]) => (
+            {[["۱+", "سال تجربه"], ["۳+", "پروژه تحویل‌شده"], ["۱۰۰٪", "رضایت مشتریان"]].map(([n, l]) => (
               <div key={l}>
                 <div style={{ fontSize: 36, fontWeight: 900, color: "#C8F563", fontFamily: "'IBM Plex Mono'" }}>{n}</div>
                 <div style={{ fontSize: 13, color: "#555", marginTop: 4 }}>{l}</div>
@@ -317,25 +313,22 @@ export default function Portfolio() {
             <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#555", letterSpacing: 4, marginBottom: 12 }}>02 — PROJECTS</div>
             <h2 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 900 }}>پروژه‌های برگزیده</h2>
           </div>
-          <div style={{ fontSize: 13, color: "#555" }}>مشاهده همه ↗</div>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 24 }}>
           {projects.map((p, i) => (
-            <div key={p.id} data-hover className={`proj-card fade-up d${i % 4 + 1} ${projIn ? "visible" : ""}`}
+            <a key={p.id} href={p.link} target="_blank" rel="noopener noreferrer"
+              data-hover className={`proj-card fade-up d${i % 4 + 1} ${projIn ? "visible" : ""}`}
               style={{
                 background: "#111", borderRadius: 20, overflow: "hidden", position: "relative",
-                transition: "transform 0.4s cubic-bezier(0.4,0,0.2,1)", cursor: "none",
-                border: "1px solid #1a1a1a",
+                cursor: "none", border: "1px solid #1a1a1a", textDecoration: "none", color: "inherit", display: "block",
               }}>
-              {/* Card top */}
               <div style={{ height: 180, background: `linear-gradient(135deg, #151515 0%, #0d0d0d 100%)`, position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <div style={{ width: 80, height: 80, borderRadius: "50%", background: `${p.color}18`, border: `1px solid ${p.color}40`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <div style={{ width: 40, height: 40, borderRadius: "50%", background: `${p.color}30` }} />
                 </div>
                 <div style={{ position: "absolute", top: 16, left: 16, fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#444" }}>{p.year}</div>
                 <div style={{ position: "absolute", top: 16, right: 16, padding: "4px 12px", background: `${p.color}15`, border: `1px solid ${p.color}30`, borderRadius: 100, fontSize: 11, color: p.color }}>{p.category}</div>
-                {/* Hover overlay */}
                 <div className="proj-overlay" style={{ position: "absolute", inset: 0, background: `${p.color}10`, opacity: 0, transition: "opacity 0.3s", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <span style={{ fontSize: 24 }}>↗</span>
                 </div>
@@ -347,7 +340,7 @@ export default function Portfolio() {
                   {p.tags.map(t => <span key={t} className="tag">{t}</span>)}
                 </div>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </section>
@@ -383,7 +376,7 @@ export default function Portfolio() {
             <div style={{ marginTop: 48, padding: 32, background: "#111", borderRadius: 20, border: "1px solid #1a1a1a" }}>
               <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#C8F563", letterSpacing: 3, marginBottom: 16 }}>APPROACH</div>
               <p style={{ fontSize: 15, color: "#666", lineHeight: 1.9 }}>
-                طراحی برای من یعنی حل مسئله با زبان بصری. هر پروژه با تحقیق کاربری شروع می‌شه و با آزمون دقیق به اتمام می‌رسه.
+                برنامه‌نویسی برای من یعنی ساختن چیزی که هم کار کنه، هم خوب به نظر برسه. کد تمیز، عملکرد بالا، و تجربه کاربری روان — اینا چیزاییه که همیشه دنبالشونم.
               </p>
             </div>
           </div>
@@ -436,15 +429,13 @@ export default function Portfolio() {
                     onBlur={e => e.target.style.borderColor = "#1a1a1a"} />
                 );
               })}
-              {error && <div style={{ color: "#ff6b6b", fontSize: 13, textAlign: "center" }}>{error}</div>}
+              {error && <div style={{ color: "#ff6b6b", fontSize: 13, textAlign: "center", padding: "8px 0" }}>{error}</div>}
               <button data-hover onClick={handleSubmit} disabled={sending} style={{
-                padding: "16px", background: sending ? "#555" : "#C8F563", color: "#0a0a0a",
+                padding: "16px", background: sending ? "#333" : "#C8F563", color: sending ? "#888" : "#0a0a0a",
                 border: "none", borderRadius: 14, fontSize: 15, fontWeight: 700,
                 cursor: sending ? "not-allowed" : "none", fontFamily: "inherit", marginTop: 8,
-                transition: "all 0.3s", opacity: sending ? 0.7 : 1,
-              }}
-                onMouseEnter={e => { if (!sending) e.target.style.opacity = "0.9"; }}
-                onMouseLeave={e => { if (!sending) e.target.style.opacity = "1"; }}>
+                transition: "all 0.3s",
+              }}>
                 {sending ? "در حال ارسال..." : "ارسال پیام ✦"}
               </button>
             </div>
@@ -454,12 +445,17 @@ export default function Portfolio() {
 
       {/* Footer */}
       <footer className="footer-pad" style={{ borderTop: "1px solid #111", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#333" }}>© 2026 — UI/UX/Web DESIGNER</div>
+        <div style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#333" }}>© 2026 — JNJAL</div>
         <div style={{ display: "flex", gap: 24 }}>
-          {["Dribbble", "Behance", "LinkedIn"].map(s => (
-            <span key={s} data-hover style={{ fontSize: 12, color: "#444", cursor: "none", transition: "color 0.2s" }}
+          {[
+            { label: "GitHub", href: "https://github.com/jnjal" },
+            { label: "LinkedIn", href: "#" },
+            { label: "Dribbble", href: "#" },
+          ].map(s => (
+            <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
+              data-hover style={{ fontSize: 12, color: "#444", cursor: "none", transition: "color 0.2s", textDecoration: "none" }}
               onMouseEnter={e => e.target.style.color = "#C8F563"}
-              onMouseLeave={e => e.target.style.color = "#444"}>{s}</span>
+              onMouseLeave={e => e.target.style.color = "#444"}>{s.label}</a>
           ))}
         </div>
       </footer>
