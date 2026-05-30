@@ -33,15 +33,14 @@ const projects = [
 ];
 
 const skills = [
-  { name: "User Research", level: 95 },
-  { name: "Figma / Prototyping", level: 100 },
-  { name: "Design Systems", level: 95 },
-  { name: "Interaction Design", level: 90 },
-  { name: "Usability Testing", level: 85 },
-  { name: "Motion Design", level: 80 },
+  { name: "React", level: 90 },
+  { name: "Next.js", level: 85 },
+  { name: "HTML", level: 98 },
+  { name: "CSS", level: 95 },
+  { name: "JavaScript", level: 88 },
 ];
 
-const tools = ["Figma", "Framer", "Notion", "Maze", "Hotjar", "Miro", "Principle", "Zeplin", "Wordpress",];
+const tools = ["React", "Next.js", "TypeScript", "Tailwind", "Git", "Figma", "Vite", "Vercel", "Cloudflare", "VS Code"];
 
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
