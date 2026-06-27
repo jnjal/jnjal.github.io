@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const WORKER_URL = "https://portfolio.tnugos.workers.dev/";
+const WORKER_URL = "https://portfolio.iwdwy.workers.dev/";
 
 const projects = [
   {
