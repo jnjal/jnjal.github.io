@@ -15,35 +15,45 @@ const projects = [
   },
   {
     id: 2,
-    title: "پروژه دوم",
-    category: "React",
+    title: "Habit Tracker Bot",
+    category: "Telegram Bot",
     year: "2026",
-    desc: "توضیح پروژه دوم خودت رو اینجا بنویس",
-    tags: ["React", "Next.js", "Tailwind"],
+    desc: "بات تلگرامی ردیاب عادت با سیستم XP و لول، استریک، فصل‌های ۲۲ روزه، ۲۲ دستاورد، ژورنال با تگ حالت روحی و کوچینگ هوشمند با مدل AI",
+    tags: ["Cloudflare Workers", "D1", "Telegram Bot API"],
     link: "#",
     color: "#63C8F5",
   },
   {
     id: 3,
-    title: "پروژه سوم",
-    category: "Next.js",
-    year: "2025",
-    desc: "توضیح پروژه سوم خودت رو اینجا بنویس",
-    tags: ["Next.js", "TypeScript", "CSS"],
-    link: "#",
+    title: "claude-rtl",
+    category: "Chrome Extension",
+    year: "2026",
+    desc: "افزونه کروم برای اصلاح چیدمان راست‌چین و شخصی‌سازی فونت‌ها در وبسایت Claude برای کاربران فارسی‌زبان",
+    tags: ["CSS", "JavaScript", "Chrome Extension"],
+    link: "https://github.com/jnjal/claude-rtl",
     color: "#F563C8",
+  },
+  {
+    id: 4,
+    title: "aistudio-rtl",
+    category: "Chrome Extension",
+    year: "2026",
+    desc: "افزونه کروم برای اصلاح چیدمان راست‌چین و شخصی‌سازی فونت‌ها در وبسایت گوگل AI Studio برای کاربران فارسی‌زبان",
+    tags: ["JavaScript", "Chrome Extension"],
+    link: "https://github.com/jnjal/aistudio-rtl",
+    color: "#F5C863",
   },
 ];
 
 const skills = [
-  { name: "React", level: 90 },
-  { name: "Next.js", level: 85 },
-  { name: "JavaScript", level: 88 },
-  { name: "HTML & CSS", level: 97 },
-  { name: "Git & GitHub", level: 85 },
+  { name: "Cloudflare Workers", level: 90 },
+  { name: "JavaScript", level: 90 },
+  { name: "React & Vite", level: 82 },
+  { name: "TypeScript", level: 70 },
+  { name: "Rust", level: 55 },
 ];
 
-const tools = ["React", "Next.js", "TypeScript", "Tailwind", "Git", "Figma", "Vite", "Vercel", "Cloudflare", "VS Code"];
+const tools = ["Cloudflare Workers", "D1", "JavaScript", "TypeScript", "React", "Vite", "CSS", "Rust", "Telegram Bot API", "Git", "VS Code"];
 
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
@@ -231,7 +241,7 @@ export default function Portfolio() {
             ))}
           </div>
           <div className="desktop-logo" style={{ fontFamily: "'IBM Plex Mono'", fontSize: 11, color: "#444", letterSpacing: 1 }}>
-            FRONTEND DEVELOPER
+            FULL-STACK & BOT DEVELOPER
           </div>
           <div className="hamburger" onClick={() => setMenuOpen(o => !o)} data-hover>
             <span style={{ transform: menuOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
@@ -271,7 +281,7 @@ export default function Portfolio() {
           </h1>
 
           <p className={`fade-up d2 ${heroIn ? "visible" : ""}`} style={{ fontSize: 18, color: "#777", maxWidth: 520, lineHeight: 1.8, marginBottom: 48 }}>
-            رابط‌های کاربری سریع، زیبا و قابل نگهداری می‌سازم — با React و Next.js، با تمرکز بر تجربه کاربر و کد تمیز.
+            بات‌ها و رابط‌های کاربری سریع و قابل‌اعتماد می‌سازم — با React، Cloudflare Workers و کد تمیز و بدون فریمورک اضافه.
           </p>
 
           <div className={`fade-up d3 hero-buttons ${heroIn ? "visible" : ""}`}>
