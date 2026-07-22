@@ -46,10 +46,10 @@ const projects = [
    {
     id: 5,
     title: "poodlin",
-    category: "Chrome Extension",
+    category: "Frontend",
     year: "2026",
     desc: "ساخت و توسعه فرانت سایت با زبان های react & typescript & next.js",
-    tags: ["Frontend"],
+    tags: ["TypeScript", "Next.js", "React],
     link: "https://github.com/jnjal/poodlin",
     color: "#C8F563",
   },
