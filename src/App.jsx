@@ -43,6 +43,16 @@ const projects = [
     link: "https://github.com/jnjal/aistudio-rtl",
     color: "#F5C863",
   },
+   {
+    id: 5,
+    title: "poodlin",
+    category: "Chrome Extension",
+    year: "2026",
+    desc: "ساخت و توسعه فرانت سایت با زبان های react & typescript & next.js",
+    tags: ["Frontend"],
+    link: "https://github.com/jnjal/poodlin",
+    color: "#C8F563",
+  },
 ];
 
 const skills = [
