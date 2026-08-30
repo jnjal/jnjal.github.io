@@ -40,7 +40,7 @@ const projects = [
     year: "2026",
     desc: "افزونه کروم برای اصلاح چیدمان راست‌چین و شخصی‌سازی فونت‌ها در وبسایت گوگل AI Studio برای کاربران فارسی‌زبان",
     tags: ["JavaScript", "Chrome Extension"],
-    link: "https://github.com/jnjal/aistudio-rtl",
+    link: "#",
     color: "#F5C863",
   },
    {
