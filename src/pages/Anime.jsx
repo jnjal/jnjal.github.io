@@ -4,30 +4,51 @@ import "./Anime.css";
 
 export default function Anime() {
   return (
-    <div className="page">
-      <div className="container">
+    <section id="anime" className="section anime">
+      <div className="container anime-inner">
+        <span className="anime-jp" aria-hidden="true">アニメ</span>
+
         <Reveal className="kicker">انیمه</Reveal>
-        <Reveal delay={60}><h1 className="page-title">یه بخش کوچیک از هویتم</h1></Reveal>
+        <Reveal delay={60}><h2 className="page-title">یه بخش کوچیک از هویتم</h2></Reveal>
         <Reveal delay={120} className="page-lede">
           نه همه‌ی این سایت، فقط یه گوشه‌اش.
         </Reveal>
 
-        <Reveal className="card watching-card">
-          <div className="mono faint" style={{ fontSize: 11, marginBottom: 10 }}>در حال تماشا</div>
-          <div style={{ fontSize: 22, fontWeight: 800, marginBottom: 4 }}>{ANIME.watching.title}</div>
-          <div className="dim" style={{ fontSize: 14 }}>{ANIME.watching.detail}</div>
+        <Reveal delay={160} className="ticket">
+          <div className="ticket-main">
+            <div className="ticket-live mono">
+              <span className="ticket-dot" aria-hidden="true" />
+              در حال تماشا
+            </div>
+            <div className="ticket-title">{ANIME.watching.title}</div>
+            <div className="ticket-arc">{ANIME.watching.arc}</div>
+            <div className="ticket-code mono">ep. {ANIME.watching.ep} · now playing</div>
+          </div>
+
+          <div className="ticket-stub">
+            <div className="ticket-stub-label mono">قسمت</div>
+            <div className="ticket-stub-num">{ANIME.watching.ep}</div>
+          </div>
         </Reveal>
 
-        <Reveal delay={80}><h2 className="section-h" style={{ marginTop: 56 }}>محبوب‌ترین‌ها</h2></Reveal>
+        <div className="anime-fav-head">
+          <h3 className="section-h" style={{ margin: 0 }}>محبوب‌ترین‌ها</h3>
+          <span className="mono faint" style={{ fontSize: 11 }}>
+            {String(ANIME.favorites.length).padStart(2, "0")} عنوان
+          </span>
+        </div>
+
         <div className="anime-grid">
           {ANIME.favorites.map((a, i) => (
-            <Reveal key={a.title} delay={i * 70} className="card anime-fav">
-              <div style={{ fontWeight: 700, fontSize: 16, marginBottom: 6 }}>{a.title}</div>
-              <div className="dim" style={{ fontSize: 13, lineHeight: 1.8 }}>{a.note}</div>
+            <Reveal key={a.title} delay={i * 90} className="fav-card">
+              <span className="fav-num mono" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <div className="fav-title">{a.title}</div>
+              <p className="fav-note dim">{a.note}</p>
+              <span className="fav-bar" aria-hidden="true" />
             </Reveal>
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

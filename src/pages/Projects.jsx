@@ -1,36 +1,74 @@
+import { useState } from "react";
 import Reveal from "../components/Reveal";
+import LicenseModal from "../components/LicenseModal";
 import { PROJECTS } from "../data/content";
 import "./Projects.css";
 
 export default function Projects() {
+  const [licenseOpen, setLicenseOpen] = useState(false);
+
   return (
-    <div className="page">
+    <section id="projects" className="section">
       <div className="container">
         <Reveal className="kicker">پروژه‌ها</Reveal>
-        <Reveal delay={60}><h1 className="page-title">چیزایی که ساختم</h1></Reveal>
+        <Reveal delay={60}><h2 className="page-title">دو تا داستان</h2></Reveal>
         <Reveal delay={120} className="page-lede">
-          بعضی‌هاشون کامل شدن، بعضی‌هاشون هنوز در حال تغییرن. هر کدوم یه دلیلی برای وجود داشتن دارن.
+          اینجا پروژه رو به‌صورت کارت نشون نمیدم. هر کدوم یه داستان داره: از کجا شروع شد، چی شد، و حالا کجاست.
         </Reveal>
 
-        <div className="projects-grid">
+        <div className="stories">
           {PROJECTS.map((p, i) => (
-            <Reveal key={p.id} delay={(i % 3) * 90}>
-              <a href={p.link} target="_blank" rel="noopener noreferrer" className="card project-card" data-hover>
-                <div className="project-card-top">
-                  <span className="mono faint" style={{ fontSize: 11 }}>{p.year}</span>
-                  <span className="tag">{p.category}</span>
-                </div>
-                <h3 style={{ fontSize: 19, margin: "14px 0 10px" }}>{p.title}</h3>
-                <p className="dim" style={{ fontSize: 14, lineHeight: 1.85, marginBottom: 18 }}>{p.desc}</p>
+            <Reveal key={p.id} delay={i * 110} className="story">
+              <span className="story-ghost mono" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+
+              <div className="story-meta">
+                <span className="tag">{p.category}</span>
+                <span className="mono faint" style={{ fontSize: 11 }}>{p.year}</span>
+                {p.badge && <span className="story-badge">{p.badge}</span>}
+              </div>
+
+              <h3 className="story-title">{p.title}</h3>
+
+              <div className="story-text">
+                {p.story.map((para, j) => (
+                  <p key={j}>{para}</p>
+                ))}
+              </div>
+
+              <div className="story-foot">
                 <div className="project-tags">
                   {p.tags.map((t) => <span key={t} className="tag">{t}</span>)}
                 </div>
-                <span className="project-arrow" aria-hidden="true">↗</span>
-              </a>
+
+                {p.license ? (
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    data-hover
+                    onClick={() => setLicenseOpen(true)}
+                  >
+                    {p.cta} ✦
+                  </button>
+                ) : (
+                  <a
+                    href={p.link}
+                    className="btn btn-primary"
+                    data-hover
+                    target={p.external ? "_blank" : undefined}
+                    rel={p.external ? "noopener noreferrer" : undefined}
+                  >
+                    {p.cta} {p.external ? "↗" : ""}
+                  </a>
+                )}
+              </div>
             </Reveal>
           ))}
         </div>
+
+        {licenseOpen && <LicenseModal onClose={() => setLicenseOpen(false)} />}
       </div>
-    </div>
+    </section>
   );
 }

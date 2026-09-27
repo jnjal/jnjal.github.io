@@ -1,59 +1,110 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Reveal from "../components/Reveal";
-import { NOW, PROJECTS } from "../data/content";
+import Clock from "../components/Clock";
+import { TOOLS } from "../data/content";
 import "./Home.css";
 
+const CYCLE = ["چیز می‌سازم", "بات می‌نویسم", "ابزار می‌سازم", "خط می‌شکنم"];
+
+function useCycle(words, ms) {
+  const [i, setI] = useState(0);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
+    const id = setInterval(() => setI((v) => (v + 1) % words.length), ms);
+    return () => clearInterval(id);
+  }, [words.length, ms]);
+
+  return words[i];
+}
+
 export default function Home() {
-  const featured = PROJECTS.filter((p) => p.featured).slice(0, 2);
+  const word = useCycle(CYCLE, 2600);
 
   return (
-    <div className="page home">
+    <section id="home" className="section home">
       <div className="container">
         <div className="home-hero">
-          <Reveal className="kicker">سلام، دیر وقته و من هنوز بیدارم</Reveal>
-          <Reveal delay={80}>
-            <h1 className="home-title">
-              سلام، من <span className="accent-text">جنجال</span>ـم.
-            </h1>
-          </Reveal>
-          <Reveal delay={160}>
-            <p className="home-sub">برای اینترنت چیز می‌سازم — بات، رابط کاربری، و هر چی وسطش پیدا بشه.</p>
-          </Reveal>
+          <div className="home-main">
+            <Reveal className="kicker home-kicker">
+              <span className="home-kicker-dot" aria-hidden="true" />
+              سلام، دیر وقته و من هنوز بیدارم
+            </Reveal>
 
-          <Reveal delay={240} className="home-actions">
-            <Link to="/projects" className="btn btn-primary" data-hover>پروژه‌ها</Link>
-            <Link to="/now" className="btn" data-hover>الان چیکار می‌کنم؟</Link>
+            <Reveal delay={70}>
+              <h1 className="home-title">
+                سلام، من <span className="home-name">جنجال</span>ـم.
+              </h1>
+            </Reveal>
+
+            <Reveal delay={140} className="home-sub">
+              برای اینترنت{" "}
+              <span className="home-cycle">
+                {CYCLE.map((w) => (
+                  <span
+                    key={w}
+                    className={`home-cycle-word${w === word ? " is-on" : ""}`}
+                    aria-hidden={w === word ? undefined : "true"}
+                  >
+                    {w}
+                  </span>
+                ))}
+              </span>{" "}
+              — و هر چی وسطش پیدا بشه.
+            </Reveal>
+
+            <Reveal delay={210} className="home-actions">
+              <a href="#projects" className="btn btn-primary" data-hover>پروژه‌ها</a>
+              <a href="#now" className="btn" data-hover>الان چیکار می‌کنم؟</a>
+              <a href="#about" className="home-scroll" data-hover aria-label="برو پایین">
+                <span aria-hidden="true">↓</span>
+              </a>
+            </Reveal>
+          </div>
+
+          <Reveal delay={280} className="home-card">
+            <div className="home-card-head">
+              <span className="home-card-mark" aria-hidden="true">✦</span>
+              <span className="mono faint">status.txt</span>
+            </div>
+
+            <div className="home-card-live">
+              <span className="home-live-dot" aria-hidden="true" />
+              آنلاین و بیدار
+            </div>
+
+            <dl className="home-card-rows">
+              <div>
+                <dt className="mono">local</dt>
+                <dd><Clock /></dd>
+              </div>
+              <div>
+                <dt className="mono">based</dt>
+                <dd>ایران</dd>
+              </div>
+              <div>
+                <dt className="mono">stack</dt>
+                <dd className="mono">React · Workers · TS</dd>
+              </div>
+              <div>
+                <dt className="mono">open</dt>
+                <dd>برای یه پروژه‌ی خوب</dd>
+              </div>
+            </dl>
           </Reveal>
         </div>
 
-        <Reveal delay={100} className="now-strip">
-          {NOW.items.slice(0, 3).map((item) => (
-            <div key={item.label} className="now-strip-item">
-              <span>{item.emoji}</span>
-              <div>
-                <div className="faint mono" style={{ fontSize: 11 }}>{item.label}</div>
-                <div style={{ fontSize: 14 }}>{item.value}</div>
-              </div>
-            </div>
-          ))}
-        </Reveal>
-
-        <Reveal className="home-projects">
-          <div className="home-projects-head">
-            <h2 style={{ fontSize: 20 }}>یه دو تا چیزی که ساختم</h2>
-            <Link to="/projects" className="footer-link" data-hover>همه‌شون ←</Link>
-          </div>
-          <div className="home-projects-grid">
-            {featured.map((p) => (
-              <a key={p.id} href={p.link} target="_blank" rel="noopener noreferrer" className="card home-project-card" data-hover>
-                <div className="mono faint" style={{ fontSize: 11, marginBottom: 10 }}>{p.category} · {p.year}</div>
-                <h3 style={{ fontSize: 17, marginBottom: 8 }}>{p.title}</h3>
-                <p className="dim" style={{ fontSize: 13.5, lineHeight: 1.8 }}>{p.desc}</p>
-              </a>
+        <Reveal delay={340} className="ticker" aria-hidden="true">
+          <div className="ticker-track">
+            {[...TOOLS, ...TOOLS].map((t, i) => (
+              <span key={`${t}-${i}`} className="ticker-item mono">
+                {t}
+                <span className="ticker-sep">✦</span>
+              </span>
             ))}
           </div>
         </Reveal>
       </div>
-    </div>
+    </section>
   );
 }

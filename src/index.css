@@ -18,7 +18,7 @@
   --container: 1080px;
 
   --sans: 'Vazirmatn', system-ui, sans-serif;
-  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --mono: 'IBM Plex Mono', 'Vazirmatn', ui-monospace, monospace;
 }
 
 * { box-sizing: border-box; }
@@ -30,11 +30,13 @@ body {
   color: var(--text);
   font-family: var(--sans);
   direction: rtl;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 #root { min-height: 100svh; display: flex; flex-direction: column; }
+main { flex: 1; }
 
 h1, h2, h3, h4 { margin: 0; font-weight: 700; color: var(--text); }
 p { margin: 0; }
@@ -64,6 +66,37 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
   }
 }
 
+/* ---------- اینتروی لود ---------- */
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: var(--bg);
+  pointer-events: none;
+  animation: boot-out 0.65s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+}
+.boot::after {
+  content: "✦";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--accent-2);
+  font-size: 26px;
+  animation: boot-mark 0.75s ease both;
+}
+@keyframes boot-out {
+  to { opacity: 0; visibility: hidden; }
+}
+@keyframes boot-mark {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  45% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.4); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .boot { display: none; }
+}
+
 /* ---------- layout helpers ---------- */
 .container {
   width: 100%;
@@ -72,11 +105,17 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
   padding: 0 24px;
 }
 
-.page { flex: 1; padding: 140px 0 96px; position: relative; z-index: 1; }
+.section {
+  padding: 76px 0 56px;
+  position: relative;
+  z-index: 1;
+  scroll-margin-top: 62px;
+}
 
 .mono { font-family: var(--mono); direction: ltr; unicode-bidi: isolate; }
 .dim { color: var(--text-dim); }
 .faint { color: var(--text-faint); }
+.accent-text { color: var(--accent-2); }
 
 .kicker { font-family: var(--mono); font-size: 12px; color: var(--text-faint); margin-bottom: 10px; }
 .page-title { font-size: clamp(30px, 4.4vw, 44px); font-weight: 800; margin-bottom: 12px; }
@@ -84,8 +123,6 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 .section-h { font-size: 15px; color: var(--text-dim); font-weight: 600; margin-bottom: 26px; }
 
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
-
-.form-error { color: #e0777f; font-size: 13px; }
 
 .tag {
   display: inline-block;
@@ -142,6 +179,6 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 }
 
 @media (max-width: 720px) {
-  .page { padding: 120px 0 72px; }
+  .section { padding: 60px 0 44px; scroll-margin-top: 58px; }
   .container { padding: 0 18px; }
 }
