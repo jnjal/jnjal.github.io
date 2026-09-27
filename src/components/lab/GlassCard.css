@@ -1,0 +1,22 @@
+.glass-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(14px);
+  overflow: hidden;
+  --x: 50%;
+  --y: 50%;
+}
+
+.glass-spot {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(180px circle at var(--x) var(--y), rgba(122, 31, 53, 0.35), transparent 65%);
+  transition: opacity 0.2s;
+}

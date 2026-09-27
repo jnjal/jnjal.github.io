@@ -1,0 +1,4 @@
+.watching-card { padding: 28px; max-width: 420px; border-color: var(--accent-border); }
+
+.anime-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.anime-fav { padding: 20px; }

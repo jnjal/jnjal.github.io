@@ -1,0 +1,24 @@
+.magnetic-zone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.magnetic-btn {
+  padding: 22px 34px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease-out, background 0.2s;
+}
+.magnetic-btn:hover { background: var(--accent-soft); }
+
+@media (prefers-reduced-motion: reduce) {
+  .magnetic-btn { transition: none; transform: none !important; }
+}

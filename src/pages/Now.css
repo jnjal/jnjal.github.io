@@ -1,0 +1,10 @@
+.now-list { display: flex; flex-direction: column; gap: 14px; max-width: 560px; }
+
+.now-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 22px;
+}
+
+.now-emoji { font-size: 24px; line-height: 1; }
