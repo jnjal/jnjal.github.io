@@ -2,10 +2,10 @@ import { useState } from "react";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import Cursor from "./Cursor";
-import Void from "../pages/Void";
+import Archive from "./Archive";
 
 export default function Layout({ children }) {
-  const [voidOpen, setVoidOpen] = useState(false);
+  const [archiveOpen, setArchiveOpen] = useState(false);
 
   return (
     <div style={{ cursor: "inherit", display: "flex", flexDirection: "column", minHeight: "100svh" }}>
@@ -15,10 +15,10 @@ export default function Layout({ children }) {
         <div className="noise" />
         <div className="glow" />
       </div>
-      <Nav onSecret={() => setVoidOpen(true)} />
+      <Nav onSecret={() => setArchiveOpen(true)} />
       <main>{children}</main>
       <Footer />
-      {voidOpen && <Void onClose={() => setVoidOpen(false)} />}
+      {archiveOpen && <Archive onClose={() => setArchiveOpen(false)} />}
     </div>
   );
 }
