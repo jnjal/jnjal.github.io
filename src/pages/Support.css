@@ -1,0 +1,120 @@
+.support-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 28px;
+  max-width: 860px;
+  padding: 34px 36px;
+  background:
+    radial-gradient(130% 150% at 100% 0%, rgba(122, 31, 53, 0.32) 0%, transparent 58%),
+    var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.35);
+}
+
+.support-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.022) 0 10px,
+    transparent 10px 20px
+  );
+  pointer-events: none;
+}
+
+.support-body {
+  position: relative;
+  max-width: 540px;
+}
+
+.support-badge {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 4px 12px;
+  border: 1px solid var(--accent-border);
+  border-radius: 100px;
+  font-size: 10.5px;
+  letter-spacing: 3px;
+  color: var(--accent-2);
+}
+
+.support-title {
+  font-size: clamp(21px, 3vw, 27px);
+  font-weight: 900;
+  letter-spacing: -0.6px;
+  margin-bottom: 10px;
+}
+
+.support-text {
+  font-size: 14.5px;
+  line-height: 2;
+}
+
+.support-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 34px;
+  border: 1px solid var(--accent);
+  border-radius: 100px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 16px 36px rgba(122, 31, 53, 0.4);
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+.support-btn:hover {
+  transform: translateY(-3px);
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  box-shadow: 0 22px 44px rgba(122, 31, 53, 0.5);
+}
+
+/* حلقه‌ی پالس دور دکمه */
+.support-btn::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 1px solid var(--accent-border);
+  border-radius: 100px;
+  pointer-events: none;
+  animation: support-pulse 2.4s ease-out infinite;
+}
+
+@keyframes support-pulse {
+  0% { opacity: 0.85; transform: scale(0.98); }
+  70% { opacity: 0; transform: scale(1.07); }
+  100% { opacity: 0; transform: scale(1.07); }
+}
+
+.support-btn-pending {
+  background: transparent;
+  border: 1px dashed var(--accent-border);
+  color: var(--accent-2);
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: default;
+}
+.support-btn-pending:hover { transform: none; }
+
+.support-btn-pending::after { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .support-btn::after { animation: none; }
+}
+
+@media (max-width: 720px) {
+  .support-card { padding: 26px 22px; }
+  .support-btn { width: 100%; justify-content: center; }
+}

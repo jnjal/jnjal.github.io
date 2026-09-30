@@ -100,7 +100,7 @@
   transform: translateY(101%);
   transition: transform 0.3s ease;
 }
-.to-top span { position: relative; z-index: 1; }
+.to-top > * { position: relative; z-index: 1; }
 .to-top:hover { color: #fff; border-color: var(--accent); }
 .to-top:hover::before { transform: translateY(0); }
 

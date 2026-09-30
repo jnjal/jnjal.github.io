@@ -6,6 +6,7 @@ import Now from "./pages/Now";
 import Notes from "./pages/Notes";
 import Anime from "./pages/Anime";
 import Music from "./pages/Music";
+import Support from "./pages/Support";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
       <Notes />
       <Anime />
       <Music />
+      <Support />
     </Layout>
   );
 }

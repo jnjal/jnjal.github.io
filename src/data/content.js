@@ -19,14 +19,15 @@ export const NAV_ITEMS = [
   { id: "notes", label: "یادداشت‌ها" },
   { id: "anime", label: "انیمه" },
   { id: "music", label: "موزیک" },
+  { id: "support", label: "حمایت" },
 ];
 
 export const WORKER_URL = "https://portfolio.iwdwy.workers.dev/";
 
 export const SOCIAL_LINKS = [
-  { label: "گیت‌هاب", short: "GH", value: "github.com/jnjal", href: "https://github.com/jnjal" },
-  { label: "تلگرام", short: "TG", value: "@cl_lot", href: "https://t.me/cl_lot" },
-  { label: "ایمیل", short: "@", value: PROFILE.email, href: `mailto:${PROFILE.email}` },
+  { label: "گیت‌هاب", short: "GH", icon: "github", value: "github.com/jnjal", href: "https://github.com/jnjal" },
+  { label: "تلگرام", short: "TG", icon: "telegram", value: "@cl_lot", href: "https://t.me/cl_lot" },
+  { label: "ایمیل", short: "@", icon: "mail", value: PROFILE.email, href: `mailto:${PROFILE.email}` },
 ];
 
 // پروژه‌ها به‌صورت داستانی نشون داده می‌شن: هر کدوم `story` از چند پاراگراف داره.
@@ -65,6 +66,27 @@ export const PROJECTS = [
     ],
   },
 ];
+
+// ظاهر هر نوع محتوای آرشیو (کلید = فیلد type توی D1)
+export const ARCHIVE_TYPES = {
+  memory: { label: "خاطره", icon: "photo", color: "#e0576f" },
+  people: { label: "آدم‌ها", icon: "people", color: "#e0913f" },
+  thoughts: { label: "فکرها", icon: "thought", color: "#9d86e0" },
+  attachments: { label: "وابستگی‌ها", icon: "link", color: "#5aa9e6" },
+  dreams: { label: "رویاها", icon: "moon", color: "#b07be6" },
+  obsessions: { label: "وسواس‌ها", icon: "repeat", color: "#e0703f" },
+  music: { label: "موسیقی", icon: "note", color: "#5fbf8a" },
+  unsaid: { label: "چیزهای نگفته", icon: "muted", color: "#8b95ad" },
+  fears: { label: "ترس‌ها", icon: "alert", color: "#d94f4f" },
+  keepsakes: { label: "یادگاری‌ها", icon: "gift", color: "#e08bb0" },
+  note: { label: "یادداشت", icon: "file", color: "#9c2c44" },
+};
+
+// بخش حمایت — لینک درگاه رو اینجا بذار تا دکمه فعال بشه
+export const SUPPORT = {
+  url: "#",
+  label: "حمایت مالی",
+};
 
 // اطلاعات کامل محصول «دارینو» برای صفحه‌ی خرید/لایسنس
 export const DARINO = {

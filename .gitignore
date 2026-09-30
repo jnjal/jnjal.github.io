@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Cloudflare Worker (کد ورکر و اسکیما اینجا نگه‌داری نمی‌شه)
+worker/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

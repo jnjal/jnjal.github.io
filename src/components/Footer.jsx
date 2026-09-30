@@ -1,6 +1,7 @@
 import { SOCIAL_LINKS, HUMAN_TOUCHES } from "../data/content";
 import useInView from "../hooks/useInView";
 import useTyped from "../hooks/useTyped";
+import Icon from "./Icon";
 import "./Footer.css";
 
 const note = HUMAN_TOUCHES[Math.floor(Math.random() * HUMAN_TOUCHES.length)];
@@ -34,13 +35,13 @@ export default function Footer() {
                   target={s.href.startsWith("http") ? "_blank" : undefined}
                   rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
                 >
-                  <span className="mono">{s.short}</span>
+                  <Icon name={s.icon} size={18} />
                 </a>
               ))}
             </div>
 
             <a href="#home" className="to-top" data-hover aria-label="برو بالا">
-              <span aria-hidden="true">↑</span>
+              <Icon name="arrowUp" size={17} />
             </a>
           </div>
         </div>

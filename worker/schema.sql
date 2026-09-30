@@ -8,6 +8,14 @@ CREATE TABLE IF NOT EXISTS archive_entries (
   updated_at TEXT NOT NULL
 );
 
+-- وضعیت مکالمه‌ی ربات (برای /add مرحله‌به‌مرحله با دکمه‌ها)
+CREATE TABLE IF NOT EXISTS bot_state (
+  chat_id TEXT PRIMARY KEY,
+  state TEXT NOT NULL DEFAULT 'idle',
+  payload TEXT NOT NULL DEFAULT '{}',
+  updated_at TEXT NOT NULL
+);
+
 -- اجرا:
 --   wrangler d1 create archive
 --   wrangler d1 execute archive --remote --file=./schema.sql
