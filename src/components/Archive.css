@@ -645,17 +645,23 @@
   color: #fff;
 }
 
-/* ---------- قفسه‌ی کتاب‌ها ---------- */
+/* ---------- قفسه‌ی کتاب‌ها (شبیه کتابخانه) ---------- */
 .arc-shelf {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: 20px;
-  padding: 26px 22px 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: linear-gradient(180deg, #131316 0%, #0d0d10 100%);
-  box-shadow: inset 0 14px 30px rgba(0, 0, 0, 0.55);
+  gap: 8px 0;
+  padding: 18px 8px 0;
+  border: 8px solid #1b1510;
+  border-top-width: 12px;
+  border-bottom-width: 16px;
+  border-radius: 6px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 74px),
+    linear-gradient(180deg, #100e0c 0%, #0a0908 100%);
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.5),
+    inset 0 18px 30px rgba(0, 0, 0, 0.55);
 }
 
 .arc-shelf-hint {
@@ -664,20 +670,28 @@
   letter-spacing: 1px;
 }
 
-/* کتاب */
+/* کتاب — پایینش تخته‌ی چوبی ردیف رو می‌سازه (به خاطر چسبیده بودن، پیوسته می‌شه) */
 .book {
   position: relative;
   width: clamp(112px, 13vw, 134px);
   aspect-ratio: 0.72;
   padding: 0;
   border: none;
+  border-bottom: 8px solid #2b2118;
   background: transparent;
   cursor: pointer;
-  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.25, 1);
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.25, 1), filter 0.3s ease;
 }
+
+/* ارتفاع‌های متنوع — پایین همه روی تخته‌ی ردیف می‌مونه */
+.book:nth-child(3n) { aspect-ratio: 0.66; }
+.book:nth-child(4n + 2) { aspect-ratio: 0.8; }
+
 .book:hover,
 .book:focus-visible {
-  transform: translateY(-14px) rotate(-1.8deg);
+  transform: rotate(-2.2deg);
+  transform-origin: 50% 100%;
+  filter: brightness(1.14);
 }
 
 .book-face {
@@ -709,13 +723,14 @@
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.35);
 }
 
-/* لبه‌ی صفحات (سمت چپ) */
+/* لبه‌ی صفحات (سمت چپ) — بالای صورتِ کتابِ همسایه تا دیده بشه */
 .book-edges {
   position: absolute;
   top: 6px;
   bottom: 6px;
   inset-inline-end: -4px;
   width: 5px;
+  z-index: 1;
   border-radius: 2px;
   background: repeating-linear-gradient(
     180deg,
@@ -1081,7 +1096,13 @@
   .arc-entries .arc-entry:hover { transform: translateY(-6px); }
   .arc-tape { left: 18px; width: 60px; }
   .arc-seal { width: 66px; height: 66px; }
-  .arc-shelf { gap: 14px; padding: 20px 14px 16px; }
+  .arc-shelf {
+    gap: 7px 0;
+    padding: 12px 6px 0;
+    border-width: 6px;
+    border-top-width: 9px;
+    border-bottom-width: 12px;
+  }
   .book { width: clamp(96px, 26vw, 116px); }
   .book-title { font-size: 13.5px; }
   .arc-book-foot { letter-spacing: 2px; }
