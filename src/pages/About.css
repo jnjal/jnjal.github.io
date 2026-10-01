@@ -137,7 +137,7 @@
 .seal-text {
   font-family: var(--mono);
   font-size: 9px;
-  letter-spacing: 2.4px;
+  letter-spacing: 2px;
   fill: var(--text-dim);
 }
 

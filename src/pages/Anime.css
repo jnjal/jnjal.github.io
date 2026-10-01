@@ -69,6 +69,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ticket-dot { animation: none; }
+  .ticket.in .ticket-bar i,
+  .reveal.in .fav-rating-fill { animation-delay: 0s; }
+  .fav-status.is-live i { animation: none; }
 }
 
 .ticket-title {
@@ -89,6 +92,51 @@
   color: var(--text-faint);
   margin-top: 22px;
   letter-spacing: 1px;
+}
+
+.ticket-meta {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 9px;
+  letter-spacing: 0.3px;
+}
+
+/* بار پیشرفت تماشا */
+.ticket-progress {
+  margin-top: 18px;
+  max-width: 430px;
+}
+.ticket-progress-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 7px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+.ticket-bar {
+  position: relative;
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+.ticket-bar i {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 6px;
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+}
+.ticket.in .ticket-bar i {
+  animation: anime-grow 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.35s both;
+}
+
+@keyframes anime-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 .ticket-stub {
@@ -115,6 +163,11 @@
   color: var(--accent-2);
 }
 
+.ticket-stub-sub {
+  font-size: 10.5px;
+  letter-spacing: 0.5px;
+}
+
 /* ---------- محبوب‌ترین‌ها ---------- */
 .anime-fav-head {
   display: flex;
@@ -137,8 +190,8 @@
   min-height: 186px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 8px;
+  justify-content: flex-start;
+  gap: 10px;
   padding: 26px 24px;
   overflow: hidden;
   background: var(--surface);
@@ -175,6 +228,150 @@
 .fav-note {
   font-size: 13.5px;
   line-height: 1.85;
+}
+
+/* سرکارت: عنوان + سال */
+.fav-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 10px;
+}
+.fav-year {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+/* نوار امتیاز */
+.fav-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fav-rating-label {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+.fav-rating-track {
+  position: relative;
+  flex: 1;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.fav-rating-fill {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--accent-2);
+  border-radius: 5px;
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+}
+.reveal.in .fav-rating-fill {
+  animation: anime-grow 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.35s both;
+}
+.fav-rating-num {
+  font-size: 11px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+/* پای کارت: ژانر/اپیزود + وضعیت */
+.fav-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 11px;
+  border-top: 1px dashed var(--border);
+}
+.fav-meta {
+  font-size: 11.5px;
+  color: var(--text-faint);
+}
+.fav-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.fav-status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-faint);
+}
+.fav-status.is-live {
+  border-color: var(--accent-border);
+  color: var(--accent-2);
+}
+.fav-status.is-live i {
+  background: var(--accent-2);
+  animation: ticket-blink 1.6s ease-in-out infinite;
+}
+
+/* در صف انتظار */
+.anime-queue { margin-top: 30px; }
+.anime-queue-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.anime-queue-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.anime-queue-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.queue-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border: 1px dashed var(--border);
+  border-radius: 100px;
+  background: var(--surface);
+  font-size: 13px;
+  color: var(--text-dim);
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.queue-chip:hover {
+  border-color: var(--accent-border);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+.queue-chip-no {
+  font-size: 10px;
+  color: var(--text-faint);
+}
+
+.anime-queue-empty {
+  padding: 14px 16px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--text-faint);
 }
 
 .fav-bar {

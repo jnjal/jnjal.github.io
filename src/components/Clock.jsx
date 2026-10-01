@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { PROFILE } from "../data/content";
 
+// فرمت سطح ماژول — ساخته‌شدن توی هر رندر هزینه‌داره
+const TIME_FMT = new Intl.DateTimeFormat("en-GB", {
+  timeZone: PROFILE.timezone,
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+});
+
 function formatTime() {
-  return new Intl.DateTimeFormat("en-GB", {
-    timeZone: PROFILE.timezone,
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).format(new Date());
+  return TIME_FMT.format(new Date());
 }
 
 export default function Clock({ className = "" }) {

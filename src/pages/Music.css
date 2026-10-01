@@ -176,6 +176,12 @@
 
 .gramo-artist { font-size: 15px; margin-top: 6px; }
 
+.gramo-meta {
+  margin-top: 8px;
+  font-size: 11.5px;
+  letter-spacing: 0.5px;
+}
+
 .gramo-range {
   -webkit-appearance: none;
   appearance: none;
@@ -217,6 +223,25 @@
   font-size: 11px;
 }
 
+/* --- ویژوالایزر --- */
+.gramo-viz {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 44px;
+  margin-top: 18px;
+}
+.gramo-viz span {
+  flex: 1;
+  height: 100%;
+  border-radius: 3px 3px 1px 1px;
+  background: linear-gradient(180deg, var(--accent-2) 0%, var(--accent) 78%);
+  opacity: 0.85;
+  transform: scaleY(0.06);
+  transform-origin: bottom;
+  transition: transform 0.07s linear;
+}
+
 .gramo-controls {
   display: flex;
   align-items: center;
@@ -246,6 +271,88 @@
 
 .gramo-hint { font-size: 12.5px; line-height: 1.7; }
 
+.gramo-plays {
+  font-size: 11.5px;
+  letter-spacing: 0.3px;
+}
+
+/* --- ابزارهای کنار کنترل‌ها --- */
+.gramo-tools {
+  margin-inline-start: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gramo-mini {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.gramo-mini:hover {
+  border-color: var(--accent-border);
+  color: var(--text);
+}
+.gramo-mini.is-on {
+  border-color: var(--accent-border);
+  background: var(--accent-soft);
+  color: var(--accent-2);
+}
+
+.gramo-vol-ic {
+  display: grid;
+  place-items: center;
+  color: var(--text-faint);
+}
+
+.gramo-vol {
+  -webkit-appearance: none;
+  appearance: none;
+  direction: ltr;
+  width: 78px;
+  height: 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    var(--text-dim) var(--pct, 100%),
+    var(--border) var(--pct, 100%)
+  );
+}
+.gramo-vol::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: var(--text);
+  border: 2px solid var(--text-faint);
+}
+.gramo-vol::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--text);
+  border: 2px solid var(--text-faint);
+}
+.gramo-vol::-moz-range-track { background: transparent; }
+
+/* --- جمله‌ی «چرا این آهنگ؟» --- */
+.gramo-why {
+  margin-top: 18px;
+  max-width: 760px;
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--text-dim);
+}
+
 .gramo-error {
   color: #e0777f;
   font-size: 12.5px;
@@ -260,11 +367,35 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 14px;
-  margin-top: 68px;
+  margin-top: 46px;
   padding-top: 30px;
   border-top: 1px solid var(--border);
   margin-bottom: 22px;
   max-width: 760px;
+}
+
+.crate-head-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.crate-nav { display: flex; gap: 8px; }
+.crate-arrow {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.crate-arrow:hover {
+  border-color: var(--accent-border);
+  color: var(--accent-2);
 }
 
 .crate-hint { font-size: 12.5px; }
@@ -274,15 +405,39 @@
   max-width: 760px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: linear-gradient(180deg, #141416 0%, #0f0f11 100%);
-  box-shadow: 0 26px 54px rgba(0, 0, 0, 0.35);
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(255, 255, 255, 0.05), transparent 60%),
+    linear-gradient(180deg, #141416 0%, #0f0f11 100%);
+  box-shadow:
+    inset 0 22px 34px -22px rgba(0, 0, 0, 0.95),
+    0 26px 54px rgba(0, 0, 0, 0.35);
+}
+
+/* فِیِد لبه‌ها — فقط وقتی جعبه اسکرول‌پذیره */
+.crate.has-scroll::before,
+.crate.has-scroll::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 54px;
+  width: 44px;
+  z-index: 5;
+  pointer-events: none;
+}
+.crate.has-scroll::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(16, 16, 19, 0.96), rgba(16, 16, 19, 0));
+}
+.crate.has-scroll::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(16, 16, 19, 0.96), rgba(16, 16, 19, 0));
 }
 
 .bands {
   display: flex;
   flex-wrap: nowrap;
   align-items: flex-end;
-  padding: 74px 20px 0;
+  padding: 74px 20px 30px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x proximity;
@@ -301,25 +456,33 @@
   scroll-snap-align: center;
 }
 .band-slot + .band-slot { margin-inline-start: -18px; }
-.band-slot:hover { z-index: 6; }
+.band-slot:hover,
+.band-slot.is-open { z-index: 6; }
 
 .band-disc {
   position: relative;
   width: 100%;
   aspect-ratio: 1;
   border-radius: 50%;
-  cursor: default;
+  cursor: pointer;
   background: #0a0a0c;
   box-shadow:
     inset 0 0 0 1px #1c1c20,
     0 10px 24px rgba(0, 0, 0, 0.55);
+  transform: rotate(var(--rot, 0deg));
   transition: transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1), box-shadow 0.3s ease;
 }
 
 .band-slot:hover .band-disc {
-  transform: translateY(-68px);
+  transform: rotate(0deg) translateY(-68px);
   box-shadow:
     inset 0 0 0 1px #1c1c20,
+    0 30px 46px rgba(0, 0, 0, 0.65);
+}
+.band-slot.is-open .band-disc {
+  transform: rotate(0deg) translateY(-68px);
+  box-shadow:
+    inset 0 0 0 1px var(--accent-border),
     0 30px 46px rgba(0, 0, 0, 0.65);
 }
 
@@ -345,15 +508,30 @@
   justify-content: center;
   padding: 5px;
   text-align: center;
+  overflow: hidden;
   border-radius: 50%;
   background: radial-gradient(circle at 34% 28%, var(--accent-2) 0%, var(--accent) 62%, #571325 100%);
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4);
 }
 
+/* هایلایت شیشه‌ای بالای لیبل */
+.band-label::after {
+  content: "";
+  position: absolute;
+  top: 9%;
+  left: 16%;
+  width: 36%;
+  height: 26%;
+  border-radius: 50%;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0));
+  transform: rotate(-18deg);
+  pointer-events: none;
+}
+
 .band-name {
-  font-size: clamp(7.5px, 0.95vw, 9px);
+  font-size: clamp(6.5px, 0.9vw, 8.5px);
   font-weight: 800;
-  line-height: 1.3;
+  line-height: 1.25;
   color: #fff;
   overflow-wrap: anywhere;
 }
@@ -370,30 +548,62 @@
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.65);
 }
 
+/* تولتیپ اسم بند — اندازه از روی متن، همیشه یک خط */
 .band-info {
   position: absolute;
   top: calc(100% - 4px);
   left: 50%;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 7px 14px;
+  justify-content: center;
+  padding: 10px 14px;
+  text-align: center;
   white-space: nowrap;
   font-size: 11.5px;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.2px;
   color: var(--text);
-  background: rgba(11, 11, 13, 0.96);
+  background: rgba(11, 11, 13, 0.97);
   border: 1px solid var(--accent-border);
-  border-radius: 100px;
+  border-radius: 8px;
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.55);
   opacity: 0;
-  transform: translate(-50%, 12px);
+  transform: translate(-50%, 10px);
   transition: opacity 0.25s ease, transform 0.3s ease;
   pointer-events: none;
+  z-index: 7;
 }
-.band-slot:hover .band-info { opacity: 1; transform: translate(-50%, 0); }
+.band-slot:hover .band-info,
+.band-slot.is-open .band-info {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
 
-.band-index { color: var(--accent-2); font-weight: 700; }
+/* تولتیپ لبه‌ها — تراز به لبه‌ی داخلی تا از باکس بیرون نزنه */
+.band-slot:first-child .band-info {
+  left: auto;
+  right: 0;
+  transform: translate(0, 10px);
+}
+.band-slot:first-child:hover .band-info,
+.band-slot:first-child.is-open .band-info {
+  transform: translate(0, 0);
+}
+.band-slot:last-child .band-info {
+  left: 0;
+  right: auto;
+  transform: translate(0, 10px);
+}
+.band-slot:last-child:hover .band-info,
+.band-slot:last-child.is-open .band-info {
+  transform: translate(0, 0);
+}
+
+/* درگ برای اسکرول جعبه */
+.has-scroll .bands { cursor: grab; }
+.bands.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
 
 .crate-front {
   position: relative;
@@ -423,6 +633,7 @@
   .gramo.is-playing .disc-grooves,
   .gramo.is-playing .gramo-dot,
   .band-slot:hover .band-grooves { animation: none; }
+  .gramo-viz { display: none; }
 }
 
 @media (max-width: 720px) {
@@ -441,5 +652,6 @@
   .crate-head { margin-top: 54px; }
   .crate-hint { display: none; }
   .bands { padding-top: 58px; }
-  .band-slot:hover .band-disc { transform: translateY(-46px); }
+  .band-slot:hover .band-disc,
+  .band-slot.is-open .band-disc { transform: rotate(0deg) translateY(-46px); }
 }

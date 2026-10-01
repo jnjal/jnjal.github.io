@@ -14,7 +14,19 @@ const RING_C = 2 * Math.PI * RING_R;
 const FA_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
 const faNum = (n) => String(n).replace(/\d/g, (d) => FA_DIGITS[Number(d)]);
 
-// ساعت واقعی تهران — برای فکت «ساعت کار»
+// ساعت واقعی تهران — برای فکت «ساعت کار» (فرمت‌ها یکبار ساخته می‌شن)
+const F_HOUR = new Intl.DateTimeFormat("en-GB", { timeZone: PROFILE.timezone, hour12: false, hour: "2-digit" });
+const F_TIME = new Intl.DateTimeFormat("en-GB", { timeZone: PROFILE.timezone, hour12: false, hour: "2-digit", minute: "2-digit" });
+const F_RECEIPT = new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
+  timeZone: PROFILE.timezone,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+});
+
 const DAY_PARTS = [
   [5, 11, "صبح"],
   [11, 14, "ظهر"],
@@ -35,9 +47,8 @@ function useTehranClock() {
     return () => clearInterval(id);
   }, []);
 
-  const fmt = (opts) => new Intl.DateTimeFormat("en-GB", { timeZone: PROFILE.timezone, hour12: false, ...opts }).format(now);
-  const time = faNum(fmt({ hour: "2-digit", minute: "2-digit" }));
-  const hour = Number(fmt({ hour: "2-digit" }));
+  const time = faNum(F_TIME.format(now));
+  const hour = Number(F_HOUR.format(now));
 
   return { time, part: partOfDay(hour) };
 }
@@ -54,18 +65,37 @@ function SunIcon() {
 // تاریخ/ساعت شمسی برای رسید ارسال
 function receiptDate(d) {
   try {
-    return new Intl.DateTimeFormat("fa-IR-u-ca-persian", {
-      timeZone: PROFILE.timezone,
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    }).format(d);
+    return F_RECEIPT.format(d);
   } catch {
     return d.toLocaleString("fa-IR");
   }
+}
+
+// فکت ساعت — ری‌رندر هر ۳۰ ثانیه فقط همین کارت رو می‌زنه، نه کل بخش درباره
+function LiveFact({ fact, index }) {
+  const { time, part } = useTehranClock();
+  const night = part === "نیمه‌شب";
+
+  return (
+    <div className="fact">
+      <div className="fact-head">
+        <span className="fact-no mono">{String(index + 1).padStart(2, "0")}</span>
+        <span className="fact-label mono">"{fact.label}":</span>
+      </div>
+      <div className="fact-title">
+        {fact.title}
+        <span className="fact-time mono">
+          {part === "شب" || night ? <Icon name="moon" size={13} /> : <SunIcon />}
+          {time}
+        </span>
+      </div>
+      <p className="fact-text dim">
+        {night
+          ? `الان ${time} نیمه‌شبه — بیشتر کارهام همین‌جا شروع می‌شه.`
+          : `الان ${time} ${part}ه؛ ولی جدی‌ترین کدهام شب شروع شدن.`}
+      </p>
+    </div>
+  );
 }
 
 const PROMPTS = [
@@ -133,7 +163,6 @@ const offSealTilt = (e) => {
 export default function About() {
   const [skillRef, skillIn] = useInView(0.2);
   const [contactRef, contactIn] = useInView(0.2);
-  const { time, part } = useTehranClock();
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", message: "" });
   const [receipt, setReceipt] = useState(null);
   const [sending, setSending] = useState(false);
@@ -247,7 +276,7 @@ export default function About() {
                 <g className="seal-rotate">
                   <text className="seal-text">
                     <textPath href="#seal-path" startOffset="0">
-                      ✦ JNJAL.DEV ✦ FULLSTACK DEVELOPER ✦
+                      ✦ JNJAL.GITHUB.IO ✦ FULLSTACK DEVELOPER ✦
                     </textPath>
                   </text>
                 </g>
@@ -278,30 +307,20 @@ export default function About() {
               </div>
               <div className="file-body">
               <Reveal delay={140} className="about-facts">
-            {ABOUT.facts.map((f, i) => (
-              <div key={f.title} className="fact">
-                <div className="fact-head">
-                  <span className="fact-no mono">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="fact-label mono">"{f.label}":</span>
+            {ABOUT.facts.map((f, i) =>
+              f.live === "clock" ? (
+                <LiveFact key={f.title} fact={f} index={i} />
+              ) : (
+                <div key={f.title} className="fact">
+                  <div className="fact-head">
+                    <span className="fact-no mono">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="fact-label mono">"{f.label}":</span>
+                  </div>
+                  <div className="fact-title">{f.title}</div>
+                  <p className="fact-text dim">{f.text}</p>
                 </div>
-                <div className="fact-title">
-                  {f.title}
-                  {f.live === "clock" && (
-                    <span className="fact-time mono">
-                      {part === "شب" || part === "نیمه‌شب" ? <Icon name="moon" size={13} /> : <SunIcon />}
-                      {time}
-                    </span>
-                  )}
-                </div>
-                <p className="fact-text dim">
-                  {f.live === "clock"
-                    ? part === "نیمه‌شب"
-                      ? `الان ${time} نیمه‌شبه — بیشتر کارهام همین‌جا شروع می‌شه.`
-                      : `الان ${time} ${part}ه؛ ولی جدی‌ترین کدهام شب شروع شدن.`
-                    : f.text}
-                </p>
-              </div>
-            ))}
+              )
+            )}
           </Reveal>
               </div>
             </div>
@@ -391,7 +410,7 @@ export default function About() {
                     <div className="receipt-feed" role="status">
                       <div className="receipt" ref={receiptRef} tabIndex={-1}>
                         <div className="receipt-head">
-                          <span className="receipt-brand">✦ jnjal.dev</span>
+                          <span className="receipt-brand">✦ jnjal.github.io</span>
                           <span className="receipt-sub">رسید پیام</span>
                         </div>
 

@@ -1,9 +1,20 @@
+import { useState } from "react";
 import Reveal from "../components/Reveal";
 import Icon from "../components/Icon";
 import { NOTES } from "../data/content";
 import "./Notes.css";
 
+// آیکون هر حس‌وحال — بدون ایموجی، از آیکون‌های SVG سایت
+const MOOD_ICONS = {
+  "بی‌خواب": "moon",
+  فکر: "thought",
+  خوش: "pulse",
+  کد: "code",
+};
+
 export default function Notes() {
+  const [openNote, setOpenNote] = useState(null);
+
   return (
     <section id="notes" className="section">
       <div className="container">
@@ -27,18 +38,58 @@ export default function Notes() {
           </Reveal>
         ) : (
           <div className="notes-scrap">
-            {NOTES.map((note, i) => (
-              <Reveal key={note.date} delay={i * 70} className="note-slot">
-                <article className="note-card">
-                  <span className="note-tape" aria-hidden="true" />
-                  <div className="note-top">
-                    <span className="note-date mono">{note.date}</span>
-                    <span className="note-index mono faint">{String(i + 1).padStart(2, "0")}</span>
-                  </div>
-                  <p className="note-text">{note.text}</p>
-                </article>
-              </Reveal>
-            ))}
+            {NOTES.map((note, i) => {
+              const key = `${note.date}-${i}`;
+              const isOpen = openNote === key;
+              const long = note.text.length > 160;
+
+              return (
+                <Reveal key={key} delay={i * 70} className="note-slot">
+                  <article className="note-card">
+                    <span className="note-tape" aria-hidden="true" />
+                    {i === 0 && <span className="note-new">جدید</span>}
+
+                    <div className="note-top">
+                      <span className="note-date mono">{note.date}</span>
+                      <span className="note-index mono faint">{String(i + 1).padStart(2, "0")}</span>
+                    </div>
+
+                    {note.title && <h3 className="note-title">{note.title}</h3>}
+
+                    <p className={`note-text${isOpen ? " is-open" : ""}`}>{note.text}</p>
+
+                    {long && (
+                      <button
+                        type="button"
+                        className="note-more"
+                        onClick={() => setOpenNote(isOpen ? null : key)}
+                        data-hover
+                      >
+                        {isOpen ? "کمتر" : "ادامه"}
+                      </button>
+                    )}
+
+                    {(note.mood || note.tags?.length > 0) && (
+                      <div className="note-foot">
+                        {note.tags?.length > 0 && (
+                          <div className="note-tags">
+                            {note.tags.map((t) => (
+                              <span key={t} className="note-tag mono">#{t}</span>
+                            ))}
+                          </div>
+                        )}
+                        {note.mood && (
+                          <span className="note-mood">
+                            <Icon name={MOOD_ICONS[note.mood] || "note"} size={12} />
+                            {note.mood}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </article>
+                </Reveal>
+              );
+            })}
           </div>
         )}
       </div>

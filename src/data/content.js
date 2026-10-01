@@ -316,48 +316,179 @@ export const ABOUT = {
 };
 
 // این بخش رو زیاد به‌روزرسانی می‌کنم — همه‌چی از یه‌جا میاد.
+// byTime: متن رصد بر اساس باکت ساعت (صبح ۵–۱۲، عصر ۱۲–۱۸، شب ۱۸–۵)
+// x/y: موقعیت سیاره (درصد) | links: خطوط صورت فلکی (ایندکس آیتم‌ها)
+// color: رنگ سیاره | weight: ۱..۳ اندازه | mag: قدر ظاهری | period: ثانیه‌ی چرخش ماه
+// ring: حلقه‌ی زحل‌وار | medium: خط «مواد» کارت | live: "anime" → توضیح از ANIME
 export const NOW = {
   updatedAt: "۲۶ شهریور ۱۴۰۵",
   updatedAtISO: "2026-09-17",
+  gallery: "صورت فلکی روز من",
+  hours: "رصدخانه‌ی شخصی · بازدید تا صبح",
+  catalog: "CAT · JNJAL",
+  links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]], // زنجیره‌ای: هر سیاره فقط به همسایه‌ها وصله (حداکثر ۲)
   items: [
-    { icon: "school", label: "درس", value: "دانشگاه میرم", detail: "" },
-    { icon: "music", label: "موسیقی", value: "آهنگ گوش می‌کنم", detail: "" },
-    { icon: "pulse", label: "روزمره", value: "سعی می‌کنم زنده بمونم", detail: "" },
-    { icon: "screen", label: "تلویزیون", value: "بلیچ می‌بینم", detail: "" },
-    { icon: "code", label: "برنامه‌نویسی", value: "TypeScript رو بیشتر و بیشتر یاد می‌گیرم", detail: "" },
-    { icon: "game", label: "بازی", value: "ماینکرفت بازی می‌کنم", detail: "" },
+    {
+      icon: "school",
+      x: 73,
+      y: 30,
+      color: "#b03a56",
+      weight: 2,
+      mag: "۱٫۴",
+      period: 9,
+      label: "درس",
+      medium: "مواد: جزوه، کتاب، خواب‌آلودگی",
+      value: "دانشگاه میرم",
+      byTime: {
+        صبح: "دارم میرم دانشگاه",
+        عصر: "کلاسا تموم شد، سر فردا",
+        شب: "تا دیروقت درس می‌خونم",
+      },
+      detail: "مهندسی کامپیوتر — ترمی که باید تمومش کنم",
+    },
+    {
+      icon: "music",
+      x: 60,
+      y: 40,
+      color: "#5aa9e6",
+      weight: 1,
+      mag: "۲٫۱",
+      period: 7,
+      label: "موسیقی",
+      medium: "مواد: هدفون، تکرار بی‌وقفه",
+      value: "آهنگ گوش می‌کنم",
+      byTime: {
+        صبح: "پلی‌لیست صبحگاهی",
+        عصر: "یه آهنگ بلند بلند",
+        شب: "با هدفون، بی‌صدا",
+      },
+      detail: "هر چی بیشتر تکرار بشه، بهتره — هشدار",
+    },
+    {
+      icon: "pulse",
+      x: 70,
+      y: 64,
+      color: "#e0913f",
+      weight: 1,
+      mag: "۲٫۴",
+      period: 11,
+      label: "روزمره",
+      medium: "مواد: قهوه، پیاده‌روی، شانس",
+      value: "سعی می‌کنم زنده بمونم",
+      byTime: {
+        صبح: "با قهوه شروع می‌شه",
+        عصر: "یه پیاده‌روی کوتاه وسط روز",
+        شب: "هنوز بیدارم، طبق معمول",
+      },
+      detail: "حداقل ۳ فنجون قهوه تا الان",
+    },
+    { icon: "screen", x: 46, y: 60, color: "#9d86e0", weight: 2, mag: "۱٫۸", period: 8, ring: true, label: "تلویزیون", medium: "مواد: بلیچ، پاپ‌کورن", value: "بلیچ می‌بینم", live: "anime", detail: "" },
+    {
+      icon: "code",
+      x: 32,
+      y: 34,
+      color: "#e0576f",
+      weight: 3,
+      mag: "۰٫۹",
+      period: 6,
+      label: "برنامه‌نویسی",
+      medium: "مواد: TypeScript، باگ، قهوه‌ی سرد",
+      value: "TypeScript رو بیشتر و بیشتر یاد می‌گیرم",
+      byTime: {
+        صبح: "برنامه‌ریزی و یادداشت",
+        عصر: "دارم می‌نویسمش",
+        شب: "TypeScript رو بیشتر و بیشتر یاد می‌گیرم",
+      },
+      detail: "۲ باگ حل‌نشده که شب‌ها فکرم رو مشغول می‌کنن",
+    },
+    {
+      icon: "game",
+      x: 14,
+      y: 62,
+      color: "#5fbf8a",
+      weight: 2,
+      mag: "۱٫۶",
+      period: 12,
+      ring: true,
+      label: "بازی",
+      medium: "مواد: بلوک، سرور، دوست",
+      value: "ماینکرفت بازی می‌کنم",
+      detail: "یه سرور کوچیک با چندتا دوست — ساختمانم هنوز نیمه‌کاره‌ست",
+    },
   ],
 };
 
+// هر یادداشت: { date, text, title?, tags?: [], mood? }
+// title تیتر بولد بالای متن | tags آرایه‌ی برچسب | mood حس‌وحال (بی‌خواب / فکر / خوش / کد ...)
+// اولین آیتم آرایه «جدید» علامت می‌خوره | متن‌های بلند از ۵ خط جمع می‌شن با «ادامه»
 export const NOTES = [];
 
+// watching: بلیت «در حال تماشا» + بار پیشرفت (بخش «الان» هم از total استفاده می‌کنه)
+// favorites: سال/ژانر/eps/rating/status همه اختیاری‌ان — rating سلیقه‌ای و موقته
+// queue: در صف انتظار
 export const ANIME = {
-  watching: { title: "Bleach", ep: "۲۱۰", arc: "تیبت آرک" },
+  watching: {
+    title: "Bleach",
+    ep: "۲۱۰",
+    arc: "تیبت آرک",
+    total: 366,
+    year: "۲۰۰۴",
+    genre: "اکشن / ماوراء الطبیعه",
+    studio: "Studio Pierrot",
+  },
   favorites: [
-    { title: "Bleach", note: "تیبت آرک اصلاً شروع دنیای دیگه‌ست" },
-    { title: "Death Note", note: "بهترین بازی موش و گربه‌ای که دیدم" },
-    { title: "Code Geass", note: "پایانی که هنوز بحثش داغه" },
+    {
+      title: "Bleach",
+      note: "تیبت آرک اصلاً شروع دنیای دیگه‌ست",
+      year: "۲۰۰۴",
+      eps: 366,
+      genre: "اکشن، ماجراجویی",
+      rating: 8.5,
+      status: "در حال تماشا",
+    },
+    {
+      title: "Death Note",
+      note: "بهترین بازی موش و گربه‌ای که دیدم",
+      year: "۲۰۰۶",
+      eps: 37,
+      genre: "روان‌شناختی، جنایی",
+      rating: 9,
+      status: "تمام‌شده",
+    },
+    {
+      title: "Code Geass",
+      note: "پایانی که هنوز بحثش داغه",
+      year: "۲۰۰۶",
+      eps: 50,
+      genre: "مکا، درام سیاسی",
+      rating: 9.5,
+      status: "تمام‌شده",
+    },
   ],
+  queue: [], // فعلاً خالی — پیام «چیزی توی صف ندارم» نمایش داده می‌شه
 };
 
 // فایل صوتی توی public/music/ هست.
+// favorite: year/album اختیاری‌ان | why: جمله‌ی «چرا این آهنگ؟» | bands: { name, genre }
 export const MUSIC = {
   favorite: {
     title: "Lonely Day",
     artist: "System of a Down",
     src: "music/lonely-day.m4a",
+    year: "۲۰۰۹",
   },
+  why: "هر بار که ذهنم شلوغه، از اول پخشش می‌کنم.",
   bands: [
-    "Metallica",
-    "System of a Down",
-    "ShamRain",
-    "Tame Impala",
-    "Slipknot",
-    "Falling in Reverse",
-    "Radiohead",
-    "Aemia",
-    "Cigarettes After Sex",
-    "Deftones",
+    { name: "Metallica", genre: "thrash metal", years: "۱۹۸۱", from: "آمریکا", note: "اولین آهنگی که با صدای بلند گوش دادم" },
+    { name: "System of a Down", genre: "alt-metal", years: "۱۹۹۴", from: "آمریکا" },
+    { name: "ShamRain", genre: "doom / shoegaze", years: "۲۰۰۰", from: "فنلاند" },
+    { name: "Tame Impala", genre: "psychedelic pop", years: "۲۰۰۷", from: "استرالیا", note: "صدایی که انگار تو خوابه" },
+    { name: "Slipknot", genre: "nu-metal", years: "۱۹۹۵", from: "آمریکا" },
+    { name: "Falling in Reverse", genre: "post-hardcore", years: "۲۰۰۸", from: "آمریکا" },
+    { name: "Radiohead", genre: "alternative rock", years: "۱۹۸۵", from: "انگلستان", note: "هر آلبومش یه فصل جدا از زندگیه" },
+    { name: "Aemia", genre: "symphonic metal", from: "ایران" }, // years: سال تأسیس مطمئن نیستم — خودت اضافه کن
+    { name: "Cigarettes After Sex", genre: "dream pop", years: "۲۰۰۸", from: "آمریکا" },
+    { name: "Deftones", genre: "alt-metal", years: "۱۹۸۸", from: "آمریکا", note: "گیتاری که هم آرومه هم خطرناک" },
   ],
 };
 

@@ -8,15 +8,17 @@ function canUseCursor() {
 }
 
 export default function Cursor() {
-  const [pos, setPos] = useState({ x: -100, y: -100 });
   const [hover, setHover] = useState(false);
   const [enabled] = useState(canUseCursor);
   const ringRef = useRef(null);
+  const dotRef = useRef(null);
   const magnetRef = useRef(null);
   const target = useRef({ x: -100, y: -100 });
 
   useEffect(() => {
     if (!enabled) return undefined;
+
+    if (dotRef.current) dotRef.current.style.transform = "translate(-100px, -100px)";
 
     const resetMagnet = () => {
       if (magnetRef.current) {
@@ -26,8 +28,9 @@ export default function Cursor() {
     };
 
     const move = (e) => {
-      setPos({ x: e.clientX, y: e.clientY });
       target.current = { x: e.clientX, y: e.clientY };
+      // مستقیم روی استایل — بدون ری‌رندر React
+      if (dotRef.current) dotRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
 
       const el = e.target instanceof Element ? e.target.closest(".btn") : null;
       if (el !== magnetRef.current) {
@@ -95,6 +98,7 @@ export default function Cursor() {
         }}
       />
       <div
+        ref={dotRef}
         aria-hidden="true"
         style={{
           position: "fixed",
@@ -103,10 +107,11 @@ export default function Cursor() {
           zIndex: 9999,
           width: size,
           height: size,
+          marginLeft: -size / 2,
+          marginTop: -size / 2,
           borderRadius: "50%",
           background: hover ? "transparent" : "var(--accent-2)",
           border: hover ? "1.5px solid var(--accent-2)" : "none",
-          transform: `translate(${pos.x - size / 2}px, ${pos.y - size / 2}px)`,
           transition: "width 0.15s, height 0.15s, background 0.15s, border 0.15s",
           pointerEvents: "none",
         }}

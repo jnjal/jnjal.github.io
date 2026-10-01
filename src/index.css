@@ -38,7 +38,7 @@
   --border: #222225;
   --text: #e8e6e3;
   --text-dim: #9b9895;
-  --text-faint: #5c5a58;
+  --text-faint: #7f7c78;
   --accent: #7a1f35;
   --accent-2: #9c2c44;
   --accent-soft: rgba(122, 31, 53, 0.16);
@@ -87,6 +87,23 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
+
+/* لینک پرش به محتوا — فقط موقع فوکوس با کیبورد ظاهر می‌شه */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  inset-inline-end: 16px;
+  z-index: 300;
+  padding: 10px 16px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus { top: 12px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -140,7 +157,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
   padding: 76px 0 56px;
   position: relative;
   z-index: 1;
-  scroll-margin-top: 62px;
+  scroll-margin-top: 76px;
 }
 
 .mono { font-family: var(--mono); direction: ltr; unicode-bidi: isolate; }
@@ -191,6 +208,13 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
   .reveal { opacity: 1; transform: none; transition: none; }
 }
 
+/* انیمیشن‌های بخش‌های خارج از دید متوقف می‌مونن (کلاس از Layout اضافه می‌شه) */
+.anim-off *,
+.anim-off *::before,
+.anim-off *::after {
+  animation-play-state: paused !important;
+}
+
 /* ---------- noise/glow background ---------- */
 .bg-fx { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 .bg-fx .noise {
@@ -210,6 +234,6 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 }
 
 @media (max-width: 720px) {
-  .section { padding: 60px 0 44px; scroll-margin-top: 58px; }
+  .section { padding: 60px 0 44px; scroll-margin-top: 72px; }
   .container { padding: 0 18px; }
 }
