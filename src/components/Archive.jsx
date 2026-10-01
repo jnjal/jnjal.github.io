@@ -681,7 +681,7 @@ export default function Archive({ onClose }) {
                       ))}
                     </div>
                     <div className="arc-shelf-hint faint">
-                      روی هر کتاب بزن تا باز بشه
+                      به چپ و راست بکش تا همه‌ی کتاب‌ها رو ببینی · روی هرکدوم بزن تا باز بشه
                     </div>
                   </>
                 )}
