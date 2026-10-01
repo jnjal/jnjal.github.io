@@ -8,6 +8,7 @@
     radial-gradient(120% 70% at 50% -12%, #1a1a20 0%, #0c0c0f 55%, #08080a 100%),
     var(--bg);
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   animation: arc-fade 0.3s ease both;
 }
@@ -143,7 +144,7 @@
   max-width: 940px;
   min-height: 100svh;
   margin: 0 auto;
-  padding: 34px 24px 72px;
+  padding: 0 24px 72px;
   display: flex;
   flex-direction: column;
 }
@@ -1052,16 +1053,18 @@
 
 /* ---------- ریسپانسیو ---------- */
 @media (max-width: 760px) {
-  .arc-shell { padding: 20px 18px 56px; }
+  .arc-shell { padding: 0 18px 28px; }
+  .arc-head { margin-inline: -18px; padding: 12px 18px 10px; }
+  .arc-dial { width: clamp(130px, 38vw, 160px); }
   .arc-vault {
     grid-template-columns: 1fr;
     justify-items: center;
-    gap: 34px;
-    padding: 40px 0;
+    gap: 22px;
+    padding: 24px 0;
     text-align: center;
   }
   .arc-form { max-width: 100%; text-align: start; }
-  .arc-hint { align-self: stretch; text-align: center; }
+  .arc-hint { align-self: stretch; text-align: center; font-size: 12px; line-height: 1.8; }
   .arc-book-head { flex-wrap: wrap; }
   .arc-book-mark { display: none; }
   .arc-pages { padding: 18px; }
