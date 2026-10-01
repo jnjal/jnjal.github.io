@@ -3,24 +3,16 @@ import { createPortal } from "react-dom";
 import { WORKER_URL, ARCHIVE_TYPES } from "../data/content";
 import useTyped, { prefersReducedMotion } from "../hooks/useTyped";
 import Icon from "./Icon";
+import WallClock from "./WallClock";
+import avatarSrc from "../assets/avatar.jpg";
 import "./Archive.css";
 
 const API = WORKER_URL.replace(/\/+$/, "");
 const TOKEN_KEY = "archive_token";
-const GLITCH_MS = 780;
-const LOG_MS = 1800;
 const UNLOCK_MS = 950;
-const DOOR_MS = 900;
 const IDLE_MS = 120000;
 
 const GHOST_TYPES = new Set(["secret", "unsaid"]);
-
-const BOOT_LOG = [
-  "vault://archive",
-  "· decrypting payload ....... ok",
-  "· randomizing pin pad ...... ok",
-  "· awaiting operator input_",
-].join("\n");
 
 const fmtDate = (iso) => {
   try {
@@ -35,17 +27,6 @@ const faNum = (n) => String(n).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Numb
 const fmtClock = (ms) => {
   const s = Math.max(0, Math.ceil(ms / 1000));
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
-};
-
-const daysAgo = (iso) => {
-  try {
-    const d = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
-    if (d <= 0) return "امروز";
-    if (d === 1) return "دیروز";
-    return `${faNum(d)} روز پیش`;
-  } catch {
-    return "";
-  }
 };
 
 const metaOf = (type) => ARCHIVE_TYPES[type] || { label: type || "note", icon: "file", color: "#9c2c44" };
@@ -85,55 +66,18 @@ function shuffleKeys() {
   return digits;
 }
 
-// تایپ متن کوتاه موقع ورود (فقط برای کارت اول هر بخش)
-function TypedContent({ text, active, delay = 0 }) {
+// تایپ متن کوتاه موقع ورود (صفحه‌ی اول کتاب اول)
+function TypedContent({ text, active, delay = 0, className = "bp-text" }) {
   const content = text || "";
   const canType = content.length > 0 && content.length <= 300;
   const out = useTyped(content, active && canType, 14, delay);
-  return <p className="arc-entry-text">{canType ? out : content}</p>;
-}
-
-function EntryCard({ entry, open, onToggle, typable, active, lead }) {
-  const meta = metaOf(entry.type);
-  const ghost = GHOST_TYPES.has(entry.type);
-  const long = (entry.content || "").length > 180;
-
-  return (
-    <article
-      className={`arc-entry${lead ? " is-lead" : ""}${ghost && !open ? " is-ghost" : ""}`}
-      style={{ "--type": meta.color }}
-    >
-      <span className="arc-tape" aria-hidden="true" />
-
-      <div className="arc-entry-top">
-        <span className="arc-type">
-          <Icon name={meta.icon} size={13} />
-          {meta.label}
-        </span>
-        <span className="mono faint">{fmtDate(entry.created_at)}</span>
-      </div>
-
-      <h4 className="arc-entry-title">{entry.title}</h4>
-
-      {typable ? (
-        <TypedContent text={entry.content} active={active} delay={260} />
-      ) : (
-        <p className={`arc-entry-text${long && !open ? " is-clamped" : ""}`}>{entry.content}</p>
-      )}
-
-      {long && (
-        <button type="button" className="arc-more" onClick={onToggle} data-hover>
-          {open ? "کمتر ↑" : "بیشتر ↓"}
-        </button>
-      )}
-
-      {ghost && !open && <span className="arc-ghost-hint">محو — روش برو</span>}
-    </article>
-  );
+  return <p className={className}>{canType ? out : content}</p>;
 }
 
 export default function Archive({ onClose }) {
-  const [stage, setStage] = useState("glitch"); // glitch | boot | safe | unlocking | door | open
+  const [stage, setStage] = useState(() =>
+    sessionStorage.getItem(TOKEN_KEY) ? "unlocking" : "safe"
+  ); // safe | unlocking | open
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -145,24 +89,57 @@ export default function Archive({ onClose }) {
   const [loading, setLoading] = useState(false);
   const [loadError, setLoadError] = useState("");
 
-  const [view, setView] = useState("type"); // type (کتاب‌ها) | time
   const [openBook, setOpenBook] = useState(null);
-  const [expanded, setExpanded] = useState(() => new Set());
+  const [page, setPage] = useState(0);
+  const [flip, setFlip] = useState(""); // "" | fwd | back
+  const [flipping, setFlipping] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [query, setQuery] = useState("");
   const [idleLeft, setIdleLeft] = useState(IDLE_MS);
 
-  const unlockTimer = useRef(0);
   const denyTimer = useRef(0);
-  const bootTimer = useRef(0);
-  const doorTimer = useRef(0);
+  const flipTimer = useRef(0);
   const inputRef = useRef(null);
   const overlayRef = useRef(null);
   const activityRef = useRef(0);
   const reduced = prefersReducedMotion();
 
-  const bootLog = useTyped(BOOT_LOG, stage === "boot", 16, 120);
+  const groups = groupByType(entries);
+  const openGroup = openBook ? groups.find((g) => g.key === openBook) : null;
+  const openIndex = openGroup ? groups.indexOf(openGroup) : -1;
+  const pages = openGroup ? openGroup.items : [];
+  const pageCount = pages.length;
+  const pageIdx = Math.min(page, Math.max(0, pageCount - 1));
+  const currentEntry = pages[pageIdx];
+
+  // ورق زدن: اول صفحه‌ی فعلی می‌پره، بعد صفحه‌ی بعدی می‌شینه (کم‌حرکت: مستقیم عوض می‌شه)
+  const turnTo = useCallback(
+    (target) => {
+      const t = Math.max(0, Math.min(pageCount - 1, target));
+      if (t === page || flipping) return;
+      if (prefersReducedMotion()) {
+        setPage(t);
+        return;
+      }
+      setFlip(t > page ? "fwd" : "back");
+      setFlipping(true);
+      window.clearTimeout(flipTimer.current);
+      flipTimer.current = window.setTimeout(() => {
+        setPage(t);
+        setFlipping(false);
+      }, 210);
+    },
+    [page, flipping, pageCount]
+  );
+
+  const pageFlipClass = flipping
+    ? flip === "fwd"
+      ? " is-out-fwd"
+      : " is-out-back"
+    : flip === "fwd"
+      ? " is-in-fwd"
+      : flip === "back"
+        ? " is-in-back"
+        : "";
 
   const load = useCallback(async (token) => {
     setLoading(true);
@@ -194,41 +171,27 @@ export default function Archive({ onClose }) {
     setPassword("");
     setEntries([]);
     setError("");
-    setExpanded(new Set());
     setStage("safe");
   }, []);
 
-  // شروع: گلیچ → لاگ ترمینال → گاوصندوق (یا ورود با توکن ذخیره‌شده)
+  // ورود با توکن ذخیره‌شده — بدون گلیچ، لاگ ترمینال و در
   useEffect(() => {
-    bootTimer.current = window.setTimeout(() => setStage("boot"), GLITCH_MS);
+    const saved = sessionStorage.getItem(TOKEN_KEY);
+    const t = saved ? window.setTimeout(() => load(saved), 0) : 0;
     return () => {
-      window.clearTimeout(bootTimer.current);
-      window.clearTimeout(unlockTimer.current);
+      window.clearTimeout(t);
       window.clearTimeout(denyTimer.current);
-      window.clearTimeout(doorTimer.current);
     };
-  }, []);
+  }, [load]);
 
+  // قفل‌گشایی چرخ → مستقیم ورود به اتاق
   useEffect(() => {
-    if (stage !== "boot") return undefined;
-    doorTimer.current = window.setTimeout(() => {
-      const saved = sessionStorage.getItem(TOKEN_KEY);
-      if (saved) {
-        setStage("unlocking");
-        unlockTimer.current = window.setTimeout(() => setStage("door"), UNLOCK_MS);
-        load(saved);
-      } else {
-        setStage("safe");
-      }
-    }, LOG_MS);
-    return () => window.clearTimeout(doorTimer.current);
-  }, [stage, load]);
-
-  // در باز می‌شه → ورود به اتاق
-  useEffect(() => {
-    if (stage !== "door") return undefined;
-    doorTimer.current = window.setTimeout(() => setStage("open"), DOOR_MS);
-    return () => window.clearTimeout(doorTimer.current);
+    if (stage !== "unlocking") return undefined;
+    const t = window.setTimeout(() => {
+      if (sessionStorage.getItem(TOKEN_KEY)) setStage("open");
+      else setStage("safe");
+    }, UNLOCK_MS);
+    return () => window.clearTimeout(t);
   }, [stage]);
 
   // فوکوس روی فیلد رمز
@@ -236,7 +199,7 @@ export default function Archive({ onClose }) {
     if (stage === "safe") inputRef.current?.focus();
   }, [stage]);
 
-  // قفل اسکرول + Esc (اول جستجو، بعد کتاب، بعد کل اتاق)
+  // قفل اسکرول + Esc (اول کتاب، بعد کل اتاق)
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -252,17 +215,18 @@ export default function Archive({ onClose }) {
     };
   }, [onClose, openBook]);
 
-  // جستجو با Ctrl/Cmd + K
+  // ورق زدن با کلیدهای جهت‌دار (کتاب باز)
   useEffect(() => {
+    if (!openGroup) return undefined;
     const onKey = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        setSearchOpen((v) => !v);
-      }
+      if (e.key === "ArrowLeft") turnTo(pageIdx + 1);
+      else if (e.key === "ArrowRight") turnTo(pageIdx - 1);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [openGroup, turnTo, pageIdx]);
+
+  useEffect(() => () => window.clearTimeout(flipTimer.current), []);
 
   // قفل خودکار بعد از بی‌حرکتی
   useEffect(() => {
@@ -331,8 +295,6 @@ export default function Archive({ onClose }) {
       sessionStorage.setItem(TOKEN_KEY, data.token);
       setPassword("");
       setStage("unlocking");
-      window.clearTimeout(unlockTimer.current);
-      unlockTimer.current = window.setTimeout(() => setStage("door"), UNLOCK_MS);
       load(data.token);
     } catch {
       setError("ارتباط با سرور برقرار نشد.");
@@ -353,22 +315,6 @@ export default function Archive({ onClose }) {
     setPassword("");
   };
 
-  const toggleCard = (id) =>
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-
-  const groups = groupByType(entries);
-  const openGroup = openBook ? groups.find((g) => g.key === openBook) : null;
-  const openIndex = openGroup ? groups.indexOf(openGroup) : -1;
-  const q = query.trim().toLowerCase();
-  const results = q
-    ? entries.filter((e) => `${e.title}\n${e.content}`.toLowerCase().includes(q))
-    : [];
-  const lastAdded = entries.length ? daysAgo(entries[0].created_at) : "";
   const padDisabled = stage !== "safe" || busy;
   const dialTurn = reduced ? undefined : `rotate(${stage === "unlocking" ? 270 : password.length * 30}deg)`;
 
@@ -382,15 +328,6 @@ export default function Archive({ onClose }) {
       aria-label="Archive"
     >
       <div className="arc-noise" aria-hidden="true" />
-      {stage === "glitch" && <div className="arc-glitch" aria-hidden="true" />}
-
-      {stage === "door" && (
-        <div className="arc-door" aria-hidden="true">
-          <span className="arc-door-half arc-door-a" />
-          <span className="arc-door-half arc-door-b" />
-          <span className="arc-door-plate mono">archive</span>
-        </div>
-      )}
 
       <div className="arc-shell">
         <header className="arc-head">
@@ -398,7 +335,7 @@ export default function Archive({ onClose }) {
 
           <div className="arc-head-right">
             {stage === "open" && idleLeft <= 60000 && (
-              <span className="arc-idle mono">🔒 {fmtClock(idleLeft)}</span>
+              <span className="arc-idle mono"><Icon name="lock" size={12} /> {fmtClock(idleLeft)}</span>
             )}
             {stage === "open" && (
               <button type="button" className="arc-mini" onClick={lock} data-hover>
@@ -413,23 +350,98 @@ export default function Archive({ onClose }) {
           <span className="arc-progress" aria-hidden="true" style={{ width: `${progress}%` }} />
         </header>
 
-        {stage === "boot" && (
-          <div className="arc-log mono">
-            {bootLog}
-            <span className="arc-log-caret" aria-hidden="true" />
-          </div>
-        )}
-
-        {(stage === "glitch" || stage === "safe" || stage === "unlocking") && (
+        {(stage === "safe" || stage === "unlocking") && (
           <div className="arc-vault">
-            <div
-              className={`arc-dial${stage === "unlocking" ? " is-unlock" : ""}`}
-              aria-hidden="true"
-              style={dialTurn ? { transform: dialTurn } : undefined}
-            >
-              <span className="arc-dial-ring" />
-              <span className="arc-dial-hub" />
-            </div>
+            <div className="arc-vault-door">
+              <span className="arc-bolt arc-bolt-tl" aria-hidden="true" />
+              <span className="arc-bolt arc-bolt-tr" aria-hidden="true" />
+              <span className="arc-bolt arc-bolt-bl" aria-hidden="true" />
+              <span className="arc-bolt arc-bolt-br" aria-hidden="true" />
+              <span className="arc-hinge arc-hinge-1" aria-hidden="true" />
+              <span className="arc-hinge arc-hinge-2" aria-hidden="true" />
+
+              <div className="arc-dial-slot">
+                <span className="arc-dial-pointer" aria-hidden="true" />
+                <div
+                  className={`arc-dial${stage === "unlocking" ? " is-unlock" : ""}`}
+                  aria-hidden="true"
+                  style={dialTurn ? { transform: dialTurn } : undefined}
+                >
+                  <svg viewBox="0 0 200 200" className="arc-dial-svg">
+                    <defs>
+                      <radialGradient id="arc-dial-face" cx="34%" cy="28%" r="78%">
+                        <stop offset="0%" stopColor="#2c2c33" />
+                        <stop offset="62%" stopColor="#16161a" />
+                        <stop offset="100%" stopColor="#0c0c0e" />
+                      </radialGradient>
+                      <radialGradient id="arc-dial-hub" cx="35%" cy="30%" r="75%">
+                        <stop offset="0%" stopColor="#b23a52" />
+                        <stop offset="68%" stopColor="#7a1f35" />
+                        <stop offset="100%" stopColor="#571325" />
+                      </radialGradient>
+                    </defs>
+
+                    <circle cx="100" cy="100" r="97" fill="#101014" stroke="#33333b" strokeWidth="2" />
+                    <circle cx="100" cy="100" r="90" fill="url(#arc-dial-face)" stroke="#26262c" />
+
+                    {Array.from({ length: 48 }, (_, i) => (
+                      <line
+                        key={`tick-${i}`}
+                        className="arc-dial-tick"
+                        x1="100"
+                        y1="5"
+                        x2="100"
+                        y2="13"
+                        transform={`rotate(${i * 7.5} 100 100)`}
+                      />
+                    ))}
+
+                    {Array.from({ length: 10 }, (_, i) => {
+                      const a = ((i * 36) * Math.PI) / 180;
+                      return (
+                        <text
+                          key={`num-${i}`}
+                          className="arc-dial-num"
+                          x={100 + 74 * Math.sin(a)}
+                          y={100 - 74 * Math.cos(a) + 4}
+                          textAnchor="middle"
+                        >
+                          {i * 10}
+                        </text>
+                      );
+                    })}
+
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="66"
+                      fill="none"
+                      stroke="rgba(156, 44, 68, 0.55)"
+                      strokeWidth="1.4"
+                      strokeDasharray="3 6"
+                    />
+
+                    {[0, 120, 240].map((deg) => (
+                      <g key={`spoke-${deg}`} transform={`rotate(${deg} 100 100)`}>
+                        <rect
+                          x="96.5"
+                          y="46"
+                          width="7"
+                          height="46"
+                          rx="3.5"
+                          fill="#2e2e36"
+                          stroke="#3a3a43"
+                          strokeWidth="0.8"
+                        />
+                        <circle cx="100" cy="44" r="6.5" fill="#26262d" stroke="#3a3a43" strokeWidth="0.8" />
+                      </g>
+                    ))}
+
+                    <circle cx="100" cy="100" r="27" fill="url(#arc-dial-hub)" stroke="#3f101e" strokeWidth="2" />
+                    <circle cx="100" cy="100" r="10" fill="#3a0f1c" />
+                  </svg>
+                </div>
+              </div>
 
             <form className="arc-form" onSubmit={unlock}>
               <label className={`arc-display${denied ? " is-denied" : ""}`}>
@@ -444,7 +456,7 @@ export default function Archive({ onClose }) {
                 <input
                   ref={inputRef}
                   type="password"
-                  inputMode="numeric"
+                  inputMode="none"
                   className="arc-display-input mono"
                   placeholder="––––"
                   value={password}
@@ -510,6 +522,7 @@ export default function Archive({ onClose }) {
                 این اتاق فقط برای آدم‌های خیلی نزدیکه. اگه رمزش رو نداری، احتمالاً لازمش نداری.
               </p>
             </form>
+            </div>
           </div>
         )}
 
@@ -520,7 +533,6 @@ export default function Archive({ onClose }) {
                 <div className="arc-room-title">اتاق شخصی</div>
                 <div className="arc-room-stats mono">
                   {faNum(entries.length)} مورد · {faNum(groups.length)} موضوع
-                  {lastAdded && ` · آخرین افزودن ${lastAdded}`}
                 </div>
               </div>
 
@@ -531,6 +543,9 @@ export default function Archive({ onClose }) {
                       id="arc-seal-path"
                       d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"
                     />
+                    <clipPath id="arc-seal-avatar-clip">
+                      <circle cx="60" cy="60" r="34" />
+                    </clipPath>
                   </defs>
                   <circle className="arc-seal-ring" cx="60" cy="60" r="57" />
                   <circle className="arc-seal-ring arc-seal-ring-dash" cx="60" cy="60" r="36" />
@@ -541,48 +556,21 @@ export default function Archive({ onClose }) {
                       </textPath>
                     </text>
                   </g>
-                  <text
-                    className="arc-seal-center"
-                    x="60"
-                    y="61"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                  >
-                    ج
-                  </text>
+                  <image
+                    className="arc-seal-photo"
+                    href={avatarSrc}
+                    x="26"
+                    y="26"
+                    width="68"
+                    height="68"
+                    preserveAspectRatio="xMidYMid slice"
+                    clipPath="url(#arc-seal-avatar-clip)"
+                  />
                 </svg>
 
-                <button
-                  type="button"
-                  className="arc-mini"
-                  onClick={() => setSearchOpen((v) => !v)}
-                  data-hover
-                  aria-label="جستجو"
-                >
-                  ⌕
-                </button>
+                <WallClock />
               </div>
             </div>
-
-            {searchOpen && (
-              <div className="arc-search">
-                <input
-                  className="arc-search-input"
-                  autoFocus
-                  placeholder="جستجو در آرشیو… (Esc برای بستن)"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Escape") {
-                      e.stopPropagation();
-                      setSearchOpen(false);
-                      setQuery("");
-                    }
-                  }}
-                />
-                <span className="mono faint">{q ? `${faNum(results.length)} نتیجه` : ""}</span>
-              </div>
-            )}
 
             {loading && <div className="arc-state mono">در حال باز کردن…</div>}
             {!loading && loadError && <div className="arc-state arc-err">✗ {loadError}</div>}
@@ -592,107 +580,372 @@ export default function Archive({ onClose }) {
               </div>
             )}
 
-            {!loading && !loadError && q && (
-              <div className="arc-entries arc-results">
-                {results.length === 0 ? (
-                  <div className="arc-state">چیزی پیدا نشد.</div>
-                ) : (
-                  results.map((e) => (
-                    <EntryCard
-                      key={e.id}
-                      entry={e}
-                      open={expanded.has(e.id)}
-                      onToggle={() => toggleCard(e.id)}
-                    />
-                  ))
-                )}
-              </div>
-            )}
-
-            {!loading && !loadError && !q && entries.length > 0 && (
+            {!loading && !loadError && entries.length > 0 && (
               <>
-                <div className="arc-views">
-                  <button
-                    type="button"
-                    className={`arc-view${view === "type" ? " is-on" : ""}`}
-                    onClick={() => {
-                      setView("type");
-                      setOpenBook(null);
-                    }}
-                    data-hover
-                  >
-                    📚 موضوعات
-                  </button>
-                  <button
-                    type="button"
-                    className={`arc-view${view === "time" ? " is-on" : ""}`}
-                    onClick={() => setView("time")}
-                    data-hover
-                  >
-                    بر اساس زمان
-                  </button>
-                </div>
-
-                {view === "time" && (
-                  <div className="arc-timeline">
-                    {entries.map((e) => {
-                      const meta = metaOf(e.type);
-                      return (
-                        <div className="tl-row" key={e.id} style={{ "--type": meta.color }}>
-                          <span className="tl-dot" aria-hidden="true" />
-                          <div className="tl-body">
-                            <div className="tl-meta mono">
-                              {fmtDate(e.created_at)} · {meta.label}
-                            </div>
-                            <div className="tl-title">{e.title}</div>
-                            <p className="tl-text">{e.content}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {view === "type" && !openGroup && (
+                {!openGroup && (
                   <>
-                    <div className="arc-shelf">
-                      {groups.map((g, i) => (
-                        <button
-                          key={g.key}
-                          type="button"
-                          className="book"
-                          style={{ "--type": g.meta.color }}
-                          onClick={() => setOpenBook(g.key)}
-                          data-hover
-                        >
-                          <span className="book-spine" aria-hidden="true" />
-                          <span className="book-edges" aria-hidden="true" />
-                          <span className="book-face">
-                            <span className="book-top">
-                              <Icon name={g.meta.icon} size={18} />
-                              <span className="book-no mono">{faNum(i + 1)}</span>
+                    <div className="arc-shelf-wrap">
+                      <div className="arc-shelf">
+                        {groups.map((g, i) => (
+                          <button
+                            key={g.key}
+                            type="button"
+                            className="book"
+                            style={{ "--type": g.meta.color }}
+                            onClick={() => {
+                              window.clearTimeout(flipTimer.current);
+                              setOpenBook(g.key);
+                              setPage(0);
+                              setFlip("");
+                              setFlipping(false);
+                            }}
+                            data-hover
+                          >
+                            <span className="book-spine" aria-hidden="true" />
+                            <span className="book-edges" aria-hidden="true" />
+                            <span className="book-face">
+                              <span className="book-top">
+                                <Icon name={g.meta.icon} size={18} />
+                                <span className="book-no mono">{faNum(i + 1)}</span>
+                              </span>
+                              <span className="book-title">{g.meta.label}</span>
+                              <span className="book-count mono">
+                                {faNum(g.items.length)} مورد
+                              </span>
                             </span>
-                            <span className="book-title">{g.meta.label}</span>
-                            <span className="book-count mono">
-                              {faNum(g.items.length)} مورد
-                            </span>
-                          </span>
-                        </button>
-                      ))}
+                          </button>
+                        ))}
+                      </div>
+
+                      {/* بچه‌گربه‌ی خوابیده روی قفسه */}
+                      <span className="arc-cat" aria-hidden="true">
+                        <svg viewBox="0 0 140 72">
+                          <g className="arc-cat-breath">
+                            {/* بدنِ خمیده (تیره‌تر از سر تا جدا دیده بشه) */}
+                            <path
+                              d="M30 68 C 27 50 40 36 66 33 C 94 30 118 40 126 58 C 128 62 128 66 127 68 Z"
+                              fill="#15151a"
+                              stroke="rgba(255, 255, 255, 0.05)"
+                              strokeWidth="1"
+                            />
+                            {/* راه‌های خفیف بدنه */}
+                            <g stroke="#2e2e37" strokeWidth="2.6" strokeLinecap="round" fill="none" opacity="0.5">
+                              <path d="M65 37 C 67 40.5 67 44 65.5 47.5" />
+                              <path d="M81 35.5 C 84 40 84.5 45 83 49" />
+                              <path d="M98 37.5 C 101 42 102 47.5 101 52.5" />
+                              <path d="M113 44 C 116.5 48.5 118 54 117.5 60" />
+                            </g>
+                            <path
+                              d="M102 46 C 112 51 118 58 119 67"
+                              stroke="#2e2e37"
+                              strokeWidth="2"
+                              fill="none"
+                              opacity="0.4"
+                              strokeLinecap="round"
+                            />
+
+                            {/* گوش‌ها (پایینشون روی سره تا ن孚ه نزنه) */}
+                            <path
+                              d="M26 36 L20 10 L44 30 Z"
+                              fill="#191920"
+                              stroke="rgba(255, 255, 255, 0.12)"
+                              strokeWidth="1"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M46 30 L58 8 L56 36 Z"
+                              fill="#1f1f26"
+                              stroke="rgba(255, 255, 255, 0.12)"
+                              strokeWidth="1"
+                              strokeLinejoin="round"
+                            />
+                            <path d="M28.5 34 L24 17 L41 27.5 Z" fill="#d99a8a" />
+                            <path d="M48.5 31 L56.5 15 L54.5 33 Z" fill="#d99a8a" />
+
+                            {/* سر (روشن‌تر از بدنه) */}
+                            <ellipse
+                              cx="40"
+                              cy="46"
+                              rx="21"
+                              ry="18"
+                              fill="#1f1f26"
+                              stroke="rgba(255, 255, 255, 0.07)"
+                              strokeWidth="1"
+                            />
+                            <g stroke="#33333d" strokeWidth="2.4" strokeLinecap="round" fill="none" opacity="0.6">
+                              <path d="M35.5 33.5 C 34.8 36 34.8 38.5 35.5 40.5" />
+                              <path d="M42.5 32 C 42.5 35 42.5 37.5 43 40" />
+                              <path d="M49.5 34 C 50.3 36.5 50.7 39 50.7 41" />
+                            </g>
+
+                            {/* پوزه، دماغ، دهن */}
+                            <ellipse cx="24" cy="52" rx="9" ry="6.5" fill="#27272f" />
+                            <path d="M18 49 L24 49 L21 52.3 Z" fill="#c96a6a" />
+                            <path
+                              d="M21 53 C 19.5 55.3 17 55.6 15.5 54.4"
+                              stroke="#5a5a64"
+                              strokeWidth="1.4"
+                              fill="none"
+                              strokeLinecap="round"
+                            />
+
+                            {/* چشمِ بسته */}
+                            <path
+                              d="M30 42.5 C 34.5 47.5 40.5 47.5 45 42.5"
+                              stroke="#8a8a95"
+                              strokeWidth="2.6"
+                              fill="none"
+                              strokeLinecap="round"
+                            />
+
+                            {/* مژه‌ها */}
+                            <g stroke="rgba(255, 255, 255, 0.85)" strokeWidth="1.1" strokeLinecap="round" fill="none">
+                              <path d="M15 50 L4 46.5" />
+                              <path d="M14.5 52.5 L3 52.5" />
+                              <path d="M15.5 55 L4.5 58.5" />
+                            </g>
+
+                            {/* سینه‌ی خفیف */}
+                            <path
+                              d="M54 56 C 60 58.5 63 62.5 63.5 68 L 51 68 C 49.5 63 50.5 58.5 52 56 Z"
+                              fill="#2a2a32"
+                              opacity="0.55"
+                            />
+
+                            {/* پنجه‌های جلو */}
+                            <ellipse cx="27" cy="64" rx="10" ry="4.8" fill="#23232b" />
+                            <ellipse cx="45" cy="65.5" rx="9.5" ry="4.4" fill="#23232b" />
+                            <g stroke="#3d3d47" strokeWidth="1.2" strokeLinecap="round">
+                              <path d="M24 61.8 L24 65.5" />
+                              <path d="M30 61.8 L30 65.8" />
+                              <path d="M42.5 63.5 L42.5 67" />
+                              <path d="M48 63.3 L48 66.8" />
+                            </g>
+
+                            {/* ریم‌نوری بالا — سیلوئت روی زمینه‌ی تیره */}
+                            <path
+                              d="M22 42 C 24 32 31 27 41 27 C 50 27 56.5 31 59.5 39.5"
+                              fill="none"
+                              stroke="rgba(255, 255, 255, 0.12)"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                            />
+                            <path
+                              d="M33 63 C 31 49 43 38 66 35.5 C 92 32.5 114 42.5 122.5 58"
+                              fill="none"
+                              stroke="rgba(255, 255, 255, 0.1)"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                            />
+
+                            {/* نور گرم میز زیرش */}
+                            <path
+                              d="M24 67 C 56 71.5 110 71.5 128 65"
+                              stroke="rgba(255, 186, 110, 0.42)"
+                              strokeWidth="2.4"
+                              fill="none"
+                              strokeLinecap="round"
+                            />
+                          </g>
+
+                          {/* دمِ نواردار */}
+                          <g className="arc-cat-tail">
+                            <path
+                              d="M124 64 C 134 62 138 53 132 47.5 C 127.5 43.5 121 47 122.5 52"
+                              stroke="#1e1e24"
+                              strokeWidth="8"
+                              fill="none"
+                              strokeLinecap="round"
+                            />
+                            <path
+                              d="M124 64 C 134 62 138 53 132 47.5 C 127.5 43.5 121 47 122.5 52"
+                              stroke="rgba(255, 255, 255, 0.1)"
+                              strokeWidth="8"
+                              fill="none"
+                              strokeLinecap="round"
+                              opacity="0.35"
+                            />
+                            <path d="M130 56 L134.5 57.5" stroke="#3a3a44" strokeWidth="3" strokeLinecap="round" />
+                            <path d="M133.5 49.5 L137 53" stroke="#3a3a44" strokeWidth="3" strokeLinecap="round" />
+                          </g>
+                        </svg>
+                      </span>
                     </div>
+
+                    <div className="arc-desk" aria-hidden="true">
+                      <svg viewBox="0 0 600 200" role="presentation">
+                        <defs>
+                          <linearGradient id="arc-cone-grad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#ffbe6e" stopOpacity="0.26" />
+                            <stop offset="100%" stopColor="#ffbe6e" stopOpacity="0.05" />
+                          </linearGradient>
+                          <radialGradient id="arc-bulb-grad">
+                            <stop offset="0%" stopColor="#ffd9a0" stopOpacity="0.55" />
+                            <stop offset="55%" stopColor="#ffbe6e" stopOpacity="0.18" />
+                            <stop offset="100%" stopColor="#ffbe6e" stopOpacity="0" />
+                          </radialGradient>
+                          <linearGradient id="arc-shade-grad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#8e2439" />
+                            <stop offset="100%" stopColor="#571324" />
+                          </linearGradient>
+                        </defs>
+                        {/* گل: سوسن عنکبوتی — ساقه و برگ و گل با هم تکون می‌خورن */}
+                        <g className="arc-plant">
+                          {/* گلبرگ‌های باریک و موج‌دار */}
+                          <g fill="#c21f39">
+                            <path
+                              d="M300 34 C 298.5 28 297 24 298 19 C 299 15 296.5 12 298 8 C 299 5 301 5 302 8 C 303.5 12 301 15 302 19 C 303 24 301.5 28 300 34 Z"
+                              transform="rotate(-80 300 34)"
+                            />
+                            <path
+                              d="M300 34 C 298.5 28 297 24 298 19 C 299 15 296.5 12 298 8 C 299 5 301 5 302 8 C 303.5 12 301 15 302 19 C 303 24 301.5 28 300 34 Z"
+                              transform="rotate(-40 300 34)"
+                            />
+                            <path d="M300 34 C 298.5 28 297 24 298 19 C 299 15 296.5 12 298 8 C 299 5 301 5 302 8 C 303.5 12 301 15 302 19 C 303 24 301.5 28 300 34 Z" />
+                            <path
+                              d="M300 34 C 298.5 28 297 24 298 19 C 299 15 296.5 12 298 8 C 299 5 301 5 302 8 C 303.5 12 301 15 302 19 C 303 24 301.5 28 300 34 Z"
+                              transform="rotate(40 300 34)"
+                            />
+                            <path
+                              d="M300 34 C 298.5 28 297 24 298 19 C 299 15 296.5 12 298 8 C 299 5 301 5 302 8 C 303.5 12 301 15 302 19 C 303 24 301.5 28 300 34 Z"
+                              transform="rotate(80 300 34)"
+                            />
+                          </g>
+
+                          {/* پرچم‌های بلند — مشخصه‌ی اصلی سوسن عنکبوتی */}
+                          <g fill="none" stroke="#d63a50" strokeWidth="1.8" strokeLinecap="round">
+                            <path d="M300 34 C 294 20 280 13 264 12" />
+                            <path d="M300 34 C 296 16 286 7 276 5" />
+                            <path d="M300 34 C 299 15 294 6 291 4" />
+                            <path d="M300 34 C 301 15 306 6 309 4" />
+                            <path d="M300 34 C 304 16 314 7 324 5" />
+                            <path d="M300 34 C 306 20 320 13 336 12" />
+                          </g>
+                          <g fill="#e8a23c">
+                            <circle cx="264" cy="12" r="2.6" />
+                            <circle cx="276" cy="5" r="2.6" />
+                            <circle cx="291" cy="4" r="2.6" />
+                            <circle cx="309" cy="4" r="2.6" />
+                            <circle cx="324" cy="5" r="2.6" />
+                            <circle cx="336" cy="12" r="2.6" />
+                          </g>
+                          <circle cx="300" cy="34" r="3.5" fill="#8f1a2e" />
+
+                          {/* ساقه و برگ */}
+                          <path
+                            d="M300 76 C 296 64, 304 56, 300 38"
+                            fill="none"
+                            stroke="#4e9e6f"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                          />
+                          <path d="M299 64 C 286 62, 279 54, 279 45 C 290 47, 297 55, 299 64 Z" fill="#3f8a5e" />
+                          <path d="M301 74 C 313 72, 319 66, 319 58 C 309 60, 303 66, 301 74 Z" fill="#4e9e6f" />
+                        </g>
+
+                        {/* گلدون */}
+                        <path d="M272 87 L328 87 L319 120 L281 120 Z" fill="#8e4f3c" />
+                        <rect x="266" y="74" width="68" height="13" rx="3" fill="#a35f49" />
+
+                        {/* میز */}
+                        <rect x="48" y="137" width="504" height="7" fill="#1f1710" />
+                        <rect x="24" y="120" width="552" height="17" rx="4" fill="#2b2119" />
+                        <rect x="26" y="121" width="548" height="3" rx="1.5" fill="#3a2d22" />
+                        <rect x="56" y="144" width="16" height="52" fill="#221a12" />
+                        <rect x="528" y="144" width="16" height="52" fill="#221a12" />
+
+                        {/* مخروط نور لامپ */}
+                        <path d="M466 62 L514 62 L556 120 L424 120 Z" fill="url(#arc-cone-grad)" />
+
+                        {/* لامپ میزی */}
+                        <path
+                          d="M514 57 C 524 72 522 98 508 112"
+                          fill="none"
+                          stroke="#2e2e36"
+                          strokeWidth="5"
+                          strokeLinecap="round"
+                        />
+                        <rect x="486" y="112" width="44" height="8" rx="3" fill="#26262d" stroke="#33333b" />
+                        <path
+                          d="M464 58 Q 490 26 516 58 Z"
+                          fill="url(#arc-shade-grad)"
+                          stroke="#4a1220"
+                          strokeWidth="1.5"
+                          strokeLinejoin="round"
+                        />
+                        <path d="M466 58 L514 58" stroke="#ffd9a0" strokeWidth="3" strokeLinecap="round" />
+                        <circle cx="490" cy="64" r="34" fill="url(#arc-bulb-grad)" />
+
+                        {/* ماگ قهوه + بخار */}
+                        <ellipse cx="150" cy="121" rx="22" ry="3.4" fill="rgba(0, 0, 0, 0.45)" />
+                        <path
+                          d="M169 98 C 181 98.5 182 113 167.5 114"
+                          fill="none"
+                          stroke="#c2bbaa"
+                          strokeWidth="7.5"
+                          strokeLinecap="round"
+                        />
+                        <path
+                          d="M169 98 C 181 98.5 182 113 167.5 114"
+                          fill="none"
+                          stroke="#e8e1d2"
+                          strokeWidth="4"
+                          strokeLinecap="round"
+                        />
+                        <path
+                          d="M131 92 L136 117 C 136.5 119.5 138.5 121 141 121 L159 121 C 161.5 121 163.5 119.5 164 117 L169 92 Z"
+                          fill="#e8e1d2"
+                          stroke="#b8b0a0"
+                          strokeWidth="1.4"
+                        />
+                        <path d="M133.5 104 L166.5 104 L165.5 111 L134.5 111 Z" fill="#9c2c44" />
+                        <ellipse cx="150" cy="92.5" rx="19.5" ry="5" fill="#d8d1c2" stroke="#b8b0a0" strokeWidth="1.3" />
+                        <ellipse cx="150" cy="93.5" rx="15.6" ry="3.6" fill="#2f211a" />
+                        <ellipse cx="145" cy="93" rx="4.5" ry="1.3" fill="#53402f" opacity="0.8" />
+                        <path
+                          className="arc-steam arc-steam-1"
+                          d="M145 88 C 142 80 148 76 145 68"
+                          fill="none"
+                          stroke="rgba(232, 232, 238, 0.55)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                        <path
+                          className="arc-steam arc-steam-2"
+                          d="M155 88 C 158 80 152 75 155 67"
+                          fill="none"
+                          stroke="rgba(232, 232, 238, 0.45)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                        />
+                      </svg>
+
+                      {/* ذرات گرد در نور */}
+                      <span className="arc-dust" aria-hidden="true">
+                        {Array.from({ length: 7 }, (_, i) => (
+                          <i key={i} />
+                        ))}
+                      </span>
+                    </div>
+
                     <div className="arc-shelf-hint faint">
                       به چپ و راست بکش تا همه‌ی کتاب‌ها رو ببینی · روی هرکدوم بزن تا باز بشه
                     </div>
                   </>
                 )}
 
-                {view === "type" && openGroup && (
+                {openGroup && (
                   <div className="arc-book" style={{ "--type": openGroup.meta.color }}>
                     <div className="arc-book-head">
                       <button
                         type="button"
                         className="arc-back"
-                        onClick={() => setOpenBook(null)}
+                        onClick={() => {
+                          window.clearTimeout(flipTimer.current);
+                          setOpenBook(null);
+                          setFlip("");
+                          setFlipping(false);
+                        }}
                         data-hover
                       >
                         → بازگشت به قفسه
@@ -715,27 +968,73 @@ export default function Archive({ onClose }) {
                       />
                     </div>
 
-                    <div className="arc-pages">
-                      <div className="arc-entries">
-                        {openGroup.items.map((e, ci) => (
-                          <EntryCard
-                            key={e.id}
-                            entry={e}
-                            lead={ci === 0}
-                            open={expanded.has(e.id)}
-                            onToggle={() => toggleCard(e.id)}
-                            typable={openIndex === 0 && ci === 0}
-                            active={stage === "open"}
-                          />
-                        ))}
-                      </div>
-                    </div>
+                    {currentEntry && (
+                      <>
+                        <div className="bp-stage">
+                          <article
+                            key={currentEntry.id}
+                            className={`bp-page${pageFlipClass}${GHOST_TYPES.has(currentEntry.type) ? " is-ghost" : ""}`}
+                          >
+                            <div className="bp-page-head">
+                              <span className="bp-page-kind mono">
+                                <Icon name={openGroup.meta.icon} size={13} />
+                                {openGroup.meta.label}
+                              </span>
+                              <span className="bp-page-no mono">
+                                صفحه‌ی {faNum(pageIdx + 1)}
+                              </span>
+                            </div>
 
-                    <div className="arc-book-foot mono" aria-hidden="true">
-                      <span>end of book</span>
-                      <span className="arc-end-line" />
-                      <span>✦</span>
-                    </div>
+                            <h4 className="bp-title">{currentEntry.title}</h4>
+
+                            {openIndex === 0 && pageIdx === 0 ? (
+                              <TypedContent
+                                text={currentEntry.content}
+                                active={stage === "open"}
+                                delay={300}
+                              />
+                            ) : (
+                              <p className="bp-text">{currentEntry.content}</p>
+                            )}
+
+                            {GHOST_TYPES.has(currentEntry.type) && (
+                              <span className="bp-ghost-hint">محو — روش برو</span>
+                            )}
+
+                            <div className="bp-page-foot">
+                              <span className="mono">{fmtDate(currentEntry.created_at)}</span>
+                              <span className="bp-counter mono">
+                                {faNum(pageIdx + 1)} / {faNum(pages.length)}
+                              </span>
+                            </div>
+                          </article>
+                        </div>
+
+                        <div className="bp-nav">
+                          <button
+                            type="button"
+                            className="bp-nav-btn"
+                            onClick={() => turnTo(pageIdx - 1)}
+                            disabled={flipping || pageIdx === 0}
+                            data-hover
+                          >
+                            → ورق قبلی
+                          </button>
+                          <span className="bp-nav-hint faint">
+                            ← → هم کار می‌کنن
+                          </span>
+                          <button
+                            type="button"
+                            className="bp-nav-btn bp-nav-next"
+                            onClick={() => turnTo(pageIdx + 1)}
+                            disabled={flipping || pageIdx >= pages.length - 1}
+                            data-hover
+                          >
+                            ورق بعدی ←
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 )}
               </>

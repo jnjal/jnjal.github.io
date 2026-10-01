@@ -38,106 +38,6 @@
     url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* گلیچ اول کار */
-.arc-glitch {
-  position: fixed;
-  inset: 0;
-  z-index: 8;
-  pointer-events: none;
-  background:
-    repeating-linear-gradient(0deg, rgba(156, 44, 68, 0.18) 0 2px, transparent 2px 5px),
-    var(--bg);
-  animation: arc-glitch 0.78s steps(1, end) forwards;
-}
-
-@keyframes arc-glitch {
-  0% { opacity: 1; clip-path: inset(0 0 0 0); filter: invert(1); transform: none; }
-  18% { clip-path: inset(34% 0 42% 0); filter: none; transform: translateX(-9px); }
-  34% { clip-path: inset(72% 0 4% 0); filter: invert(1); transform: translateX(7px); }
-  52% { clip-path: inset(8% 0 76% 0); filter: none; transform: translateX(-5px); }
-  70% { clip-path: inset(46% 0 28% 0); filter: invert(1); transform: translateX(4px); }
-  86% { clip-path: inset(20% 0 62% 0); filter: none; transform: translateX(-2px); }
-  100% { opacity: 0; clip-path: inset(0 0 100% 0); transform: none; }
-}
-
-/* ---------- لاگ ترمینال موقع ورود ---------- */
-.arc-log {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  min-height: 300px;
-  padding: 44px 2px;
-  font-size: 13px;
-  line-height: 2.4;
-  letter-spacing: 1px;
-  color: var(--accent-2);
-  white-space: pre-wrap;
-}
-
-.arc-log-caret {
-  display: inline-block;
-  width: 9px;
-  height: 15px;
-  margin-inline-start: 5px;
-  background: var(--accent-2);
-  animation: arc-caret 0.85s steps(1) infinite;
-}
-
-@keyframes arc-caret {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
-}
-
-/* ---------- درِ بازشونده ---------- */
-.arc-door {
-  position: fixed;
-  inset: 0;
-  z-index: 9;
-  pointer-events: none;
-}
-
-.arc-door-half {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 51%;
-  background:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 8px),
-    linear-gradient(180deg, #1b1b1f 0%, #101013 100%);
-  animation: door-slide 0.85s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-}
-.arc-door-a {
-  left: 0;
-  --dir: -1;
-  border-right: 1px solid var(--border);
-}
-.arc-door-b {
-  right: 0;
-  --dir: 1;
-  border-left: 1px solid var(--border);
-}
-
-@keyframes door-slide {
-  to { transform: translateX(calc(var(--dir) * 100%)); }
-}
-
-.arc-door-plate {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: 13px;
-  letter-spacing: 12px;
-  color: var(--accent-2);
-  animation: door-plate 0.85s ease forwards;
-}
-
-@keyframes door-plate {
-  0% { opacity: 0; }
-  30% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
 /* ---------- بدنه ---------- */
 .arc-shell {
   position: relative;
@@ -175,6 +75,9 @@
 }
 
 .arc-idle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-size: 11px;
   letter-spacing: 1px;
   color: var(--accent-2);
@@ -215,21 +118,112 @@
 /* ---------- گاوصندوق ---------- */
 .arc-vault {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+}
+
+/* درِ فلزی گاوصندوق */
+.arc-vault-door {
+  position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 52px;
+  gap: 48px;
   align-items: center;
-  padding: 56px 0;
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 46px 52px;
+  border: 1px solid #2a2a31;
+  border-radius: 18px;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 5px),
+    linear-gradient(160deg, #1c1c21 0%, #131318 55%, #101014 100%);
+  box-shadow:
+    0 44px 90px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -30px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* پیچ‌های گوشه‌ی در */
+.arc-bolt {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 30%, #3c3c44 0%, #202026 55%, #131317 100%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.18), 0 2px 3px rgba(0, 0, 0, 0.6);
+}
+.arc-bolt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 9px;
+  height: 1.6px;
+  background: #0d0d10;
+  transform: rotate(-35deg);
+  border-radius: 1px;
+}
+.arc-bolt-tl { top: 14px; left: 14px; }
+.arc-bolt-tr { top: 14px; right: 14px; }
+.arc-bolt-bl { bottom: 14px; left: 14px; }
+.arc-bolt-br { bottom: 14px; right: 14px; }
+
+/* لولاها */
+.arc-hinge {
+  position: absolute;
+  left: -13px;
+  width: 24px;
+  height: 66px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #2c2c33 0%, #1a1a20 60%, #121216 100%);
+  border: 1px solid #34343c;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.55);
+}
+.arc-hinge::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  bottom: 10px;
+  width: 5px;
+  margin-left: -2.5px;
+  background: #0d0d11;
+  border-radius: 3px;
+}
+.arc-hinge-1 { top: 56px; }
+.arc-hinge-2 { bottom: 56px; }
+
+/* چرخِ رمز */
+.arc-dial-slot {
+  position: relative;
+  width: clamp(180px, 26vw, 258px);
+  margin: 0 auto;
+}
+
+.arc-dial-pointer {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 15px solid var(--accent-2);
+  filter: drop-shadow(0 0 6px rgba(156, 44, 68, 0.6));
+  z-index: 2;
 }
 
 .arc-dial {
   position: relative;
-  width: clamp(180px, 26vw, 258px);
+  width: 100%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background:
-    repeating-conic-gradient(from 0deg, rgba(255, 255, 255, 0.09) 0deg 1.6deg, transparent 1.6deg 14deg),
-    radial-gradient(circle at 34% 28%, #2c2c33 0%, #16161a 62%, #0c0c0e 100%);
+  overflow: hidden;
+  background: radial-gradient(circle at 34% 28%, #2c2c33 0%, #16161a 62%, #0c0c0e 100%);
   border: 1px solid var(--border);
   box-shadow:
     0 26px 60px rgba(0, 0, 0, 0.55),
@@ -242,19 +236,21 @@
     inset 0 0 44px rgba(0, 0, 0, 0.75);
 }
 
-.arc-dial-ring {
-  position: absolute;
-  inset: 15%;
-  border-radius: 50%;
-  border: 1px dashed rgba(156, 44, 68, 0.55);
+.arc-dial-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
-
-.arc-dial-hub {
-  position: absolute;
-  inset: 35%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, var(--accent-2) 0%, var(--accent) 68%, #571325 100%);
-  box-shadow: 0 0 0 7px rgba(122, 31, 53, 0.16);
+.arc-dial-tick {
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.arc-dial-num {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--text-faint);
 }
 
 .arc-form {
@@ -342,7 +338,7 @@
   letter-spacing: 10px;
   text-align: center;
   text-shadow: 0 0 14px rgba(156, 44, 68, 0.5);
-  caret-color: var(--accent-2);
+  caret-color: transparent;
 }
 .arc-display-input::placeholder {
   color: var(--text-faint);
@@ -548,12 +544,6 @@
   letter-spacing: 2.6px;
   fill: var(--text-dim);
 }
-.arc-seal-center {
-  font-family: var(--sans);
-  font-size: 30px;
-  font-weight: 800;
-  fill: var(--accent-2);
-}
 
 .arc-room-title {
   font-size: clamp(30px, 5vw, 46px);
@@ -597,62 +587,15 @@
   color: #e0777f;
 }
 
-/* ---------- جستجو / تب نمایش ---------- */
-.arc-search {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
-  padding: 10px 14px;
-  background: var(--surface);
-  border: 1px solid var(--accent-border);
-  border-radius: var(--radius-sm);
-}
-.arc-search-input {
-  flex: 1;
-  min-width: 0;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--text);
-  font-family: inherit;
-  font-size: 14.5px;
-}
-.arc-search-input::placeholder { color: var(--text-faint); }
-
-.arc-views {
-  display: inline-flex;
-  gap: 4px;
-  padding: 4px;
-  margin-bottom: 26px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-}
-.arc-view {
-  padding: 8px 18px;
-  border: none;
-  border-radius: 100px;
-  background: transparent;
-  color: var(--text-dim);
-  font-family: inherit;
-  font-size: 12.5px;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-.arc-view.is-on {
-  background: var(--accent);
-  color: #fff;
-}
-
 /* ---------- قفسه‌ی کتاب‌ها (شبیه کتابخانه — همه توی یه ردیف، اسکرول افقی) ---------- */
 .arc-shelf {
   display: flex;
   flex-wrap: nowrap;
   align-items: flex-end;
-  gap: 0;
-  padding: 18px 8px 6px;
+  gap: 8px;
+  padding: 18px 8px 8px;
   overflow-x: auto;
+  overflow-y: hidden;
   overscroll-behavior-x: contain;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
@@ -679,7 +622,169 @@
   letter-spacing: 1px;
 }
 
-/* کتاب — پایینش تخته‌ی چوبی ردیف رو می‌سازه (به خاطر چسبیده بودن، پیوسته می‌شه) */
+/* ---------- قفسه، گربه و ساعت ---------- */
+.arc-shelf-wrap {
+  position: relative;
+}
+
+.arc-cat {
+  position: absolute;
+  bottom: calc(100% - 8px);
+  left: 9%;
+  width: clamp(94px, 11vw, 112px);
+  z-index: 2;
+  pointer-events: none;
+}
+.arc-cat svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.arc-cat-breath {
+  transform-box: view-box;
+  transform-origin: 70px 68px;
+  animation: arc-cat-breathe 3.6s ease-in-out infinite;
+}
+.arc-cat-tail {
+  transform-box: view-box;
+  transform-origin: 124px 64px;
+  animation: arc-cat-tail 7s ease-in-out infinite alternate;
+}
+@keyframes arc-cat-breathe {
+  50% { transform: scaleY(1.045); }
+}
+@keyframes arc-cat-tail {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(6deg); }
+}
+
+.arc-wall-clock {
+  width: 64px;
+  flex-shrink: 0;
+}
+.arc-wall-clock svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+}
+.arc-wall-clock line {
+  transform-box: view-box;
+  transform-origin: 50px 50px;
+}
+.arc-clock-tick {
+  stroke: #4a4a53;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.arc-clock-tick-major {
+  stroke: var(--text-dim);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+.arc-clock-hour {
+  stroke: var(--text);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.arc-clock-min {
+  stroke: var(--text-dim);
+  stroke-width: 3.4;
+  stroke-linecap: round;
+}
+.arc-clock-sec {
+  stroke: var(--accent-2);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+/* ---------- میز، لامپ و هاله‌ی نور ---------- */
+.arc-desk {
+  position: relative;
+  display: block;
+  width: min(100%, 640px);
+  margin: 44px auto 0;
+}
+
+/* هاله‌ی نور گرم روی دیوار، پشت میز */
+.arc-desk::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  right: 0;
+  width: 62%;
+  height: 140%;
+  background: radial-gradient(
+    closest-side at 55% 48%,
+    rgba(255, 186, 110, 0.16),
+    rgba(255, 186, 110, 0.05) 55%,
+    transparent 78%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* بخار ماگ */
+.arc-steam {
+  animation: arc-steam-rise 3.4s ease-in-out infinite;
+}
+.arc-steam-2 {
+  animation-duration: 4.2s;
+  animation-delay: 1.1s;
+}
+@keyframes arc-steam-rise {
+  0% { opacity: 0; transform: translateY(4px); }
+  30% { opacity: 0.7; }
+  100% { opacity: 0; transform: translateY(-13px); }
+}
+
+/* ذرات گرد در نور */
+.arc-dust {
+  position: absolute;
+  top: -50px;
+  right: 6%;
+  width: 50%;
+  height: 85%;
+  pointer-events: none;
+}
+.arc-dust i {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 214, 160, 0.8);
+  filter: blur(0.6px);
+  opacity: 0;
+  animation: arc-dust-drift var(--dur, 9s) ease-in-out infinite;
+  animation-delay: var(--del, 0s);
+}
+.arc-dust i:nth-child(1) { left: 14%; top: 62%; --dur: 8.5s; }
+.arc-dust i:nth-child(2) { left: 34%; top: 74%; --dur: 10.5s; --del: 1.4s; width: 2px; height: 2px; }
+.arc-dust i:nth-child(3) { left: 55%; top: 58%; --dur: 9.2s; --del: 2.8s; }
+.arc-dust i:nth-child(4) { left: 72%; top: 70%; --dur: 11s; --del: 0.7s; width: 2px; height: 2px; }
+.arc-dust i:nth-child(5) { left: 46%; top: 40%; --dur: 8s; --del: 3.6s; }
+.arc-dust i:nth-child(6) { left: 24%; top: 48%; --dur: 12s; --del: 2.1s; width: 2.5px; height: 2.5px; }
+.arc-dust i:nth-child(7) { left: 64%; top: 30%; --dur: 9.8s; --del: 4.4s; }
+@keyframes arc-dust-drift {
+  0% { transform: translate(0, 0); opacity: 0; }
+  25% { opacity: 0.75; }
+  60% { opacity: 0.4; }
+  100% { transform: translate(-30px, -76px); opacity: 0; }
+}
+
+/* سوسن عنکبوتی — تکان آروم مثل باد */
+.arc-plant {
+  transform-box: view-box;
+  transform-origin: 300px 76px;
+  animation: arc-sway 4.6s ease-in-out infinite alternate;
+}
+
+@keyframes arc-sway {
+  from { transform: rotate(-2deg); }
+  to { transform: rotate(1.8deg); }
+}
+
+/* کتاب — زیرش تخته‌ی چوبی که با ±۴px از هر طرف، بین کتاب‌ها هم پیوسته می‌مونه */
 .book {
   position: relative;
   flex: none;
@@ -687,15 +792,21 @@
   aspect-ratio: 0.72;
   padding: 0;
   border: none;
-  border-bottom: 8px solid #2b2118;
   background: transparent;
   cursor: pointer;
   transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.25, 1), filter 0.3s ease;
 }
 
-/* ارتفاع‌های متنوع — پایین همه روی تخته‌ی ردیف می‌مونه */
-.book:nth-child(3n) { aspect-ratio: 0.66; }
-.book:nth-child(4n + 2) { aspect-ratio: 0.8; }
+.book::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  bottom: -8px;
+  height: 8px;
+  background: #2b2118;
+  border-radius: 1px;
+}
 
 .book:hover,
 .book:focus-visible {
@@ -774,72 +885,15 @@
   padding-inline-start: 4px;
 }
 
-/* ---------- خط زمانی ---------- */
-.arc-timeline {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  padding-inline-start: 26px;
-}
-.arc-timeline::before {
-  content: "";
-  position: absolute;
-  inset-inline-start: 5px;
-  top: 6px;
-  bottom: 6px;
-  width: 1px;
-  background: linear-gradient(to bottom, var(--accent-border), transparent);
-}
-
-.tl-row { position: relative; }
-
-.tl-dot {
-  position: absolute;
-  inset-inline-start: -26px;
-  top: 18px;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: var(--type, var(--accent-2));
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
-}
-
-.tl-body {
-  padding: 16px 18px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-inline-start: 2px solid var(--type, var(--accent-2));
-  border-radius: var(--radius-sm);
-  transition: border-color 0.2s ease;
-}
-.tl-row:hover .tl-body { border-color: var(--type, var(--accent-2)); }
-
-.tl-meta {
-  font-size: 11px;
-  color: var(--type, var(--accent-2));
-  margin-bottom: 8px;
-}
-.tl-title {
-  font-size: 16px;
-  font-weight: 800;
-  margin-bottom: 6px;
-}
-.tl-text {
-  font-size: 14.5px;
-  line-height: 2;
-  color: var(--text-dim);
-  white-space: pre-wrap;
-}
-
-/* ---------- کتاب بازشده ---------- */
+/* ---------- کتاب بازشده — مثل باز شدن خود جلد ---------- */
 .arc-book {
-  animation: book-open 0.55s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+  transform-origin: right center;
+  animation: book-open 0.6s cubic-bezier(0.2, 0.8, 0.25, 1) both;
 }
 
 @keyframes book-open {
-  from { opacity: 0; transform: perspective(1000px) rotateX(10deg) translateY(30px); }
-  to { opacity: 1; transform: none; }
+  from { opacity: 0; transform: perspective(1800px) rotateY(-52deg); }
+  to { opacity: 1; transform: perspective(1800px) rotateY(0); }
 }
 
 .arc-book-head {
@@ -904,231 +958,217 @@
   opacity: 0.35;
 }
 
-/* صفحه‌های کتاب */
-.arc-pages {
-  position: relative;
-  padding: 26px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0) 100%);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+/* ---------- کتاب باز: صفحه‌ی کاغذی + ورق زدن ---------- */
+.bp-stage {
+  perspective: 1600px;
+  margin-top: 24px;
 }
 
-/* خط پایان کتاب */
-.arc-book-foot {
+.bp-page {
+  position: relative;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 14px;
-  margin-top: 26px;
-  font-size: 10.5px;
-  letter-spacing: 4px;
-  color: var(--text-faint);
-}
-.arc-end-line {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(to left, var(--border), transparent);
-}
-
-/* ---------- کارت‌ها: موزاییک با کارت شاخص ---------- */
-.arc-entries {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
-
-/* کارت اول هر فصل، تمام‌عرض و درشت‌تر */
-.arc-entries > .arc-entry:first-child { grid-column: 1 / -1; }
-
-.arc-entry.is-lead { padding: 32px 30px 28px; }
-.arc-entry.is-lead .arc-entry-title {
-  font-size: clamp(20px, 2.6vw, 27px);
-  letter-spacing: -0.5px;
-}
-.arc-entry.is-lead .arc-entry-text {
-  font-size: 16.5px;
-  line-height: 2.05;
+  max-width: 640px;
+  min-height: 380px;
+  margin: 0 auto;
+  padding: 30px 34px 24px;
+  background:
+    linear-gradient(to left, rgba(0, 0, 0, 0.4), transparent 30px),
+    linear-gradient(180deg, #16161a 0%, #111114 100%);
   color: var(--text);
-}
-.arc-entry.is-lead .arc-tape {
-  width: 96px;
-  height: 22px;
-}
-
-/* کارت‌ها: مثل برگه‌ی یادداشت‌ها — چسب، کجی ملایم، صاف شدن موقع هاور */
-.arc-entry {
-  position: relative;
-  padding: 26px 22px 24px;
-  background: linear-gradient(180deg, #16161a 0%, #121215 100%);
   border: 1px solid var(--border);
   border-radius: 4px;
-  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.35);
-  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transform-origin: right center;
 }
 
-.arc-entries .arc-entry:nth-child(odd) { transform: rotate(-1.4deg); }
-.arc-entries .arc-entry:nth-child(even) { transform: rotate(1.6deg); }
+/* ورق زدن — اول صفحه‌ی فعلی می‌پره، بعد بعدی می‌شینه */
+.bp-page.is-out-fwd { animation: bp-out-fwd 0.21s ease-in forwards; }
+.bp-page.is-out-back { animation: bp-out-back 0.21s ease-in forwards; }
+.bp-page.is-in-fwd { animation: bp-in-fwd 0.36s cubic-bezier(0.2, 0.8, 0.25, 1) both; }
+.bp-page.is-in-back { animation: bp-in-back 0.36s cubic-bezier(0.2, 0.8, 0.25, 1) both; }
 
-.arc-entries .arc-entry:hover {
-  transform: rotate(0deg) translateY(-6px);
-  border-color: var(--type, var(--accent-2));
-  box-shadow: 0 28px 48px rgba(0, 0, 0, 0.45);
+/* رو به جلو: لبه‌ی چپ بلند می‌شه و از روی صحافی می‌فته */
+@keyframes bp-out-fwd {
+  to { opacity: 0; transform: rotateY(72deg); }
+}
+@keyframes bp-in-fwd {
+  from { opacity: 0.2; transform: rotateY(64deg); }
+  to { opacity: 1; transform: rotateY(0); }
 }
 
-/* نوار چسب، به رنگ همون موضوع */
-.arc-tape {
-  position: absolute;
-  top: -10px;
-  left: 26px;
-  width: 72px;
-  height: 20px;
-  transform: rotate(-3deg);
-  background: var(--type, var(--accent-2));
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  opacity: 0.6;
+/* رو به عقب */
+@keyframes bp-out-back {
+  to { opacity: 0; transform: rotateY(-48deg); }
+}
+@keyframes bp-in-back {
+  from { opacity: 0.2; transform: rotateY(-56deg); }
+  to { opacity: 1; transform: rotateY(0); }
 }
 
-.arc-entry-top {
-  position: relative;
-  z-index: 1;
+.bp-page-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
 }
 
-.arc-type {
+.bp-page-kind {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 11px;
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  background: rgba(255, 255, 255, 0.03);
-  color: var(--type, var(--accent-2));
   font-size: 11.5px;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--type, var(--accent-2));
 }
 
-.arc-entry-title {
-  position: relative;
-  z-index: 1;
-  font-size: 18px;
+.bp-page-no {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.bp-title {
+  font-size: clamp(19px, 2.4vw, 24px);
   font-weight: 800;
-  margin-bottom: 10px;
+  color: var(--text);
 }
 
-.arc-entry-text {
-  position: relative;
-  z-index: 1;
-  font-size: 15px;
-  line-height: 2;
+.bp-text {
+  font-size: 15.5px;
+  line-height: 2.1;
   color: var(--text-dim);
   white-space: pre-wrap;
 }
 
-/* متن بلند: اول ۳ خط، با دکمه باز می‌شه */
-.arc-entry-text.is-clamped {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.bp-ghost-hint {
+  font-size: 11px;
+  color: var(--text-faint);
 }
 
-.arc-more {
-  position: relative;
-  z-index: 1;
-  margin-top: 12px;
-  padding: 6px 14px;
-  border: 1px dashed var(--border);
-  border-radius: 100px;
-  background: transparent;
-  color: var(--accent-2);
-  font-family: inherit;
-  font-size: 12px;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-.arc-more:hover {
-  border-color: var(--accent-border);
-  background: rgba(156, 44, 68, 0.12);
-}
-
-/* حالت شبح برای secret / unsaid */
-.arc-entry.is-ghost .arc-entry-title,
-.arc-entry.is-ghost .arc-entry-text {
+/* حالت شبح (secret / unsaid) — محو تا روش بری */
+.bp-page.is-ghost .bp-title,
+.bp-page.is-ghost .bp-text {
   filter: blur(6px);
   user-select: none;
   transition: filter 0.3s ease;
 }
-.arc-entry.is-ghost:hover .arc-entry-title,
-.arc-entry.is-ghost:hover .arc-entry-text {
+.bp-page.is-ghost:hover .bp-title,
+.bp-page.is-ghost:hover .bp-text {
   filter: blur(0);
 }
 
-.arc-ghost-hint {
-  position: relative;
-  z-index: 1;
-  display: block;
-  margin-top: 10px;
+.bp-page-foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
   font-size: 11px;
   color: var(--text-faint);
+}
+
+.bp-counter { letter-spacing: 1px; }
+
+.bp-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.bp-nav-btn {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.bp-nav-btn:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.bp-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.bp-nav-hint {
+  font-size: 11px;
+  letter-spacing: 1px;
 }
 
 /* ---------- ریسپانسیو ---------- */
 @media (max-width: 760px) {
   .arc-shell { padding: 0 18px 28px; }
   .arc-head { margin-inline: -18px; padding: 12px 18px 10px; }
-  .arc-dial { width: clamp(130px, 38vw, 160px); }
-  .arc-vault {
+  .arc-dial-slot { width: clamp(130px, 38vw, 160px); }
+  .arc-vault { padding: 24px 0; }
+  .arc-vault-door {
     grid-template-columns: 1fr;
     justify-items: center;
-    gap: 22px;
-    padding: 24px 0;
+    gap: 26px;
+    padding: 34px 20px;
     text-align: center;
   }
   .arc-form { max-width: 100%; text-align: start; }
   .arc-hint { align-self: stretch; text-align: center; font-size: 12px; line-height: 1.8; }
   .arc-book-head { flex-wrap: wrap; }
   .arc-book-mark { display: none; }
-  .arc-pages { padding: 18px; }
-}
-
-@media (max-width: 680px) {
-  .arc-entries { grid-template-columns: 1fr; }
-  .arc-entries > .arc-entry:first-child { grid-column: auto; }
+  .bp-stage { margin-top: 18px; }
+  .bp-nav { gap: 10px; }
+  .bp-nav-hint { display: none; }
 }
 
 @media (max-width: 560px) {
-  .arc-entries .arc-entry:nth-child(odd),
-  .arc-entries .arc-entry:nth-child(even) { transform: none; }
-  .arc-entries .arc-entry:hover { transform: translateY(-6px); }
-  .arc-tape { left: 18px; width: 60px; }
   .arc-seal { width: 66px; height: 66px; }
+  .arc-wall-clock { width: 54px; }
+  .arc-cat { left: 5%; width: 90px; }
+  .bp-page {
+    min-height: 320px;
+    padding: 22px 18px 18px;
+    gap: 12px;
+  }
+  .bp-nav-btn { padding: 8px 14px; font-size: 12.5px; }
   .arc-shelf {
-    gap: 0;
-    padding: 12px 6px 6px;
+    gap: 8px;
+    padding: 12px 6px 8px;
     border-width: 6px;
     border-top-width: 9px;
     border-bottom-width: 12px;
   }
   .book { width: clamp(96px, 26vw, 116px); }
   .book-title { font-size: 13.5px; }
-  .arc-book-foot { letter-spacing: 2px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .arc-glitch,
   .arc-book,
+  .arc-plant,
+  .arc-steam,
+  .arc-dust i,
+  .arc-cat-breath,
+  .arc-cat-tail,
+  .bp-page.is-out-fwd,
+  .bp-page.is-out-back,
+  .bp-page.is-in-fwd,
+  .bp-page.is-in-back,
   .arc-room-dot,
   .arc-form .arc-err,
   .arc-pop,
   .arc-key,
-  .arc-log-caret,
   .arc-seal-rotate,
-  .arc-door-half,
-  .arc-door-plate,
   .arc-display.is-denied,
   .arc-led { animation: none; }
   .arc-dial,

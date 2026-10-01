@@ -1,4 +1,5 @@
 import Reveal from "../components/Reveal";
+import Icon from "../components/Icon";
 import { SUPPORT } from "../data/content";
 import "./Support.css";
 
@@ -32,7 +33,7 @@ export default function Support() {
               rel="noopener noreferrer"
               data-hover
             >
-              <span aria-hidden="true">♥</span>
+              <Icon name="heart" size={17} />
               {SUPPORT.label}
             </a>
           ) : (

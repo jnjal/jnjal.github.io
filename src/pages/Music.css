@@ -228,6 +228,8 @@
   width: 54px;
   height: 54px;
   flex-shrink: 0;
+  display: grid;
+  place-items: center;
   border: 1px solid var(--accent-border);
   border-radius: 50%;
   cursor: pointer;

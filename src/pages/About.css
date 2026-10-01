@@ -94,42 +94,6 @@
   color: var(--text-faint);
 }
 
-/* ---------- نقل‌قول ---------- */
-.quote {
-  position: relative;
-  max-width: 840px;
-  margin: 0 auto 78px;
-  padding: 46px 44px;
-  text-align: center;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.quote-text {
-  font-size: clamp(19px, 2.6vw, 27px);
-  line-height: 1.85;
-  font-weight: 700;
-  letter-spacing: -0.4px;
-  color: var(--text);
-}
-
-.quote-mark {
-  position: absolute;
-  top: 2px;
-  inset-inline-start: 20px;
-  font-size: 74px;
-  line-height: 1;
-  font-weight: 800;
-  color: var(--accent-2);
-  opacity: 0.3;
-}
-.quote-mark-end {
-  top: auto;
-  bottom: -18px;
-  inset-inline-start: auto;
-  inset-inline-end: 20px;
-}
-
 .about-facts {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -526,9 +490,6 @@
 }
 
 @media (max-width: 560px) {
-  .quote { padding: 36px 20px; }
-  .quote-mark { font-size: 54px; inset-inline-start: 6px; }
-  .quote-mark-end { inset-inline-end: 6px; }
   .intro-row { grid-template-columns: 26px 1fr; gap: 12px; }
 }
 

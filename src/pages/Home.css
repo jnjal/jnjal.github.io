@@ -47,6 +47,31 @@
   margin-bottom: 20px;
 }
 
+/* آواتار داخل خودِ تیتر — با اندازه‌ی فونت مقیاس می‌گیره، فاصله‌ی دو طرفش قرینه‌ست */
+.home-avatar {
+  display: inline-block;
+  vertical-align: middle;
+  width: 0.95em;
+  height: 0.95em;
+  margin: 0 0.16em;
+  border-radius: 30%;
+  overflow: hidden;
+  border: 2px solid var(--accent-border);
+  box-shadow: 0 12px 26px rgba(122, 31, 53, 0.4);
+  transform: rotate(-4deg);
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.25, 1), border-color 0.3s ease;
+}
+.home-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.home-title:hover .home-avatar {
+  transform: rotate(0deg) scale(1.05);
+  border-color: var(--accent-2);
+}
+
 .home-name {
   color: var(--accent-2);
   text-decoration: underline;
@@ -176,6 +201,101 @@
   color: var(--text);
 }
 
+/* --- نقل‌قول: manifesto --- */
+.home-quote {
+  position: relative;
+  margin-top: 78px;
+  padding: 38px 44px 34px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.024) 0%, rgba(255, 255, 255, 0) 70%);
+  overflow: hidden;
+}
+
+.home-quote-mark {
+  position: absolute;
+  top: -34px;
+  inset-inline-start: 16px;
+  font-size: 170px;
+  line-height: 1;
+  font-weight: 800;
+  color: var(--accent);
+  opacity: 0.14;
+  pointer-events: none;
+  user-select: none;
+}
+
+.home-quote-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 22px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--accent-2);
+}
+
+.home-quote-cmd {
+  display: inline-flex;
+  align-items: center;
+}
+
+.home-quote-caret {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  margin-inline-start: 5px;
+  background: var(--accent-2);
+  animation: home-caret 0.85s steps(1) infinite;
+}
+
+@keyframes home-caret {
+  50% { opacity: 0; }
+}
+
+.home-quote-comment {
+  color: var(--text-faint);
+}
+
+.home-quote-text {
+  position: relative;
+  max-width: 760px;
+  font-size: clamp(21px, 3vw, 30px);
+  font-weight: 800;
+  line-height: 1.85;
+  letter-spacing: -0.4px;
+  margin-bottom: 14px;
+}
+
+.home-quote-text em {
+  font-style: normal;
+  color: var(--accent-2);
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: var(--accent-border);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 9px;
+}
+
+.home-quote-sub {
+  position: relative;
+  max-width: 620px;
+  color: var(--text-dim);
+  font-size: 15.5px;
+  line-height: 2;
+}
+
+.home-quote-sign {
+  position: relative;
+  display: inline-block;
+  margin-top: 20px;
+  font-size: 11.5px;
+  letter-spacing: 3px;
+  color: var(--text-faint);
+}
+
 /* --- تیکر ابزارها --- */
 .ticker {
   position: relative;
@@ -217,6 +337,7 @@
 @media (prefers-reduced-motion: reduce) {
   .home-kicker-dot,
   .home-live-dot,
+  .home-quote-caret,
   .home-cycle-word.is-on { animation: none; }
   .ticker-track { animation: none; }
 }
@@ -229,4 +350,7 @@
 @media (max-width: 720px) {
   .section.home { padding-top: 124px; }
   .ticker { margin-top: 52px; }
+  .home-quote { margin-top: 56px; padding: 28px 20px 26px; }
+  .home-quote-mark { font-size: 120px; top: -24px; }
+  .home-quote-label { flex-wrap: wrap; margin-bottom: 18px; }
 }

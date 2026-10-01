@@ -143,6 +143,24 @@ const ICONS = {
       <path d="m5 12 7-7 7 7" />
     </>
   ),
+  lock: (
+    <>
+      <rect x="3" y="11" width="18" height="11" rx="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </>
+  ),
+  play: (
+    <path fill="currentColor" stroke="none" d="M6.5 4.5 19 12 6.5 19.5Z" />
+  ),
+  pause: (
+    <>
+      <rect fill="currentColor" stroke="none" x="6.5" y="4.5" width="4" height="15" rx="1" />
+      <rect fill="currentColor" stroke="none" x="13.5" y="4.5" width="4" height="15" rx="1" />
+    </>
+  ),
+  heart: (
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  ),
 };
 
 // بعضی آیکن‌ها viewBox خودشون رو دارن

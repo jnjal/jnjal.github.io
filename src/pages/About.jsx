@@ -187,12 +187,6 @@ export default function About() {
             </Reveal>
           </div>
 
-          <Reveal delay={80} className="quote">
-            <span className="quote-mark" aria-hidden="true">«</span>
-            <p className="quote-text">{ABOUT.quote}</p>
-            <span className="quote-mark quote-mark-end" aria-hidden="true">»</span>
-          </Reveal>
-
           <Reveal delay={140} className="about-facts">
             {ABOUT.facts.map((f, i) => (
               <div key={f.title} className="fact">

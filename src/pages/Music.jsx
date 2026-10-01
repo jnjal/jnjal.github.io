@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import Reveal from "../components/Reveal";
+import Icon from "../components/Icon";
 import { MUSIC } from "../data/content";
 import "./Music.css";
 
@@ -104,7 +105,7 @@ export default function Music() {
                 data-hover
                 aria-label={playing ? "توقف" : "پخش"}
               >
-                {playing ? "❚❚" : "▶"}
+                {playing ? <Icon name="pause" size={16} /> : <Icon name="play" size={16} />}
               </button>
               <span className="gramo-hint faint">روی صفحه بزن تا پخش بشه</span>
             </div>

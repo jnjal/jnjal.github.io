@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import Reveal from "../components/Reveal";
 import Clock from "../components/Clock";
-import { TOOLS } from "../data/content";
+import useInView from "../hooks/useInView";
+import useTyped from "../hooks/useTyped";
+import { TOOLS, ABOUT } from "../data/content";
+import avatarSrc from "../assets/avatar.jpg";
 import "./Home.css";
 
 const CYCLE = ["چیز می‌سازم", "بات می‌نویسم", "ابزار می‌سازم", "خط می‌شکنم"];
+const QUOTE_KEYS = ["هم کار کنه", "خوب به‌نظر برسه"];
 
 function useCycle(words, ms) {
   const [i, setI] = useState(0);
@@ -20,6 +24,11 @@ function useCycle(words, ms) {
 
 export default function Home() {
   const word = useCycle(CYCLE, 2600);
+  const [quoteRef, quoteIn] = useInView(0.3);
+  const cmd = useTyped("$ cat manifesto.txt", quoteIn, 34, 150);
+
+  const [lead = ABOUT.quote, sub = ""] = ABOUT.quote.split(". ");
+  const leadParts = lead.split(/(هم کار کنه|خوب به‌نظر برسه)/g);
 
   return (
     <section id="home" className="section home">
@@ -33,7 +42,11 @@ export default function Home() {
 
             <Reveal delay={70}>
               <h1 className="home-title">
-                سلام، من <span className="home-name">جنجال</span>ـم.
+                سلام، من
+                <span className="home-avatar" aria-hidden="true">
+                  <img src={avatarSrc} alt="" />
+                </span>
+                <span className="home-name">جنجال</span>ـم.
               </h1>
             </Reveal>
 
@@ -91,6 +104,31 @@ export default function Home() {
                 <dd>برای یه پروژه‌ی خوب</dd>
               </div>
             </dl>
+          </Reveal>
+        </div>
+
+        <div ref={quoteRef}>
+          <Reveal className="home-quote">
+            <span className="home-quote-mark" aria-hidden="true">«</span>
+
+            <div className="home-quote-label mono">
+              <span className="home-quote-cmd">
+                {cmd}
+                <span className="home-quote-caret" aria-hidden="true" />
+              </span>
+              <span className="home-quote-comment">// philosophy</span>
+            </div>
+
+            <p className="home-quote-text">
+              {leadParts.map((p, i) =>
+                QUOTE_KEYS.includes(p) ? <em key={i}>{p}</em> : p
+              )}
+              .
+            </p>
+
+            {sub && <p className="home-quote-sub">{sub}</p>}
+
+            <span className="home-quote-sign mono">✦ جنجال</span>
           </Reveal>
         </div>
 
