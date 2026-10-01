@@ -283,11 +283,12 @@ export const DARINO = {
   ],
 };
 
+// label جایگزین درصدِ توی حلقه می‌شه (درصد فقط روی هاور)، note زیر اسم نمایش داده می‌شه.
 export const SKILLS = [
-  { name: "JavaScript", level: 90 },
-  { name: "React & Vite", level: 82 },
-  { name: "TypeScript", level: 70 },
-  { name: "Rust", level: 55 },
+  { name: "JavaScript", level: 90, label: "حرفه‌ای", note: "۴ سال استفاده روزمره" },
+  { name: "React & Vite", level: 82, label: "حرفه‌ای", note: "پروژه‌های اصلیم اینجان" },
+  { name: "TypeScript", level: 70, label: "متوسط", note: "روزمره باهاش کار می‌کنم" },
+  { name: "Rust", level: 55, label: "در حال یادگیری", note: "آروم‌آروم جلو میرم" },
 ];
 
 export const TOOLS = [
@@ -309,7 +310,8 @@ export const ABOUT = {
     { label: "نقش", title: "فول‌استک", text: "از رابط کاربری و انیمیشن‌های ریز تا سرور، بات و دیتابیس — کل مسیر رو خودم میرم." },
     { label: "علاقه", title: "بات‌ها", text: "یه بات خوب یعنی یه ابزار کوچیک که هر روز یه مشکل روحل می‌کنه." },
     { label: "زیرساخت", title: "Cloudflare Workers", text: "انتخاب پیش‌فرض من — سریع، ارزان، و بدون سرور نگه‌دارنده." },
-    { label: "ساعت کار", title: "نیمه‌شب", text: "بیشتر کارهام بعد از نیمه‌شب شروع می‌شن، وقتی همه خوابن." },
+    // live: "clock" → ساعت واقعی تهران + متنِ متغیر بر اساس وقت روز (توی About.jsx)
+    { label: "ساعت کار", title: "نیمه‌شب", live: "clock", text: "بیشتر کارهام بعد از نیمه‌شب شروع می‌شن، وقتی همه خوابن." },
   ],
 };
 

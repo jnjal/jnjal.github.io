@@ -1,9 +1,4 @@
-.scramble-text {
-  background: none;
-  border: none;
-  color: var(--accent-2);
-  font-size: 20px;
-  letter-spacing: 3px;
-  cursor: pointer;
-  padding: 8px;
+.scramble {
+  unicode-bidi: isolate;
+  cursor: default;
 }
