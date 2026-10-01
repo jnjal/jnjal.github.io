@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import Cursor from "./Cursor";
-import Archive from "./Archive";
+
+const Archive = lazy(() => import("./Archive"));
 
 export default function Layout({ children }) {
   const [archiveOpen, setArchiveOpen] = useState(false);
@@ -18,7 +19,11 @@ export default function Layout({ children }) {
       <Nav onSecret={() => setArchiveOpen(true)} />
       <main>{children}</main>
       <Footer />
-      {archiveOpen && <Archive onClose={() => setArchiveOpen(false)} />}
+      {archiveOpen && (
+        <Suspense fallback={null}>
+          <Archive onClose={() => setArchiveOpen(false)} />
+        </Suspense>
+      )}
     </div>
   );
 }

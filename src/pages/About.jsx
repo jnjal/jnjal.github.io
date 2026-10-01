@@ -3,6 +3,7 @@ import Reveal from "../components/Reveal";
 import useInView from "../hooks/useInView";
 import useTyped, { prefersReducedMotion } from "../hooks/useTyped";
 import { SKILLS, TOOLS, ABOUT, SOCIAL_LINKS, WORKER_URL } from "../data/content";
+import avatarSrc from "../assets/avatar.jpg";
 import "./About.css";
 
 const RING_R = 42;
@@ -157,6 +158,9 @@ export default function About() {
               <svg className="seal" viewBox="0 0 140 140" aria-hidden="true">
                 <defs>
                   <path id="seal-path" d="M70,70 m-52,0 a52,52 0 1,1 104,0 a52,52 0 1,1 -104,0" />
+                  <clipPath id="seal-avatar-clip">
+                    <circle cx="70" cy="70" r="40" />
+                  </clipPath>
                 </defs>
                 <circle className="seal-ring" cx="70" cy="70" r="65" />
                 <circle className="seal-ring seal-ring-dash" cx="70" cy="70" r="42" />
@@ -168,6 +172,16 @@ export default function About() {
                   </text>
                 </g>
                 <text className="seal-center" x="70" y="71" textAnchor="middle" dominantBaseline="central">ج</text>
+                <image
+                  className="seal-photo"
+                  href={avatarSrc}
+                  x="30"
+                  y="30"
+                  width="80"
+                  height="80"
+                  preserveAspectRatio="xMidYMid slice"
+                  clipPath="url(#seal-avatar-clip)"
+                />
               </svg>
               <span className="seal-caption mono">handmade on the web</span>
             </Reveal>

@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import Reveal from "../components/Reveal";
-import LicenseModal from "../components/LicenseModal";
+
+const LicenseModal = lazy(() => import("../components/LicenseModal"));
 import { PROJECTS } from "../data/content";
 import "./Projects.css";
 
@@ -67,7 +68,11 @@ export default function Projects() {
           ))}
         </div>
 
-        {licenseOpen && <LicenseModal onClose={() => setLicenseOpen(false)} />}
+        {licenseOpen && (
+          <Suspense fallback={null}>
+            <LicenseModal onClose={() => setLicenseOpen(false)} />
+          </Suspense>
+        )}
       </div>
     </section>
   );
