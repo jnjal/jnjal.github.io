@@ -27,16 +27,15 @@
 .home-kicker { display: inline-flex; align-items: center; gap: 10px; }
 
 .home-kicker-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--accent-2);
+  color: var(--accent-2);
+  font-size: 12px;
+  line-height: 1;
   animation: home-blink 2.2s ease-in-out infinite;
 }
 
 @keyframes home-blink {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(156, 44, 68, 0.5); }
-  50% { box-shadow: 0 0 0 7px rgba(156, 44, 68, 0); }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 .home-title {

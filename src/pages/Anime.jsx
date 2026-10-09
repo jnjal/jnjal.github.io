@@ -108,7 +108,7 @@ export default function Anime() {
 
         <Reveal delay={120} className="anime-queue">
           <div className="anime-queue-head">
-            <span className="anime-queue-label">در صف انتظار</span>
+              <span className="anime-queue-label">در صف انتظار ✦</span>
             {ANIME.queue.length > 0 && (
               <span className="mono faint" style={{ fontSize: 11 }}>
                 {faNum(ANIME.queue.length)} عنوان

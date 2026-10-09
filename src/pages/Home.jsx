@@ -36,7 +36,7 @@ export default function Home() {
         <div className="home-hero">
           <div className="home-main">
             <Reveal className="kicker home-kicker">
-              <span className="home-kicker-dot" aria-hidden="true" />
+              <span className="home-kicker-dot" aria-hidden="true">✦</span>
               سلام، دیر وقته و من هنوز بیدارم
             </Reveal>
 
@@ -67,7 +67,7 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={210} className="home-actions">
-              <a href="#projects" className="btn btn-primary" data-hover>پروژه‌ها</a>
+              <a href="#projects" className="btn btn-primary" data-hover>پروژه‌ها ✦</a>
               <a href="#now" className="btn" data-hover>الان چیکار می‌کنم؟</a>
               <a href="#about" className="home-scroll" data-hover aria-label="برو پایین">
                 <span aria-hidden="true">↓</span>
@@ -101,7 +101,7 @@ export default function Home() {
               </div>
               <div>
                 <dt className="mono">open</dt>
-                <dd>برای یه پروژه‌ی خوب</dd>
+                    <dd>برای یه پروژه‌ی خوب ✦</dd>
               </div>
             </dl>
           </Reveal>

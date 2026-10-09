@@ -17,7 +17,7 @@ export default function Support() {
 
         <Reveal delay={180} className="support-card">
           <div className="support-body">
-            <span className="support-badge mono">support · voluntary</span>
+            <span className="support-badge mono">✦ support · voluntary</span>
             <div className="support-title">یه دست کمک</div>
             <p className="support-text dim">
               اگه این سایت یا یکی از پروژه‌های دیگه‌ام برات ارزشی داشته، می‌تونی از راه درگاه حمایت کنی.

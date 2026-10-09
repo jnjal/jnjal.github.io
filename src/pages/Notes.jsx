@@ -30,7 +30,7 @@ export default function Notes() {
               <span className="paper-tape" aria-hidden="true" />
               <div className="paper-head">
                 <Icon name="pencil" className="paper-icon" size={16} />
-                <span className="mono faint">۰ یادداشت</span>
+                <span className="mono faint">۰ یادداشت ✦</span>
               </div>
               <p className="paper-text">هنوز چیزی اینجا ننوشتم. شاید یه شب دیگه، شاید هرگز.</p>
               <span className="paper-line" aria-hidden="true" />

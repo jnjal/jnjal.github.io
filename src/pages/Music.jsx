@@ -119,7 +119,7 @@ const Crate = memo(function Crate() {
             </div>
           )}
         </div>
-        <span className="crate-hint faint">روی هر صفحه برو تا بیاد بیرون</span>
+        <span className="crate-hint faint">✦ روی هر صفحه برو تا بیاد بیرون</span>
       </div>
 
       <div className={`crate${scrollable ? " has-scroll" : ""}`}>

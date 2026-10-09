@@ -27,33 +27,26 @@
   100% { box-shadow: 0 0 0 0 rgba(95, 191, 110, 0); }
 }
 
-/* ---------- صورت فلکی سیاره‌ای ---------- */
-.sky {
+/* ---------- کتابخانه‌ی روز (کتاب‌های روی هم) ---------- */
+.books {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
 }
 
-.sky-head {
+.books-head {
   display: flex;
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
   padding: 16px 22px;
   border-bottom: 1px solid var(--border);
+  box-shadow: 0 3px 0 -2px var(--border);
 }
-.sky-name { font-size: 16px; font-weight: 800; }
-.sky-catalog {
-  font-size: 9.5px;
-  letter-spacing: 1.5px;
-  color: var(--text-faint);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  padding: 3px 10px;
-}
-.sky-hours { font-size: 10.5px; }
-.sky-time {
+.books-name { font-size: 16px; font-weight: 800; }
+.books-hours { font-size: 10.5px; }
+.books-time {
   margin-inline-start: auto;
   display: inline-flex;
   align-items: center;
@@ -61,419 +54,114 @@
   font-size: 11.5px;
   color: var(--text-dim);
 }
-.sky-time i {
+.books-time i {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--accent-2);
-  animation: sky-pulse 2.2s ease-out infinite;
+  animation: books-pulse 2.2s ease-out infinite;
   flex-shrink: 0;
 }
 
-@keyframes sky-pulse {
+@keyframes books-pulse {
   0% { box-shadow: 0 0 0 0 rgba(156, 44, 68, 0.5); }
   70% { box-shadow: 0 0 0 8px rgba(156, 44, 68, 0); }
   100% { box-shadow: 0 0 0 0 rgba(156, 44, 68, 0); }
 }
 
-/* جعبه‌ی آسمان */
-.sky-box {
+/* فهرست کتاب‌های روز */
+.book-list {
+  padding: 6px 22px 16px;
+}
+
+.book-row {
   position: relative;
-  width: 100%;
-  max-width: 100%;
-  margin-inline: auto;
-  aspect-ratio: 16 / 9;
-  min-height: 360px;
-  max-height: 480px;
-  overflow: hidden;
-  background:
-    radial-gradient(55% 45% at 50% 42%, rgba(122, 31, 53, 0.16), transparent 70%),
-    radial-gradient(75% 65% at 50% 74%, rgba(90, 169, 230, 0.05), transparent 70%),
-    #08080b;
+  padding: 15px 0 14px;
+  padding-inline-start: 18px;
+  transition: background 0.25s ease;
 }
-.sky-box.is-drawing { cursor: crosshair; }
-
-.sky-dust {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  translate: calc(var(--mx, 0) * -10px) calc(var(--my, 0) * -8px);
-  transition: translate 0.35s ease-out;
+.book-row + .book-row {
+  border-top: 1px solid var(--border);
+}
+.book-row:hover {
+  background: rgba(255, 255, 255, 0.02);
 }
 
-/* ستاره‌های ریز تزئینی */
-.mini-stars {
+/* اسپاین کتاب — نوار رنگی براق کنار ردیف */
+.book-row-spine {
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-  translate: calc(var(--mx, 0) * -10px) calc(var(--my, 0) * -8px);
-  transition: translate 0.35s ease-out;
-}
-.mini-star {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.55);
-  animation: mini-twinkle 4s ease-in-out infinite;
-}
-@keyframes mini-twinkle {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.15; }
-}
-
-/* خطوط صورت فلکی — جریان نور + ورود */
-.sky-lines {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0;
-  translate: calc(var(--mx, 0) * -6px) calc(var(--my, 0) * -5px);
-  transition: translate 0.35s ease-out;
-}
-.sky.in .sky-lines {
-  animation: sky-fade-in 0.9s ease 0.55s both;
-}
-@keyframes sky-fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.sky-lines line {
-  stroke: rgba(156, 44, 68, 0.45);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 4 8;
-  animation: sky-flow 2.6s linear infinite;
-  transition: stroke 0.3s ease;
-}
-.sky-lines line.is-hot { stroke: rgba(214, 79, 111, 0.95); }
-@keyframes sky-flow {
-  to { stroke-dashoffset: -12; }
-}
-
-/* خطوط کشیده‌شده توسط بازدیدکننده */
-.sky-lines line.is-custom {
-  stroke: rgba(232, 230, 227, 0.6);
-  stroke-dasharray: 1;
-  animation: sky-draw 0.7s ease both;
-}
-.sky-lines line.is-custom.is-hot { stroke: rgba(255, 255, 255, 0.9); }
-@keyframes sky-draw {
-  from { stroke-dashoffset: 1; }
-  to { stroke-dashoffset: 0; }
-}
-
-/* شهاب + ماهواره‌ی کند */
-.sky-shoot {
-  position: absolute;
-  width: 90px;
-  height: 1.5px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0), #fff);
-  transform: rotate(7deg);
-  opacity: 0;
-  pointer-events: none;
-  animation: sky-shoot 9s ease-in infinite;
-  animation-delay: 3s;
-}
-@keyframes sky-shoot {
-  0% { left: -12%; top: 10%; opacity: 0; }
-  3% { opacity: 0.85; }
-  20% { left: 108%; top: 58%; opacity: 0; }
-  100% { left: 108%; top: 58%; opacity: 0; }
-}
-
-.sky-sat {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 18px 0 9px -3px rgba(255, 255, 255, 0.3);
-  opacity: 0;
-  pointer-events: none;
-  animation: sky-sat 26s linear infinite;
-  animation-delay: 9s;
-}
-@keyframes sky-sat {
-  0% { left: 112%; top: 8%; opacity: 0; }
-  5% { opacity: 0.8; }
-  45% { opacity: 0.8; }
-  50% { left: -6%; top: 70%; opacity: 0; }
-  100% { left: -6%; top: 70%; opacity: 0; }
-}
-
-/* HUD تلسکوپی */
-.sky-corner {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border: 1.5px solid rgba(232, 230, 227, 0.28);
-  pointer-events: none;
-  z-index: 3;
-}
-.sky-c1 { top: 12px; left: 12px; border-right: 0; border-bottom: 0; }
-.sky-c2 { top: 12px; right: 12px; border-left: 0; border-bottom: 0; }
-.sky-c3 { bottom: 12px; left: 12px; border-right: 0; border-top: 0; }
-.sky-c4 { bottom: 12px; right: 12px; border-left: 0; border-top: 0; }
-
-.sky-hud {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 3;
-}
-.sky-hud span {
-  position: absolute;
-  font-size: 9.5px;
-  letter-spacing: 1.2px;
-  color: rgba(232, 230, 227, 0.42);
-}
-.hud-tl { top: 15px; left: 38px; }
-.hud-tr { top: 15px; right: 38px; }
-.hud-bl { bottom: 15px; left: 38px; }
-.hud-br { bottom: 15px; right: 38px; }
-
-/* ---------- سیاره‌ها ---------- */
-.sky-planet {
-  position: absolute;
-  transform: translate(-50%, -50%) scale(0.4);
-  opacity: 0;
-  display: block;
-  padding: 0;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: inherit;
-  translate: calc(var(--mx, 0) * -14px) calc(var(--my, 0) * -11px);
-  transition: translate 0.35s ease-out;
-}
-.sky.in .sky-planet {
-  animation: sky-pop 0.55s cubic-bezier(0.2, 0.8, 0.3, 1.25) both;
-  animation-delay: calc(var(--i, 0) * 90ms + 150ms);
-}
-@keyframes sky-pop {
-  from { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
-  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-}
-
-.planet-body {
-  position: relative;
-  display: block;
-  width: var(--size, 18px);
-  height: var(--size, 18px);
-  animation: planet-drift 9s ease-in-out infinite;
-}
-@keyframes planet-drift {
-  0% { translate: -3px 2px; }
-  33% { translate: 4px -3px; }
-  66% { translate: -2px -1px; }
-  100% { translate: -3px 2px; }
-}
-
-/* مدار + ماه */
-.planet-orbit {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: calc(var(--size, 18px) * 2);
-  height: calc(var(--size, 18px) * 2);
-  margin-left: calc(var(--size, 18px) * -1);
-  margin-top: calc(var(--size, 18px) * -1);
-  animation: planet-orbit var(--period, 9s) linear infinite;
-}
-@keyframes planet-orbit {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-.planet-orbit::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 1px dashed rgba(255, 255, 255, 0.16);
-  border-radius: 50%;
-}
-.planet-moon {
-  position: absolute;
-  top: -3px;
-  left: 50%;
-  width: 6px;
-  height: 6px;
-  margin-left: -3px;
-  border-radius: 50%;
-  background: #d8d5cf;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.65);
-}
-
-/* حلقه‌ی زحل‌وار */
-.planet-ring {
-  position: absolute;
-  left: -24%;
-  right: -24%;
-  top: 50%;
-  height: 46%;
-  transform: translateY(-50%) rotate(-22deg);
-  border: 1.5px solid var(--color, var(--accent-2));
-  border-radius: 50%;
-  opacity: 0.75;
-  pointer-events: none;
-}
-
-/* گوی سیاره */
-.planet-core {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.5), transparent 45%),
-    var(--color, var(--accent-2));
-  box-shadow: inset -5px -5px 12px rgba(0, 0, 0, 0.55);
-  filter: drop-shadow(0 0 10px var(--color, rgba(156, 44, 68, 0.6)));
-  transition: transform 0.25s ease, filter 0.25s ease;
-}
-.sky-planet.is-active .planet-core { transform: scale(1.18); }
-.sky-planet.is-sel .planet-core {
-  outline: 1.5px solid rgba(255, 255, 255, 0.75);
-  outline-offset: 4px;
-}
-.sky-planet.is-near .planet-core {
-  filter: brightness(1.3) drop-shadow(0 0 15px var(--color, transparent));
-}
-
-/* سرعت ماه موقع هاور با JS و حفظِ فاز عوض می‌شه (setOrbitSpeed) */
-
-/* انفجار نور موقع کلیک */
-.planet-burst {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-}
-.planet-burst i {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 3px;
-  height: 3px;
-  margin: -1.5px;
-  border-radius: 50%;
-  background: var(--color, #fff);
-  animation: planet-burst 0.65s ease-out both;
-}
-@keyframes planet-burst {
-  from { transform: rotate(var(--a, 0deg)) translateX(calc(var(--size, 18px) * 0.7)); opacity: 1; }
-  to { transform: rotate(var(--a, 0deg)) translateX(36px); opacity: 0; }
-}
-
-/* لیبل */
-.planet-label {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: calc(var(--size, 18px) * 0.5 + 8px);
-  white-space: nowrap;
-  font-size: 11px;
-  color: var(--text-dim);
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.85);
-  transition: color 0.2s ease;
-  pointer-events: none;
-}
-.sky-planet.is-active .planet-label { color: var(--text); font-weight: 700; }
-.sky-planet.is-sel .planet-label { color: #fff; font-weight: 700; }
-.sky-planet.is-near .planet-label { color: var(--text); }
-
-/* ---------- ابزار ترسیم ---------- */
-.sky-tools {
-  position: absolute;
+  top: 14px;
   bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  z-index: 4;
-  flex-wrap: wrap;
-  justify-content: center;
+  inset-inline-start: 0;
+  width: 5px;
+  border-radius: 100px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 70%),
+    var(--color, var(--accent));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  transition: width 0.25s ease;
 }
-.sky-tool {
+.book-row:hover .book-row-spine { width: 10px; }
+
+.book-row-top {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.book-row-no {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 13px;
+  justify-content: center;
+  min-width: 26px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--color) 20%, transparent);
+  color: var(--color);
   font-size: 11px;
-  font-family: var(--mono);
-  color: var(--text-dim);
-  background: rgba(20, 20, 22, 0.88);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
-}
-.sky-tool-icon {
   flex-shrink: 0;
-  color: inherit;
 }
-.sky-tool:hover {
-  border-color: var(--accent-border);
-  color: var(--text);
-}
-.sky-tool.is-on {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-.sky-tool-hint {
-  font-size: 10.5px;
-  color: var(--text-faint);
-  white-space: nowrap;
-}
-
-/* ---------- کارت رصد ---------- */
-.sky-info {
-  margin: 18px 22px 22px;
-  padding: 16px 18px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  animation: sky-info-in 0.35s ease both;
-}
-@keyframes sky-info-in {
-  from { opacity: 0; transform: translateY(8px); }
-}
-
-.sky-info-head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-.sky-info-no {
-  font-size: 10.5px;
-  letter-spacing: 0.5px;
-  color: var(--text-faint);
-}
-.sky-info-title { font-size: 14.5px; font-weight: 800; }
-.sky-info-value {
-  font-size: 17px;
+.book-row-title {
+  font-size: 16px;
   font-weight: 800;
-  line-height: 1.55;
 }
-.sky-info-medium {
-  font-size: 11.5px;
+.book-row-author {
+  font-size: 12px;
   color: var(--text-faint);
-  margin-top: 4px;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
 }
-.sky-info-desc {
-  font-size: 12.5px;
-  line-height: 1.9;
-  margin-top: 9px;
-  padding-top: 9px;
-  border-top: 1px dashed var(--border);
+.book-row:hover .book-row-author { color: var(--color); }
+.book-row-lead {
+  flex: 1;
+  min-width: 30px;
+  align-self: center;
+  margin: 0 4px;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.16);
+  transition: border-color 0.2s ease;
+}
+.book-row:hover .book-row-lead { border-bottom-color: var(--accent-border); }
+.book-row-quote {
+  font-size: 13px;
+  color: var(--text-dim);
+  max-width: 46%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+  transition: color 0.2s ease;
+}
+.book-row:hover .book-row-quote { color: var(--text); }
+.book-row-quote > span {
+  color: var(--accent-2);
+  opacity: 0.55;
+}
+.book-row-desc {
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--text-faint);
+  line-height: 1.8;
 }
 
 /* ---------- صفحه‌ی ماه (تقویم دایره‌ای نجومی) ---------- */
@@ -847,18 +535,12 @@
 }
 
 @media (max-width: 560px) {
-  .sky-head { padding: 14px; gap: 8px; }
-  .sky-time { margin-inline-start: 0; }
-  .sky-box { min-height: 330px; }
-  .planet-label { font-size: 9.5px; margin-top: calc(var(--size, 18px) * 0.5 + 6px); }
-  .sky-hud span { font-size: 8.5px; letter-spacing: 0.8px; }
-  .hud-tl, .hud-bl { left: 34px; }
-  .hud-tr, .hud-br { right: 34px; }
-  .sky-tools { bottom: 10px; gap: 6px; }
-  .sky-tool { padding: 4px 10px; font-size: 10.5px; }
-  .sky-tool-hint { display: none; }
-  .sky-info { margin: 14px; padding: 14px; }
-  .sky-info-value { font-size: 15.5px; }
+  .books-head { padding: 14px; gap: 8px; }
+  .books-time { margin-inline-start: 0; }
+  .book-list { padding: 4px 14px 12px; }
+  .book-row-top { flex-wrap: wrap; }
+  .book-row-lead { display: none; }
+  .book-row-quote { max-width: none; white-space: normal; }
   .now-cal { max-width: 100%; flex-basis: 100%; }
   .cal-legend { max-width: 100%; flex-basis: 100%; }
   .cal-dial { max-width: 250px; }
@@ -866,26 +548,14 @@
   .cal-week-day { font-size: 9px; max-width: 40px; padding: 3px 0; }
   .cal-center-day { font-size: 32px; }
   .now-cal-phase { width: 100%; }
+  .cal-legend-foot { line-height: 17px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .now-dot,
-  .sky-time i,
-  .planet-orbit,
-  .planet-body,
-  .mini-star,
-  .cal-day.is-today,
-  .sky-lines line { animation: none; }
-  .sky-shoot,
-  .sky-sat { display: none; }
-  .sky-info,
-  .planet-burst i { animation: none; }
-  .planet-burst { display: none; }
-  .sky.in .sky-planet,
-  .sky.in .sky-lines { animation-delay: 0s; }
-  .sky-dust,
-  .mini-stars,
-  .sky-lines,
-  .sky-planet { translate: none; transition: none; }
+  .books-time i,
+  .cal-day.is-today { animation: none; }
+  .book-row { transition: none; }
+  .book-row-spine { transition: none; }
   .cal-arc-line { transition: none; }
 }

@@ -243,7 +243,7 @@ export default function About() {
             <div className="file">
               <div className="file-head">
                 <Icon name="file" size={13} className="file-icon" />
-                <span className="file-name mono">about.md</span>
+                <span className="file-name mono">✦ about.md</span>
                 <span className="file-caret" aria-hidden="true" />
                 <span className="file-meta">{faNum(ABOUT.paragraphs.length)} پاراگراف</span>
               </div>
@@ -301,7 +301,7 @@ export default function About() {
             <div className="file">
               <div className="file-head">
                 <Icon name="file" size={13} className="file-icon" />
-                <span className="file-name mono">facts.json</span>
+                <span className="file-name mono">✦ facts.json</span>
                 <span className="file-caret" aria-hidden="true" />
                 <span className="file-meta">{faNum(ABOUT.facts.length)} کلید</span>
               </div>
@@ -328,7 +328,7 @@ export default function About() {
             <div className="file">
               <div className="file-head">
                 <Icon name="file" size={13} className="file-icon" />
-                <span className="file-name mono">stack.toml</span>
+                <span className="file-name mono">✦ stack.toml</span>
                 <span className="file-caret" aria-hidden="true" />
                 <span className="file-meta">{faNum(SKILLS.length)} مهارت · {faNum(TOOLS.length)} ابزار</span>
               </div>

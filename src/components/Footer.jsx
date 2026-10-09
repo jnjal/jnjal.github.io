@@ -19,7 +19,7 @@ export default function Footer() {
               <span>{typed}</span>
               <span className="footer-caret" aria-hidden="true" />
             </div>
-            <div className="footer-sign" aria-hidden="true">جنجال</div>
+            <div className="footer-sign" aria-hidden="true">✦ جنجال</div>
           </div>
 
           <div className="footer-side">
