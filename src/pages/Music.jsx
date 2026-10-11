@@ -266,7 +266,7 @@ export default function Music() {
     <section id="music" className="section">
       <div className="container">
         <Reveal className="kicker">موزیک</Reveal>
-        <Reveal delay={60}><h2 className="page-title">اینم آهنگی که این روزا گیرش افتادم</h2></Reveal>
+        <Reveal delay={60}><h2 className="page-title">از اون آهنگایی که یه ساله ولم نمی‌کنه</h2></Reveal>
         <Reveal delay={120} className="page-lede">
           این آهنگ رو گذاشتم همین‌جا؛ اگه تو هم خواستی گوش بدی، لازم نیست بری دنبالش بگردی.
         </Reveal>
