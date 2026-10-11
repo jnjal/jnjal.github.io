@@ -40,7 +40,7 @@ export default function Footer() {
               ))}
             </div>
 
-            <a href="#home" className="to-top" data-hover aria-label="برو بالا">
+            <a href="#home" className="to-top" data-hover aria-label="برگرد بالا">
               <Icon name="arrowUp" size={17} />
             </a>
           </div>

@@ -95,7 +95,7 @@ const Crate = memo(function Crate() {
     <>
       <div className="crate-head">
         <div className="crate-head-right">
-          <h3 className="section-h" style={{ margin: 0 }}>بند‌های مورد علاقم</h3>
+          <h3 className="section-h" style={{ margin: 0 }}>بندایی که زیاد گوش می‌دم</h3>
           {scrollable && (
             <div className="crate-nav">
               <button
@@ -266,9 +266,9 @@ export default function Music() {
     <section id="music" className="section">
       <div className="container">
         <Reveal className="kicker">موزیک</Reveal>
-        <Reveal delay={60}><h2 className="page-title">یه آهنگ، همین‌جا گوش بده</h2></Reveal>
+        <Reveal delay={60}><h2 className="page-title">اینم آهنگی که این روزا گیرش افتادم</h2></Reveal>
         <Reveal delay={120} className="page-lede">
-          موزیک مورد علاقه‌ام رو گذاشتم که هرکی خواست لازم نباشه جای دیگه‌ای دنبالش بگرده.
+          این آهنگ رو گذاشتم همین‌جا؛ اگه تو هم خواستی گوش بدی، لازم نیست بری دنبالش بگردی.
         </Reveal>
 
         <Reveal className={`gramo${playing ? " is-playing" : ""}`}>
@@ -363,7 +363,7 @@ export default function Music() {
               {plays > 0 && (
                 <span className="gramo-plays mono faint">{faNum(plays)} بار گوش دادی</span>
               )}
-              <span className="gramo-hint faint">روی صفحه بزن تا پخش بشه</span>
+              <span className="gramo-hint faint">یه ضربه بزن، خودش پخش می‌شه</span>
 
               <div className="gramo-tools">
                 <button

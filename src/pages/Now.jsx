@@ -196,9 +196,9 @@ export default function Now() {
     <section id="now" className="section">
       <div className="container">
         <Reveal className="kicker">الان</Reveal>
-        <Reveal delay={60}><h2 className="page-title">این روزا چیکار می‌کنم</h2></Reveal>
+        <Reveal delay={60}><h2 className="page-title">این روزا چه خبره؟</h2></Reveal>
         <Reveal delay={120} className="page-lede">
-          یه تیکه از زندگیم که سعی می‌کنم به‌روز بمونه.
+          یه تیکه از چیزایی که این روزا توی سر و زندگیم می‌گذره؛ هر وقت یادم بیاد آپدیتش می‌کنم.
         </Reveal>
 
         <Reveal delay={180} className="now-live mono faint">
@@ -258,7 +258,7 @@ export default function Now() {
                   onClick={() => setCalOffset((o) => o - 1)}
                   data-hover
                 >
-                  ماه قبل
+                  ماه قبلی
                 </button>
                 <span className="now-cal-title">{cal.title}</span>
                 <button
@@ -267,7 +267,7 @@ export default function Now() {
                   onClick={() => setCalOffset((o) => o + 1)}
                   data-hover
                 >
-                  ماه بعد
+                  ماه بعدی
                 </button>
               </span>
               <span className="now-cal-phase">
@@ -351,7 +351,7 @@ export default function Now() {
           </Reveal>
 
           <Reveal delay={220} className="cal-legend">
-            <h3 className="cal-legend-title">✦ راهنمای فاز ماه</h3>
+            <h3 className="cal-legend-title">✦ ماه الان چه حالیه؟</h3>
 
             <div className="cal-legend-body">
               <ul className="cal-legend-list">
@@ -372,14 +372,14 @@ export default function Now() {
 
               <div className="cal-legend-stats">
                 <div className="cal-stat">
-                  <span className="cal-stat-label">روشنایی امروز</span>
+                  <span className="cal-stat-label">روشنایی ماه</span>
                   <span className="cal-stat-value">{faNum(brightness)}٪</span>
                   <span className="cal-stat-bar" aria-hidden="true">
                     <i style={{ width: `${brightness}%` }} />
                   </span>
                 </div>
                 <div className="cal-stat">
-                  <span className="cal-stat-label">ماه قمری</span>
+                  <span className="cal-stat-label">چند روز از چرخه‌ی ماه گذشته</span>
                   <span className="cal-stat-value">روز {faNum(moonAge)}</span>
                 </div>
                 <div className="cal-stat">
@@ -387,12 +387,12 @@ export default function Now() {
                   <span className="cal-stat-value">~{faNum(nextNewMoon)} روز</span>
                 </div>
                 <div className="cal-stat">
-                  <span className="cal-stat-label">تا نیمه‌شب</span>
+                  <span className="cal-stat-label">تا آخر امروز</span>
                   <span className="cal-stat-value">{tillMid}</span>
                 </div>
                 {yearStats && (
                   <div className="cal-stat cal-stat-wide">
-                    <span className="cal-stat-label">تقویم</span>
+                    <span className="cal-stat-label">تقویم این روزا</span>
                     <span className="cal-stat-value">
                       {yearStats.season} {yearStats.year}
                     </span>

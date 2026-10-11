@@ -12,9 +12,9 @@ export default function Projects() {
     <section id="projects" className="section">
       <div className="container">
         <Reveal className="kicker">پروژه‌ها</Reveal>
-        <Reveal delay={60}><h2 className="page-title">دو تا داستان</h2></Reveal>
+        <Reveal delay={60}><h2 className="page-title">چیزایی که ساختم</h2></Reveal>
         <Reveal delay={120} className="page-lede">
-          اینجا پروژه رو به‌صورت کارت نشون نمیدم. هر کدوم یه داستان داره: از کجا شروع شد، چی شد، و حالا کجاست.
+          اینجا فقط اسم پروژه‌ها رو ردیف نکردم؛ هرکدوم یه کم داستان دارن. چی شد شروعشون کردم و آخرش به کجا رسیدن.
         </Reveal>
 
         <div className="stories">

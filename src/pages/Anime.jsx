@@ -27,7 +27,7 @@ export default function Anime() {
           <div className="ticket-main">
             <div className="ticket-live mono">
               <span className="ticket-dot" aria-hidden="true" />
-              در حال تماشا
+              دارم می‌بینم
             </div>
             <div className="ticket-title">{ANIME.watching.title}</div>
             <div className="ticket-arc">{ANIME.watching.arc}</div>
@@ -61,7 +61,7 @@ export default function Anime() {
         </Reveal>
 
         <div className="anime-fav-head">
-          <h3 className="section-h" style={{ margin: 0 }}>محبوب‌ترین‌ها</h3>
+          <h3 className="section-h" style={{ margin: 0 }}>چیزایی که دوست داشتم</h3>
           <span className="mono faint" style={{ fontSize: 11 }}>
             {faNum(ANIME.favorites.length)} عنوان · {faNum(TOTAL_EPS)} اپیزود
           </span>
@@ -79,7 +79,7 @@ export default function Anime() {
 
               {a.rating != null && (
                 <div className="fav-rating">
-                  <span className="fav-rating-label mono faint">امتیاد</span>
+                  <span className="fav-rating-label mono faint">امتیاز</span>
                   <span className="fav-rating-track" aria-hidden="true">
                     <i className="fav-rating-fill" style={{ width: `${(a.rating / 10) * 100}%` }} />
                   </span>

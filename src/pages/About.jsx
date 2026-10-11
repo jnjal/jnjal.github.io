@@ -91,8 +91,8 @@ function LiveFact({ fact, index }) {
       </div>
       <p className="fact-text dim">
         {night
-          ? `الان ${time} نیمه‌شبه — بیشتر کارهام همین‌جا شروع می‌شه.`
-          : `الان ${time} ${part}ه؛ ولی جدی‌ترین کدهام شب شروع شدن.`}
+          ? `الان ${time} نیمه‌شبه؛ ساعت محبوب مغزم برای شروع کارای جدیده.`
+          : `الان ${time} ${part}ه؛ ولی معمولاً شب‌ها بهتر می‌تونم با کد ور برم.`}
       </p>
     </div>
   );
@@ -191,15 +191,15 @@ export default function About() {
   const handleSubmit = async () => {
     const contact = formData.email.trim();
     if (!formData.name || !contact || !formData.message) {
-      setError("لطفاً همه فیلدها رو پر کن");
+      setError("همه‌ی فیلدها رو پر کن دیگه 😅");
       return;
     }
     if (!EMAIL_RE.test(contact) && !TME_RE.test(contact) && !PHONE_RE.test(contact)) {
-      setError("ایمیل، آیدی یا شماره معتبر وارد کن");
+      setError("یه ایمیل، آیدی یا شماره‌ی درست وارد کن.");
       return;
     }
     if (formData.phone && !PHONE_RE.test(formData.phone.trim())) {
-      setError("شماره تماس نامعتبره");
+      setError("این شماره یه جاش می‌لنگه.");
       return;
     }
     setSending(true);
@@ -220,7 +220,7 @@ export default function About() {
       });
       setFormData({ name: "", email: "", phone: "", message: "" });
     } catch {
-      setError("خطا در ارسال، دوباره تلاش کن");
+      setError("پیامت نرفت؛ یه بار دیگه امتحان کن.");
       setProg(0);
     } finally {
       setSending(false);
@@ -235,7 +235,7 @@ export default function About() {
           <Reveal delay={60}>
             <h2 className="page-title about-title">
               یه دانشجوی مهندسی کامپیوتر که{" "}
-              <ScrambleText className="accent-text" text="شبا کد می‌زنه" delay={450} />
+              <ScrambleText className="accent-text" text="شب‌ها کد می‌زنه" delay={450} />
             </h2>
           </Reveal>
 
@@ -335,7 +335,7 @@ export default function About() {
               <div className="file-body">
               <div className="about-grid">
             <div ref={skillRef}>
-              <h3 className="section-h">تخصص‌های اصلی</h3>
+              <h3 className="section-h">چیزایی که بیشتر باهاشون کار می‌کنم</h3>
               <div className="skills-rings">
                 {SKILLS.map((s, i) => (
                   <SkillRing
@@ -352,7 +352,7 @@ export default function About() {
             </div>
 
             <div>
-              <h3 className="section-h">ابزارهای کاری</h3>
+              <h3 className="section-h">ابزارایی که دستم می‌گیرم</h3>
               <div className="tools-wrap">
                 {TOOLS.map((t) => <span key={t} className="tool-chip mono">{t}</span>)}
               </div>
@@ -369,7 +369,7 @@ export default function About() {
           <Reveal className="kicker">تماس</Reveal>
           <Reveal delay={60}><h2 className="page-title">بیا حرف بزنیم</h2></Reveal>
           <Reveal delay={120} className="page-lede">
-            پروژه جدید داری؟ ایده‌ای تو ذهنته؟ دوست دارم بشنوم.
+            یه پروژه توی ذهنته یا فقط می‌خوای درباره‌ی یه ایده حرف بزنی؟ پیام بده، می‌خونمش.
           </Reveal>
 
           <div className="contact-grid" ref={contactRef}>
@@ -392,7 +392,7 @@ export default function About() {
               </div>
 
               <p className="channel-note dim">
-                معمولاً تا یه روز جواب میدم — مگه اینکه شب باشه و یه باگ داشته باشم.
+                معمولاً تا یه روز جواب می‌دم؛ مگر اینکه وسط یه باگ گیر کرده باشم و زمان از دستم در بره.
               </p>
             </div>
 
@@ -434,11 +434,11 @@ export default function About() {
                           <span className="receipt-fill" aria-hidden="true" />
                           <span className="receipt-status">
                             <i aria-hidden="true" />
-                            در صف پاسخ
+                            رسید، می‌رسیم بهش
                           </span>
                         </div>
 
-                        <p className="receipt-note">ممنون که نوشتی — تا یه روز جواب میدم.</p>
+                        <p className="receipt-note">مرسی که پیام دادی؛ سعی می‌کنم تا یه روز جواب بدم.</p>
                         <div className="receipt-sign">✦ جنجال</div>
 
                         <div className="receipt-barcode" aria-hidden="true">
@@ -451,7 +451,7 @@ export default function About() {
                     </div>
 
                     <button type="button" className="term-btn term-btn-ghost" onClick={() => setReceipt(null)} data-hover>
-                      ارسال پیام دیگه
+                      یه پیام دیگه بفرست
                     </button>
                   </div>
                 ) : (
@@ -509,7 +509,7 @@ export default function About() {
                   )}
 
                   <button type="submit" className="term-btn" disabled={sending} data-hover>
-                    {sending ? "در حال ارسال..." : "ارسال پیام ▸"}
+                    {sending ? "در حال ارسال..." : "بفرست ببینم ▸"}
                   </button>
                 </form>
                 )}

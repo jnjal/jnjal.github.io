@@ -37,7 +37,7 @@ export default function Home() {
           <div className="home-main">
             <Reveal className="kicker home-kicker">
               <span className="home-kicker-dot" aria-hidden="true">✦</span>
-              سلام، دیر وقته و من هنوز بیدارم
+              بازم دیره و من هنوز بیدارم
             </Reveal>
 
             <Reveal delay={70}>
@@ -51,7 +51,7 @@ export default function Home() {
             </Reveal>
 
             <Reveal delay={140} className="home-sub">
-              برای اینترنت{" "}
+              یه گوشه از اینترنت{" "}
               <span className="home-cycle">
                 {CYCLE.map((w) => (
                   <span
@@ -63,7 +63,7 @@ export default function Home() {
                   </span>
                 ))}
               </span>{" "}
-              — و هر چی وسطش پیدا بشه.
+              — و هر چیزی که وسطش وسوسه‌م کنه بسازمش.
             </Reveal>
 
             <Reveal delay={210} className="home-actions">
@@ -83,7 +83,7 @@ export default function Home() {
 
             <div className="home-card-live">
               <span className="home-live-dot" aria-hidden="true" />
-              آنلاین و بیدار
+              احتمالاً بیدارم
             </div>
 
             <dl className="home-card-rows">
@@ -101,7 +101,7 @@ export default function Home() {
               </div>
               <div>
                 <dt className="mono">open</dt>
-                    <dd>برای یه پروژه‌ی خوب ✦</dd>
+                    <dd>برای یه ایده‌ی باحال ✦</dd>
               </div>
             </dl>
           </Reveal>

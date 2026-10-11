@@ -23,7 +23,7 @@ export default function Layout({ children }) {
 
   return (
     <div style={{ cursor: "inherit", display: "flex", flexDirection: "column", minHeight: "100svh" }}>
-      <a href="#main-content" className="skip-link">پرش به محتوای اصلی</a>
+      <a href="#main-content" className="skip-link">برو سراغ محتوای اصلی</a>
       <Cursor />
       <div className="boot" aria-hidden="true" />
       <div className="bg-fx" aria-hidden="true">
