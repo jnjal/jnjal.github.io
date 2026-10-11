@@ -414,7 +414,7 @@ export const ANIME = {
   watching: {
     title: "Bleach",
     ep: "۲۱۰",
-    arc: "جنگ خونین هزارساله (TYBW)",
+    arc: "آرک گذشته (Turn Back the Pendulum)",
     total: 366,
     year: "۲۰۰۴",
     genre: "اکشن / ماوراء الطبیعه",
