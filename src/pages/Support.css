@@ -73,10 +73,13 @@
   box-shadow: 0 16px 36px rgba(122, 31, 53, 0.4);
   transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
 }
-.support-btn:hover {
+.support-btn:hover,
+.support-btn:focus-visible {
   transform: translateY(-3px);
   background: var(--accent-2);
   border-color: var(--accent-2);
+  color: #fff;
+  -webkit-text-fill-color: #fff;
   box-shadow: 0 22px 44px rgba(122, 31, 53, 0.5);
 }
 
