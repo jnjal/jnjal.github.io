@@ -192,7 +192,7 @@ export default function LicenseModal({ onClose }) {
           <>
             <div className="lic-section-head">
               <span className="mono faint">why darino</span>
-              <span className="lic-count mono">{fa(DARINO.why.length)} دلیل</span>
+              <span className="lic-count mono">{fa(DARINO.why.length)} تا دلیل</span>
             </div>
             <Collapsible open={openWhy}>
               <div className="lic-why-grid">
@@ -226,7 +226,7 @@ export default function LicenseModal({ onClose }) {
           <>
             <div className="lic-section-head">
               <span className="mono faint">features</span>
-              <span className="lic-count mono">{fa(DARINO.specs.length)} بخش</span>
+              <span className="lic-count mono">{fa(DARINO.specs.length)} تا بخش</span>
             </div>
             <Collapsible open={openFeat}>
               <div className="lic-specs-grid">
@@ -291,12 +291,12 @@ export default function LicenseModal({ onClose }) {
           <>
             <div className="lic-section-head">
               <span className="mono faint">contact</span>
-              <span className="lic-count mono">۳ روش</span>
+              <span className="lic-count mono">۳ راه</span>
             </div>
 
             <div className="lic-form">
               <p className="lic-hint dim">
-                اگه دمو خواستی، توی متن همین فرم بنویس — یا از ایمیل و حتی تلگرام بگو.
+                اگه دمو می‌خوای، توی همین فرم بگو؛ یا مستقیم از ایمیل و تلگرام پیام بده.
               </p>
               <div className="lic-form-row">
                 <input
@@ -344,15 +344,15 @@ export default function LicenseModal({ onClose }) {
                 disabled={status === "sending"}
                 data-hover
               >
-                {status === "sending" ? "در حال ارسال..." : "ارسال از طریق سایت"}
+                {status === "sending" ? "در حال ارسال..." : "از خود سایت بفرست"}
               </button>
             </div>
 
             {status === "error" && (
-              <div className="lic-msg lic-msg-err">✗ همه‌ی فیلدها رو پر کن و دوباره تلاش کن.</div>
+              <div className="lic-msg lic-msg-err">✗ اسم، راه ارتباطی و پیامت رو وارد کن و دوباره بزن.</div>
             )}
             {status === "sent" && (
-              <div className="lic-msg lic-msg-ok">✓ پیامت ارسال شد — به زودی جواب میدم.</div>
+              <div className="lic-msg lic-msg-ok">✓ پیامت رسید؛ به‌زودی جواب می‌دم.</div>
             )}
           </>
         );
@@ -405,7 +405,7 @@ export default function LicenseModal({ onClose }) {
               disabled={step === 0 || animating || phase === "out"}
               data-hover
             >
-              ← قبلی
+              ← قبلیش
             </button>
             <button
               type="button"
