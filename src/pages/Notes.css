@@ -147,6 +147,7 @@
   overflow: hidden;
   font-size: 15px;
   line-height: 2;
+  white-space: pre-line;
   color: var(--text);
 }
 .note-text.is-open {
