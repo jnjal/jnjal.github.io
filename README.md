@@ -1,16 +1,49 @@
-# React + Vite
+# جنجال — پورتفولیو شخصی
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+این سایت اول قرار بود فقط یه جایی باشه برای نشون دادن پروژه‌هام؛ ولی خب، طبق معمول نتونستم همون‌جا تمومش کنم. الان یه گوشه از کارهام، چیزایی که دوست دارم و یه‌سری یادداشت و فکر شخصیه.
 
-Currently, two official plugins are available:
+🔗 **نسخه‌ی آنلاین:** [jnjal.github.io](https://jnjal.github.io)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## چی توشه؟
 
-## React Compiler
+- **پروژه‌ها:** چیزایی که ساختم یا دارم روشون کار می‌کنم.
+- **الان:** یه تصویر کوچیک از چیزایی که این روزها سرم رو گرم کردن.
+- **یادداشت‌ها:** فکرهایی که بالاخره یه جایی باید نوشته می‌شدن.
+- **انیمه و موزیک:** چندتا از علاقه‌مندی‌هام، بدون ادعای سلیقه‌ی بی‌نقص :)
+- **حمایت:** این بخش فعلاً منتظر راه افتادن درگاه پرداخت و تکمیل احراز هویته؛ لینک رو بعداً اضافه می‌کنم.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## تکنولوژی‌ها
 
-## Expanding the ESLint configuration
+- React
+- Vite
+- JavaScript
+- CSS
+- GitHub Pages
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## اجرای پروژه روی سیستم خودت
+
+به Node.js و npm نیاز داری.
+
+```bash
+git clone https://github.com/jnjal/jnjal.github.io.git
+cd jnjal.github.io
+npm install
+npm run dev
+```
+
+برای ساخت نسخه‌ی نهایی و اجرای پیش‌نمایش:
+
+```bash
+npm run build
+npm run preview
+```
+
+## ارتباط با من
+
+- **GitHub:** [@jnjal](https://github.com/jnjal)
+- **Telegram:** [@cl_lot](https://t.me/cl_lot)
+- **Email:** [jnjal.job@gmail.com](mailto:jnjal.job@gmail.com)
+
+---
+
+این سایت هنوز در حال تغییره؛ احتمالاً دفعه‌ی بعد که سر بزنی یه چیزی جابه‌جا شده یا یه بخش جدید بهش اضافه شده.
