@@ -1,17 +1,49 @@
-# 👤 jnjal.github.io
+# جنجال — پورتفولیو شخصی
 
-> Personal portfolio website — FRONTEND DEVELOPER
+این سایت اول قرار بود فقط یه جایی باشه برای نشون دادن پروژه‌هام؛ ولی خب، طبق معمول نتونستم همون‌جا تمومش کنم. الان یه گوشه از کارهام، چیزایی که دوست دارم و یه‌سری یادداشت و فکر شخصیه.
 
-## 🔗 Live
-[jnjal.github.io](https://jnjal.github.io)
+🔗 **نسخه‌ی آنلاین:** [jnjal.github.io](https://jnjal.github.io)
 
-## 🛠 Tech Stack
-- React + Vite
-- Deployed via GitHub Pages
+## چی توشه؟
 
-## 🌿 Branches
-- `main` — this file only
-- `dev` — source code
-- `gh-pages` — production build (auto-deployed)
-## 📄 License
-© 2026 jnjal — [MIT License](LICENSE)
+- **پروژه‌ها:** چیزایی که ساختم یا دارم روشون کار می‌کنم.
+- **الان:** یه تصویر کوچیک از چیزایی که این روزها سرم رو گرم کردن.
+- **یادداشت‌ها:** فکرهایی که بالاخره یه جایی باید نوشته می‌شدن.
+- **انیمه و موزیک:** چندتا از علاقه‌مندی‌هام، بدون ادعای سلیقه‌ی بی‌نقص :)
+- **حمایت:** این بخش فعلاً منتظر راه افتادن درگاه پرداخت و تکمیل احراز هویته؛ لینک رو بعداً اضافه می‌کنم.
+
+## تکنولوژی‌ها
+
+- React
+- Vite
+- JavaScript
+- CSS
+- GitHub Pages
+
+## اجرای پروژه روی سیستم خودت
+
+به Node.js و npm نیاز داری.
+
+```bash
+git clone https://github.com/jnjal/jnjal.github.io.git
+cd jnjal.github.io
+npm install
+npm run dev
+```
+
+برای ساخت نسخه‌ی نهایی و اجرای پیش‌نمایش:
+
+```bash
+npm run build
+npm run preview
+```
+
+## ارتباط با من
+
+- **GitHub:** [@jnjal](https://github.com/jnjal)
+- **Telegram:** [@cl_lot](https://t.me/cl_lot)
+- **Email:** [jnjal.job@gmail.com](mailto:jnjal.job@gmail.com)
+
+---
+
+این سایت هنوز در حال تغییره؛ احتمالاً دفعه‌ی بعد که سر بزنی یه چیزی جابه‌جا شده یا یه بخش جدید بهش اضافه شده.
