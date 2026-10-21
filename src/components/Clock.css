@@ -1,0 +1,30 @@
+.clock-time {
+  display: inline-flex;
+  direction: ltr;
+}
+
+.clock-digit {
+  display: inline-block;
+  min-width: 0.62em;
+  text-align: center;
+  animation: clock-roll 0.45s cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
+.clock-colon {
+  display: inline-block;
+}
+
+@keyframes clock-roll {
+  from {
+    opacity: 0;
+    transform: translateY(70%) rotateX(-70deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clock-digit { animation: none; }
+}

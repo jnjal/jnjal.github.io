@@ -13,6 +13,12 @@
   opacity: 0.045;
   pointer-events: none;
   user-select: none;
+  animation: jp-drift 14s ease-in-out infinite alternate;
+}
+
+@keyframes jp-drift {
+  from { transform: translateY(0); opacity: 0.04; }
+  to { transform: translateY(16px); opacity: 0.065; }
 }
 
 /* ---------- بلیط «در حال تماشا» ---------- */

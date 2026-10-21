@@ -5,6 +5,11 @@
   max-width: 880px;
 }
 
+/* پوشش Motion دور کارت — انیمیشن ورود اینجا انجام می‌شه، هاور CSS جا می‌مونه */
+.story-slot {
+  position: relative;
+}
+
 .story {
   position: relative;
   overflow: hidden;
@@ -97,6 +102,14 @@
 }
 
 .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.project-tags .tag {
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.project-tags .tag:hover {
+  border-color: var(--accent-border);
+  color: var(--text);
+  transform: translateY(-2px);
+}
 
 @media (max-width: 640px) {
   .story { padding: 26px 20px 24px; }

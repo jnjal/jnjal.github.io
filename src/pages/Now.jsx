@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useState } from "react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import Reveal from "../components/Reveal";
 import { NOW, ANIME, PROFILE } from "../data/content";
 import "./Now.css";
@@ -129,6 +130,8 @@ export default function Now() {
   const [now, setNow] = useState(() => new Date());
   const [calOffset, setCalOffset] = useState(0);
   const [calHover, setCalHover] = useState(null);
+  // ورق‌زدن ماه‌ها با AutoAnimate — لایه‌ی روزها عوض می‌شه و نرم محو/جابه‌جا می‌شه
+  const [dialRef] = useAutoAnimate({ duration: 320, easing: "ease-out" });
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 30_000);
@@ -276,7 +279,7 @@ export default function Now() {
               </span>
             </div>
 
-            <div className="cal-dial" onMouseLeave={() => setCalHover(null)}>
+            <div className="cal-dial" ref={dialRef} onMouseLeave={() => setCalHover(null)}>
               <span className="cal-ring" aria-hidden="true" />
               {arcLen > 0 && (
                 <svg className="cal-arc" viewBox="0 0 100 100" aria-hidden="true">
@@ -290,26 +293,29 @@ export default function Now() {
                 </svg>
               )}
 
-              {cal.days.map((d, i) => {
-                const angle = (i / cal.days.length) * Math.PI * 2 - Math.PI / 2;
-                return (
-                  <span
-                    key={d.day}
-                    className={`cal-day${d.isToday ? " is-today" : ""}${
-                      d.dow === "جمعه" ? " is-friday" : ""
-                    }${calHover === i ? " is-hover" : ""}`}
-                    style={{
-                      left: `${(50 + 42 * Math.cos(angle)).toFixed(2)}%`,
-                      top: `${(50 + 42 * Math.sin(angle)).toFixed(2)}%`,
-                    }}
-                    onMouseEnter={() => setCalHover(i)}
-                    onClick={() => setCalHover(i)}
-                    aria-current={d.isToday ? "date" : undefined}
-                  >
-                    {d.day}
-                  </span>
-                );
-              })}
+              {/* کلید روی calOffset: هر ماه یه لایه‌ی تازه‌ست، AutoAnimate جابه‌جایی رو نرم می‌کنه */}
+              <div className="cal-layer" key={calOffset}>
+                {cal.days.map((d, i) => {
+                  const angle = (i / cal.days.length) * Math.PI * 2 - Math.PI / 2;
+                  return (
+                    <span
+                      key={d.day}
+                      className={`cal-day${d.isToday ? " is-today" : ""}${
+                        d.dow === "جمعه" ? " is-friday" : ""
+                      }${calHover === i ? " is-hover" : ""}`}
+                      style={{
+                        left: `${(50 + 42 * Math.cos(angle)).toFixed(2)}%`,
+                        top: `${(50 + 42 * Math.sin(angle)).toFixed(2)}%`,
+                      }}
+                      onMouseEnter={() => setCalHover(i)}
+                      onClick={() => setCalHover(i)}
+                      aria-current={d.isToday ? "date" : undefined}
+                    >
+                      {d.day}
+                    </span>
+                  );
+                })}
+              </div>
 
               <div className="cal-center">
                 <span className="cal-center-label">امروز</span>

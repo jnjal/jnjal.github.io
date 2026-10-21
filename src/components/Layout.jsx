@@ -21,13 +21,33 @@ export default function Layout({ children }) {
     return () => obs.disconnect();
   }, []);
 
+  // نور پس‌زمینه با سکشن فعال آروم جابه‌جا و هم‌رنگ می‌شه (CSS با data-section)
+  useEffect(() => {
+    const fx = document.querySelector(".bg-fx");
+    const nodes = document.querySelectorAll("main section[id]");
+    if (!fx || !nodes.length) return undefined;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) fx.dataset.section = entry.target.id;
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px" }
+    );
+    nodes.forEach((n) => obs.observe(n));
+    return () => obs.disconnect();
+  }, []);
+
   return (
     <div style={{ cursor: "inherit", display: "flex", flexDirection: "column", minHeight: "100svh" }}>
       <a href="#main-content" className="skip-link">برو سراغ محتوای اصلی</a>
       <Cursor />
       <div className="boot" aria-hidden="true" />
       <div className="bg-fx" aria-hidden="true">
-        <div className="noise" />
+        <div className="noise">
+          <span />
+          <span />
+        </div>
         <div className="glow" />
       </div>
       <Nav onSecret={() => setArchiveOpen(true)} />

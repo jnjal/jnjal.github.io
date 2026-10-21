@@ -222,6 +222,11 @@
   opacity: 0.14;
   pointer-events: none;
   user-select: none;
+  animation: quote-drift 9s ease-in-out infinite alternate;
+}
+@keyframes quote-drift {
+  from { transform: translateY(0); opacity: 0.12; }
+  to { transform: translateY(-9px); opacity: 0.18; }
 }
 
 .home-quote-label {
@@ -326,7 +331,54 @@
   white-space: nowrap;
 }
 
-.ticker-sep { color: var(--accent-2); opacity: 0.7; }
+.ticker-sep {
+  color: var(--accent-2);
+  opacity: 0.7;
+  animation: sep-twinkle 3.4s ease-in-out infinite;
+}
+.ticker-item:nth-child(2n) .ticker-sep { animation-delay: -1.7s; }
+.ticker-item:nth-child(3n) .ticker-sep { animation-delay: -0.9s; }
+
+@keyframes sep-twinkle {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+/* هاور: تیکر می‌ایسته تا بشه راحت خوند */
+@media (hover: hover) and (pointer: fine) {
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+}
+
+/* --- پارالاکس ملایم هیرو؛ فقط مرورگرهایی که scroll-driven animation دارن --- */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .home-card {
+      animation-name: hero-drift;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: cover 12% cover 88%;
+    }
+    .home-avatar {
+      animation-name: avatar-drift;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 55%;
+    }
+  }
+}
+
+@keyframes hero-drift {
+  from { translate: 0 24px; }
+  to { translate: 0 -24px; }
+}
+@keyframes avatar-drift {
+  from { translate: 0 8px; }
+  to { translate: 0 -8px; }
+}
 
 @keyframes ticker-move {
   from { transform: translateX(0); }

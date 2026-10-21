@@ -45,6 +45,11 @@
   color: transparent;
   -webkit-text-stroke: 1px var(--text-faint);
   transition: color 0.45s ease, -webkit-text-stroke-color 0.45s ease;
+  animation: sign-float 7s ease-in-out infinite alternate;
+}
+@keyframes sign-float {
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
 }
 .footer:hover .footer-sign {
   color: var(--accent-soft);

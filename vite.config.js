@@ -12,6 +12,10 @@ export default defineConfig({
           if (id.includes('node_modules/react') || id.includes('node_modules/scheduler')) {
             return 'react'
           }
+          // موتور انیمیشن جدا می‌مونه تا با آپدیت محتوا کشش باطل نشه
+          if (id.includes('node_modules/motion') || id.includes('node_modules/framer-motion')) {
+            return 'motion'
+          }
         },
       },
     },

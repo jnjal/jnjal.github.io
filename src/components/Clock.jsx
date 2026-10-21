@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { PROFILE } from "../data/content";
+import "./Clock.css";
 
 // فرمت سطح ماژول — ساخته‌شدن توی هر رندر هزینه‌داره
 const TIME_FMT = new Intl.DateTimeFormat("en-GB", {
@@ -24,7 +25,15 @@ export default function Clock({ className = "" }) {
   return (
     <span className={`mono ${className}`} style={{ fontSize: 11, color: "var(--text-faint)", display: "inline-flex", gap: 8, alignItems: "center" }}>
       <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#5fbf6e", display: "inline-block" }} />
-      {time} · {PROFILE.gmtLabel}
+      {/* کلید هر رقم بر اساس جایگاه + خودِ رقمه؛ فقط رقمِ عوض‌شده دوباره mount می‌شه و roll می‌خوره */}
+      <span className="clock-time">
+        {time.split("").map((ch, i) => (
+          <span key={`${i}-${ch}`} className={ch === ":" ? "clock-colon" : "clock-digit"}>
+            {ch}
+          </span>
+        ))}
+      </span>
+      · {PROFILE.gmtLabel}
     </span>
   );
 }

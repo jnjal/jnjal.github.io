@@ -1,9 +1,54 @@
 import Reveal from "../components/Reveal";
 import Icon from "../components/Icon";
+import { prefersReducedMotion } from "../hooks/useTyped";
 import { SUPPORT } from "../data/content";
 import "./Support.css";
 
 const ready = Boolean(SUPPORT.url && SUPPORT.url !== "#");
+
+const CONFETTI_COLORS = ["#9c2c44", "#e0556f", "#f2e9e4", "#d9a05b", "#7a1f35"];
+
+// جشن کوچیک موقع کلیک — کتابخانه فقط وقتی لازم شد لود می‌شه (چانک جدا)
+async function celebrate(e) {
+  if (prefersReducedMotion()) return;
+
+  const rect = e.currentTarget.getBoundingClientRect();
+  const origin = {
+    x: (rect.left + rect.width / 2) / window.innerWidth,
+    y: (rect.top + rect.height / 2) / window.innerHeight,
+  };
+
+  try {
+    const confetti = (await import("canvas-confetti")).default;
+    confetti({
+      particleCount: 90,
+      spread: 75,
+      startVelocity: 38,
+      gravity: 0.9,
+      scalar: 0.85,
+      ticks: 220,
+      origin,
+      colors: CONFETTI_COLORS,
+      disableForReducedMotion: true,
+    });
+
+    // موج دوم، کمی آروم‌تر
+    window.setTimeout(() => {
+      confetti({
+        particleCount: 40,
+        spread: 110,
+        startVelocity: 24,
+        scalar: 0.65,
+        ticks: 200,
+        origin,
+        colors: CONFETTI_COLORS,
+        disableForReducedMotion: true,
+      });
+    }, 160);
+  } catch {
+    /* اگه لود نشد، کلیک عادی ادامه پیدا می‌کنه */
+  }
+}
 
 export default function Support() {
   return (
@@ -32,6 +77,7 @@ export default function Support() {
               target="_blank"
               rel="noopener noreferrer"
               data-hover
+              onClick={celebrate}
             >
               <Icon name="heart" size={17} />
               {SUPPORT.label}

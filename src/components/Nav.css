@@ -34,8 +34,15 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  transition: color 0.2s ease;
 }
-.nav-logo .mono { color: var(--accent-2); }
+.nav-logo:hover { color: #fff; }
+.nav-logo .mono {
+  display: inline-block;
+  color: var(--accent-2);
+  transition: transform 0.6s cubic-bezier(0.16, 0.84, 0.28, 1);
+}
+.nav-logo:hover .mono { transform: rotate(180deg) scale(1.08); }
 
 .nav-links {
   position: relative;

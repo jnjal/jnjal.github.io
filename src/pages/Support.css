@@ -26,6 +26,11 @@
     transparent 10px 20px
   );
   pointer-events: none;
+  animation: support-stripes 16s linear infinite;
+}
+
+@keyframes support-stripes {
+  to { background-position: 40px 0; }
 }
 
 .support-body {

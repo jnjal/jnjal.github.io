@@ -231,11 +231,22 @@
   margin: 14px auto 0;
 }
 
+/* لایه‌ی روزها — با AutoAnimate موقع عوض‌شدن ماه نرم جابه‌جا می‌شه */
+.cal-layer {
+  position: absolute;
+  inset: 0;
+}
+
 .cal-ring {
   position: absolute;
   inset: 8%;
   border: 1px dashed rgba(255, 255, 255, 0.07);
   border-radius: 50%;
+  animation: cal-ring-spin 90s linear infinite;
+}
+
+@keyframes cal-ring-spin {
+  to { transform: rotate(360deg); }
 }
 
 .cal-arc {
@@ -470,6 +481,19 @@
   color: var(--text-faint);
 }
 
+/* ردیف‌های فاز ماه، پله‌پله از راست وارد می‌شن */
+.cal-legend.in .cal-legend-list li {
+  animation: legend-in 0.5s cubic-bezier(0.2, 0.9, 0.25, 1) backwards;
+}
+.cal-legend.in .cal-legend-list li:nth-child(2) { animation-delay: 70ms; }
+.cal-legend.in .cal-legend-list li:nth-child(3) { animation-delay: 140ms; }
+.cal-legend.in .cal-legend-list li:nth-child(4) { animation-delay: 210ms; }
+
+@keyframes legend-in {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: none; }
+}
+
 /* گرید آمار نجومی باکس راهنما */
 .cal-legend-stats {
   display: grid;
@@ -512,7 +536,11 @@
   height: 100%;
   background: var(--accent-2);
   border-radius: 4px;
+  transform: scaleX(0);
+  transform-origin: 100% 50%; /* RTL: نوار از راست پر می‌شه */
+  transition: transform 1s cubic-bezier(0.2, 0.9, 0.25, 1) 0.3s;
 }
+.cal-legend.in .cal-stat-bar i { transform: scaleX(1); }
 
 .cal-stat-wide {
   grid-column: 1 / -1;
@@ -556,4 +584,5 @@
   .book-row { transition: none; }
   .book-row-spine { transition: none; }
   .cal-arc-line { transition: none; }
+  .cal-stat-bar i { transform: none; transition: none; }
 }
