@@ -12,6 +12,18 @@ const MOOD_ICONS = {
   کد: "code",
 };
 
+function renderNoteText(text) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={index}>{part.slice(2, -2)}</strong>;
+    }
+
+    return <span key={index}>{part}</span>;
+  });
+}
+
 export default function Notes() {
   const [openNote, setOpenNote] = useState(null);
 
@@ -56,7 +68,7 @@ export default function Notes() {
 
                     {note.title && <h3 className="note-title">{note.title}</h3>}
 
-                    <p className={`note-text${isOpen ? " is-open" : ""}`}>{note.text}</p>
+                    <p className={`note-text${isOpen ? " is-open" : ""}`}>{renderNoteText(note.text)}</p>
 
                     {long && (
                       <button
