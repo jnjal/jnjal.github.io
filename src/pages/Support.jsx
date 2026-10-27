@@ -4,7 +4,8 @@ import { prefersReducedMotion } from "../hooks/useTyped";
 import { SUPPORT } from "../data/content";
 import "./Support.css";
 
-const ready = Boolean(SUPPORT.url && SUPPORT.url !== "#");
+const SUPPORT_URL = SUPPORT.url && SUPPORT.url !== "#" ? SUPPORT.url : "https://daramet.com/jnjal";
+const ready = Boolean(SUPPORT_URL);
 
 const CONFETTI_COLORS = ["#9c2c44", "#e0556f", "#f2e9e4", "#d9a05b", "#7a1f35"];
 
@@ -41,7 +42,6 @@ async function celebrate(e) {
         scalar: 0.65,
         ticks: 200,
         origin,
-        colors: CONFETTI_COLORS,
         disableForReducedMotion: true,
       });
     }, 160);
@@ -73,7 +73,7 @@ export default function Support() {
           {ready ? (
             <a
               className="support-btn"
-              href={SUPPORT.url}
+              href={SUPPORT_URL}
               target="_blank"
               rel="noopener noreferrer"
               data-hover
