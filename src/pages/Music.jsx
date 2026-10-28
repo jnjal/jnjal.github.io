@@ -4,6 +4,7 @@ import Icon from "../components/Icon";
 import { prefersReducedMotion } from "../hooks/useTyped";
 import { MUSIC } from "../data/content";
 import "./Music.css";
+import "./MusicRanges.css";
 
 const FA_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
 const faNum = (n) => String(n).replace(/\d/g, (d) => FA_DIGITS[Number(d)]);
