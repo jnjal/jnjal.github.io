@@ -101,7 +101,7 @@ export default function Home() {
               </div>
               <div>
                 <dt className="mono">open</dt>
-                    <dd>برای یه ایده‌ی باحال ✦</dd>
+                <dd>یه چیزی بسازیم؟ ✦</dd>
               </div>
             </dl>
           </Reveal>
