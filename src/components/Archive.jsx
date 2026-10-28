@@ -323,6 +323,7 @@ export default function Archive({ onClose }) {
       className="arc-overlay"
       ref={overlayRef}
       onScroll={handleScroll}
+      data-lenis-prevent
       role="dialog"
       aria-modal="true"
       aria-label="Archive"

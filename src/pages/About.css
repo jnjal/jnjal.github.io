@@ -154,6 +154,40 @@
   color: var(--text-faint);
 }
 
+/* ------- هاور روی اجزای مهر (خود مهر تیلت موس را دارد) ------- */
+
+/* هاله‌ی ملایم دور مهر */
+.seal { transition: transform 0.25s ease, filter 0.35s ease; }
+.about-seal:hover .seal { filter: drop-shadow(0 0 18px rgba(156, 44, 68, 0.26)); }
+
+/* حلقه‌ی بیرونی ضخیم‌تر و زرشکی می‌شه */
+.seal-ring { transition: stroke 0.3s ease, stroke-width 0.3s ease; }
+.about-seal:hover .seal-ring { stroke: var(--accent-border); stroke-width: 1.6; }
+
+/* حلقه‌ی نقطه‌چین: نقطه‌ها بازتر و رنگ اکسنت */
+.seal-ring-dash { transition: stroke 0.3s ease, stroke-width 0.3s ease, stroke-dasharray 0.5s ease; }
+.about-seal:hover .seal-ring-dash {
+  stroke: var(--accent-2);
+  stroke-width: 1.4;
+  stroke-dasharray: 5 5;
+}
+
+/* متن دور مهر: روشن‌تر و کمی بازتر */
+.seal-text { transition: fill 0.3s ease, letter-spacing 0.4s ease; }
+.about-seal:hover .seal-text { fill: var(--text); letter-spacing: 2.8px; }
+
+/* عکس وسط: زوم آروم داخل دایره */
+.seal-photo {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.25, 1), filter 0.3s ease;
+}
+.about-seal:hover .seal-photo { transform: scale(1.07); filter: saturate(1.12) brightness(1.04); }
+
+/* کپشن زیر مهر */
+.seal-caption { transition: color 0.3s ease, letter-spacing 0.4s ease; }
+.about-seal:hover .seal-caption { color: var(--accent-2); letter-spacing: 3.2px; }
+
 .about-facts {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -346,38 +380,85 @@
   margin-top: -8px;
 }
 
-/* ---------- چیپ‌های ابزار ---------- */
-.tools-wrap { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px; }
+/* ---------- فهرست ابزارها: خط‌کشی مینیمال به‌جای چیپ ---------- */
+.tools-ledger {
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+  border-top: 1px solid var(--border);
+}
 
-.tool-chip {
-  display: inline-flex;
+.tool-row {
+  position: relative;
+  display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 15px;
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  background: var(--surface);
-  font-size: 12.5px;
-  letter-spacing: 0.3px;
+  gap: 12px;
+  padding: 13px 0 12px;
+  border-bottom: 1px solid var(--border);
   color: var(--text-dim);
-  cursor: default;
-  transition: background 0.22s ease, border-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
+  transition: color 0.22s ease, background 0.25s ease;
 }
-.tool-chip::before {
-  content: "+";
+
+/* وقتی روی یکی هستیم، بقیه عقب می‌کشن تا تمرکز روی همون ردیف بمونه */
+.tools-ledger:hover .tool-row { color: var(--text-faint); }
+.tools-ledger .tool-row:hover {
+  color: var(--text);
+  background: linear-gradient(to left, var(--accent-soft), transparent 68%);
+}
+
+.tool-no {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-faint);
+  transition: color 0.22s ease;
+}
+.tool-row:hover .tool-no { color: var(--accent-2); }
+
+.tool-name {
+  font-size: 12.5px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+/* خطِ نقطه‌چین بین اسم و نشانه — فضای خالی ردیف رو عمدی می‌کنه */
+.tool-dots {
+  flex: 1 1 10px;
+  min-width: 10px;
+  height: 1px;
+  align-self: center;
+  color: var(--border);
+  background-image: repeating-linear-gradient(to right, currentColor 0 1px, transparent 1px 5px);
+  transition: color 0.22s ease;
+}
+.tool-row:hover .tool-dots { color: var(--accent-border); }
+
+/* نشانه‌ی انتهای ردیف — با هاور از سمت انتهای خط (چپ در RTL) می‌آد */
+.tool-tick {
+  font-size: 10px;
   color: var(--accent-2);
-  font-weight: 700;
+  opacity: 0;
+  transform: translateX(6px);
+  transition: opacity 0.22s ease, transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1);
 }
-.tool-chip:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-  transform: translateY(-2px);
+.tool-row:hover .tool-tick { opacity: 1; transform: none; }
+
+/* خطِ لهجه که از راست به چپ زیر ردیف کشیده می‌شه */
+.tool-row::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--accent-2);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.25, 1);
 }
-.tool-chip:hover::before {
-  content: "✦";
-  color: #fff;
-}
+.tool-row:hover::after { transform: scaleX(1); }
 
 /* ---------- تماس ---------- */
 .contact-grid {
@@ -393,7 +474,11 @@
 
 /* پدینگ و لید سکشن تماس جمع‌وجور می‌شه */
 #contact.section { padding-top: 48px; }
-#contact .page-lede { margin-bottom: 16px; }
+/* لید فقط توی ستون راست جا می‌شه؛ وگرنه فرم که با مارجین منفی بالا اومده روش می‌افته */
+#contact .page-lede {
+  max-width: calc((min(100%, 960px) - 64px) / 2.12);
+  margin-bottom: 16px;
+}
 
 /* فرم (که سمت چپه و زیرش متنی نیست) می‌ره بالاتر، هم‌تراز با «تماس» */
 .terminal { margin-top: -136px; }
@@ -739,6 +824,15 @@
 
 @media (prefers-reduced-motion: reduce) {
   .seal-rotate { animation: none; }
+  .tool-row::after,
+  .tool-tick { transition: none; }
+  .seal,
+  .seal-ring,
+  .seal-ring-dash,
+  .seal-text,
+  .seal-photo,
+  .seal-caption { transition: none; }
+  .about-seal:hover .seal-photo { transform: none; }
 }
 
 @media (max-width: 900px) {
@@ -751,6 +845,8 @@
   .contact-grid { grid-template-columns: 1fr; gap: 36px; }
   .terminal { margin-top: 0; }
   .contact-side { margin-top: 0; }
+  /* تک‌ستونه شده؛ دیگه فرمی کنارش نیست که لید زیرش بره */
+  #contact .page-lede { max-width: none; }
 }
 
 @media (max-width: 980px) {
@@ -759,6 +855,7 @@
 
 @media (max-width: 560px) {
   .skills-rings { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 14px; }
+  .tools-ledger { grid-template-columns: 1fr; }
   .intro-row { grid-template-columns: 26px 1fr; gap: 12px; }
   .files { gap: 22px; }
   .file-head { padding: 10px 14px; gap: 7px; }

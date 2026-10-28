@@ -57,7 +57,9 @@
   overflow: hidden;
   border: 2px solid var(--accent-border);
   box-shadow: 0 12px 26px rgba(122, 31, 53, 0.4);
-  transform: rotate(-4deg);
+  /* خط فارسی توی جعبه‌ی خط پایین‌تر می‌نشینه؛ این جابه‌جایی تصویر رو
+     با بدنه‌ی حروف کنارش هم‌تراز می‌کنه (با em، همراه فونت مقیاس می‌گیره) */
+  transform: translateY(0.18em) rotate(-4deg);
   transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.25, 1), border-color 0.3s ease;
 }
 .home-avatar img {
@@ -67,7 +69,7 @@
   object-fit: cover;
 }
 .home-title:hover .home-avatar {
-  transform: rotate(0deg) scale(1.05);
+  transform: translateY(0.18em) rotate(0deg) scale(1.05);
   border-color: var(--accent-2);
 }
 
@@ -200,6 +202,30 @@
   color: var(--text);
 }
 
+/* ------- هاور روی اجزای کارت وضعیت (خود کارت هاور ندارد) ------- */
+
+/* ستاره‌ی سربرگ */
+.home-card-mark { transition: transform 0.45s cubic-bezier(0.2, 0.9, 0.25, 1), color 0.3s ease; }
+.home-card-mark:hover { transform: rotate(90deg) scale(1.15); color: var(--accent); }
+
+/* نام فایل */
+.home-card-file { transition: color 0.25s ease; }
+.home-card-file:hover { color: var(--accent-2); }
+
+/* خط وضعیت: نقطه بزرگ‌تر می‌شه، متن سفیدتر */
+.home-card-live { transition: color 0.25s ease; }
+.home-card-live:hover { color: #fff; }
+.home-live-dot { transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1); }
+.home-card-live:hover .home-live-dot { transform: scale(1.45); }
+
+/* ردیف‌های وضعیت: کلید زرشکی، مقدار روشن‌تر، خط جداکننده پررنگ */
+.home-card-rows > div { transition: border-bottom-color 0.25s ease; }
+.home-card-rows > div:hover { border-bottom-color: var(--accent-border); }
+.home-card-rows dt { transition: color 0.25s ease; }
+.home-card-rows > div:hover dt { color: var(--accent-2); }
+.home-card-rows dd { transition: color 0.25s ease; }
+.home-card-rows > div:hover dd { color: #fff; }
+
 /* --- نقل‌قول: manifesto --- */
 .home-quote {
   position: relative;
@@ -300,6 +326,42 @@
   color: var(--text-faint);
 }
 
+/* ------- هاور روی اجزای نقل‌قول (خود باکس هاور ندارد) ------- */
+
+/* علامت « پس‌زمینه: رنگش گرم‌تر می‌شه (انیمیشن شناورش دست‌نخورده) */
+.home-quote-mark { transition: color 0.5s ease; }
+.home-quote:hover .home-quote-mark { color: var(--accent-2); }
+
+/* دستور ترمینال: روشن می‌شه و مکان‌نما تندتر پلک می‌زنه */
+.home-quote-cmd { transition: color 0.25s ease; }
+.home-quote-cmd:hover { color: var(--text); }
+.home-quote-cmd:hover .home-quote-caret { background: var(--text); animation-duration: 0.45s; }
+
+/* کامنت // philosophy */
+.home-quote-comment { transition: color 0.25s ease; }
+.home-quote-comment:hover { color: var(--accent-2); }
+
+/* کلمات کلیدی: خط موجی صاف و پررنگ می‌شه و متن هاله می‌گیره */
+.home-quote-text em {
+  transition: color 0.25s ease, text-decoration-color 0.3s ease,
+    text-decoration-thickness 0.3s ease, text-shadow 0.3s ease;
+}
+.home-quote-text em:hover {
+  color: var(--text);
+  text-decoration-style: solid;
+  text-decoration-color: var(--accent-2);
+  text-decoration-thickness: 2.5px;
+  text-shadow: 0 0 22px rgba(156, 44, 68, 0.45);
+}
+
+/* زیرنویس */
+.home-quote-sub { transition: color 0.3s ease; }
+.home-quote-sub:hover { color: var(--text); }
+
+/* امضای پایین: بازتر و زرشکی */
+.home-quote-sign { transition: color 0.3s ease, letter-spacing 0.35s ease; }
+.home-quote-sign:hover { color: var(--accent-2); letter-spacing: 5px; }
+
 /* --- تیکر ابزارها --- */
 .ticker {
   position: relative;
@@ -391,6 +453,22 @@
   .home-quote-caret,
   .home-cycle-word.is-on { animation: none; }
   .ticker-track { animation: none; }
+  .home-quote-mark,
+  .home-quote-cmd,
+  .home-quote-comment,
+  .home-quote-text em,
+  .home-quote-sub,
+  .home-quote-sign { transition: none; }
+  .home-quote-cmd:hover .home-quote-caret { animation-duration: 0.85s; }
+  .home-card-mark,
+  .home-card-file,
+  .home-card-live,
+  .home-live-dot,
+  .home-card-rows > div,
+  .home-card-rows dt,
+  .home-card-rows dd { transition: none; }
+  .home-card-mark:hover,
+  .home-card-live:hover .home-live-dot { transform: none; }
 }
 
 @media (max-width: 900px) {

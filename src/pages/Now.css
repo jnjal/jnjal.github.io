@@ -13,6 +13,22 @@
 
 .now-ago { color: var(--accent-2); }
 
+/* ------- هاور روی اجزای چیپ (خود چیپ هاور نداره) ------- */
+
+/* نقطه‌ی سبز کمی بزرگ می‌شه */
+.now-dot { transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.25, 1); }
+.now-live:hover .now-dot { transform: scale(1.4); }
+
+/* تاریخ روشن می‌شه */
+.now-date { transition: color 0.25s ease; }
+.now-live:hover .now-date { color: var(--text); }
+
+/* «… روز پیش» پررنگ و کمی بالا می‌ره */
+.now-ago {
+  transition: color 0.25s ease, translate 0.25s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.now-live:hover .now-ago { color: var(--text); translate: 0 -1px; }
+
 .now-dot {
   width: 7px;
   height: 7px;
@@ -389,8 +405,89 @@
 }
 .cal-today-btn:hover { background: var(--accent-soft); }
 
+/* ------- هاور روی المان‌های داخل تقویم (خودِ باکس هاور نداره) ------- */
+
+/* دکمه‌های «ماه قبلی/بعدی» — کمی بالا می‌پرن و ته‌زمینه می‌گیرن */
+.cal-nav-btn {
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease,
+    translate 0.25s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.cal-nav-btn:hover { background: var(--accent-soft); translate: 0 -1px; }
+.cal-nav-btn:active { translate: 0 0; }
+
+/* چیپ فاز ماه کنار عنوان — ماهش آروم می‌چرخه */
+.now-cal-phase { transition: color 0.25s ease; }
+.now-cal-phase svg { transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.25, 1); }
+.now-cal-phase:hover { color: var(--text); }
+.now-cal-phase:hover svg { transform: rotate(-14deg) scale(1.12); }
+
+/* حلقه‌ی نقطه‌چین و کمان ماه — با هاور روی صفحه ساعت پررنگ می‌شن */
+.cal-ring { transition: border-color 0.4s ease; }
+.cal-dial:hover .cal-ring { border-color: var(--accent-border); }
+.cal-arc-line {
+  transition: stroke-dashoffset 0.9s ease 0.35s, filter 0.3s ease, stroke-width 0.25s ease;
+}
+.cal-dial:hover .cal-arc-line {
+  stroke-width: 3.1;
+  filter: drop-shadow(0 0 5px rgba(156, 44, 68, 0.75));
+}
+
+/* روزهای روی دایره — کمی بزرگ‌تر + هاله */
+.cal-day {
+  transition: color 0.2s ease, background 0.2s ease,
+    transform 0.25s cubic-bezier(0.2, 0.9, 0.25, 1), box-shadow 0.25s ease;
+}
+.cal-day.is-hover {
+  background: var(--surface-2);
+  color: var(--text);
+  transform: translate(-50%, -50%) scale(1.18);
+  box-shadow: 0 0 0 1px var(--accent-border), 0 8px 18px rgba(0, 0, 0, 0.45);
+  z-index: 3;
+}
+
+/* نوار هفته — چیپ‌ها بالا می‌پرن */
+.cal-week-day {
+  transition: translate 0.25s cubic-bezier(0.2, 0.9, 0.25, 1), border-color 0.2s ease,
+    color 0.2s ease, background 0.2s ease;
+}
+.cal-week-day:hover {
+  translate: 0 -2px;
+  border-color: var(--accent-border);
+  background: var(--surface);
+  color: var(--text);
+}
+.cal-week-day.is-friday:hover { color: var(--accent-2); }
+.cal-week-day.is-today:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* کپشن پایین — ستاره می‌چرخه و «امروز» پر می‌شه */
+.cal-caption-main { transition: color 0.2s ease; }
+.cal-caption:hover .cal-caption-main { color: var(--text); }
+.cal-caption-sep { transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.25, 1), color 0.25s ease; }
+.cal-caption:hover .cal-caption-sep { transform: rotate(90deg); color: var(--accent-2); }
+.cal-today-btn {
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease,
+    translate 0.25s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.cal-today-btn:hover { border-style: solid; color: var(--text); translate: 0 -1px; }
+.cal-today-btn:active { translate: 0 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cal-nav-btn, .cal-today-btn, .cal-week-day, .cal-day,
+  .cal-caption-sep, .now-cal-phase svg,
+  .now-dot, .now-date, .now-ago { transition: none; }
+  .cal-nav-btn:hover, .cal-today-btn:hover, .cal-week-day:hover,
+  .now-live:hover .now-ago { translate: none; }
+  .cal-day.is-hover { transform: translate(-50%, -50%); }
+  .cal-caption:hover .cal-caption-sep,
+  .now-cal-phase:hover svg,
+  .now-live:hover .now-dot { transform: none; }
+}
+
 /* باکس راهنمای فاز ماه — سمت چپ تقویم */
 .cal-legend {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
@@ -398,6 +495,73 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+}
+
+/* هاله‌ی زرشکی پشت باکس که آروم نفس می‌کشه (انیمیشن بی‌وقفه) */
+.cal-legend::before {
+  content: "";
+  position: absolute;
+  inset: -30% -15% 30% -15%;
+  z-index: -1;
+  background: radial-gradient(58% 62% at 74% 28%, rgba(156, 44, 68, 0.36), transparent 72%);
+  transform-origin: 74% 28%;
+  animation: legend-breathe 9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes legend-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.45; }
+  50% { transform: scale(1.18); opacity: 0.7; }
+}
+
+/* ------- هاور فقط روی المان‌های داخل باکس؛ خود باکس هاور نداره ------- */
+
+/* ستاره‌ی تیتر */
+.cal-legend-mark {
+  display: inline-block;
+  margin-inline-end: 5px;
+  color: var(--accent-2);
+  transition: transform 0.55s cubic-bezier(0.2, 0.9, 0.25, 1), color 0.3s ease;
+}
+.cal-legend-title:hover .cal-legend-mark {
+  transform: rotate(135deg) scale(1.15);
+  color: var(--accent);
+}
+
+/* ردیف‌های فاز ماه: پس‌زمینه + چرخش آروم ماه */
+.cal-legend-list li svg { transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.25, 1); }
+.cal-legend-list li:hover { background: var(--accent-soft); color: var(--text); }
+.cal-legend-list li:hover svg { transform: rotate(-12deg) scale(1.12); }
+.cal-legend-list li.is-current:hover { background: rgba(122, 31, 53, 0.3); }
+
+/* چیپ درصد روشنایی، هم‌زمان با هاور ردیف */
+.cal-legend-illum { transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease; }
+.cal-legend-list li:hover .cal-legend-illum {
+  color: var(--text);
+  border-color: var(--accent-border);
+  background: rgba(122, 31, 53, 0.18);
+}
+
+/* کارت‌های آمار: کمی بلند می‌شن و لبه‌شون رنگ می‌گیره */
+.cal-stat {
+  transition: translate 0.3s cubic-bezier(0.2, 0.9, 0.25, 1), border-color 0.25s ease, box-shadow 0.3s ease;
+}
+.cal-stat:hover {
+  translate: 0 -2px;
+  border-color: var(--accent-border);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+}
+.cal-stat:hover .cal-stat-value { color: var(--accent-2); }
+.cal-stat:hover .cal-stat-bar i { filter: brightness(1.35) saturate(1.1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .cal-legend::before { animation: none; opacity: 0.55; }
+  .cal-legend-mark,
+  .cal-legend-list li svg,
+  .cal-stat { transition: none; }
+  .cal-legend-title:hover .cal-legend-mark,
+  .cal-legend-list li:hover svg { transform: none; }
+  .cal-stat:hover { translate: none; }
 }
 
 /* محتوای میانی (لیست فاز + آمار) — وسط‌چین بین عنوان و فوتر */
@@ -522,6 +686,7 @@
   font-weight: 800;
   color: var(--text);
   font-variant-numeric: tabular-nums;
+  transition: color 0.25s ease;
 }
 .cal-stat-bar {
   display: block;
@@ -538,7 +703,7 @@
   border-radius: 4px;
   transform: scaleX(0);
   transform-origin: 100% 50%; /* RTL: نوار از راست پر می‌شه */
-  transition: transform 1s cubic-bezier(0.2, 0.9, 0.25, 1) 0.3s;
+  transition: transform 1s cubic-bezier(0.2, 0.9, 0.25, 1) 0.3s, filter 0.25s ease;
 }
 .cal-legend.in .cal-stat-bar i { transform: scaleX(1); }
 

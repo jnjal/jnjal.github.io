@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { NAV_ITEMS, PROFILE } from "../data/content";
-import { prefersReducedMotion } from "../hooks/useTyped";
+import { scrollToY } from "../lib/smooth";
 import Clock from "./Clock";
 import "./Nav.css";
 
@@ -142,7 +142,7 @@ export default function Nav({ onSecret }) {
     const jump = () => {
       const offset = (navRef.current?.offsetHeight || 64) + 10;
       const top = target.getBoundingClientRect().top + window.scrollY - offset;
-      window.scrollTo({ top, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+      scrollToY(top);
       window.history.pushState(null, "", `#${id}`);
     };
 
@@ -154,7 +154,7 @@ export default function Nav({ onSecret }) {
   return (
     <nav ref={navRef} className="nav">
       <div className="container nav-inner">
-        <button className="nav-logo" data-hover onClick={handleLogoClick} aria-label="جنجال">
+        <button className="nav-logo" data-hover data-no-magnet onClick={handleLogoClick} aria-label="جنجال">
           <span className="mono">✦</span> {PROFILE.name}
         </button>
 
@@ -199,7 +199,7 @@ export default function Nav({ onSecret }) {
       <span ref={progressRef} className="nav-progress" aria-hidden="true" />
 
       {open && (
-        <div className="nav-mobile" ref={menuRef}>
+        <div className="nav-mobile" ref={menuRef} data-lenis-prevent>
           {NAV_ITEMS.map((item, i) => (
             <a
               key={item.id}

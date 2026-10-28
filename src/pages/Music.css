@@ -140,14 +140,41 @@
 /* --- اطلاعات و کنترل‌ها --- */
 .gramo-info { min-width: 0; max-width: 460px; }
 
+/* سربرگ: چیپ وضعیت + خط‌چین + آلبوم/سال */
+.gramo-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid var(--border);
+}
+
 .gramo-state {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  flex: none;
+  gap: 8px;
+  padding: 5px 11px;
+  border: 1px solid var(--accent-border);
+  border-radius: 100px;
+  background: var(--accent-soft);
   font-size: 11px;
   letter-spacing: 1px;
   color: var(--accent-2);
-  margin-bottom: 16px;
+}
+
+.gramo-leader {
+  flex: 1 1 auto;
+  min-width: 14px;
+  height: 1px;
+  background: repeating-linear-gradient(to right, var(--border) 0 2px, transparent 2px 7px);
+}
+
+.gramo-meta {
+  flex: none;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .gramo-dot {
@@ -167,35 +194,58 @@
   50% { box-shadow: 0 0 0 7px rgba(156, 44, 68, 0); }
 }
 
+/* عنوان: گرادیان ملایم از سفید به خاکستری گرم */
 .gramo-title {
-  font-size: clamp(26px, 3.6vw, 36px);
+  margin-top: 20px;
+  font-size: clamp(27px, 3.7vw, 38px);
   font-weight: 900;
-  letter-spacing: -1px;
-  line-height: 1.15;
+  letter-spacing: -1.2px;
+  line-height: 1.08;
+  text-wrap: balance;
+  color: var(--text);
+  background: linear-gradient(180deg, #ffffff 0%, #ccc5c0 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.gramo-artist { font-size: 15px; margin-top: 6px; }
-
-.gramo-meta {
-  margin-top: 8px;
-  font-size: 11.5px;
-  letter-spacing: 0.5px;
+/* نوازنده با یک خط تیره‌ی اکسنت */
+.gramo-artist {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 10px;
+  font-size: 15px;
+  letter-spacing: 0.2px;
 }
+.gramo-artist::before {
+  content: "";
+  order: 1;
+  flex: none;
+  width: 20px;
+  height: 1px;
+  background: linear-gradient(to right, rgba(156, 44, 68, 0), var(--accent-2));
+}
+
+/* ریل پیشرفت: ناحیه‌ی کلیک بلندتر، خط باریک در وسط */
+.gramo-progress { margin-top: 22px; }
 
 .gramo-range {
   -webkit-appearance: none;
   appearance: none;
   direction: ltr;
   width: 100%;
-  height: 4px;
-  margin: 24px 0 8px;
-  border-radius: 4px;
+  height: 18px;
+  margin: 0;
   cursor: pointer;
-  background: linear-gradient(
+  background-image: linear-gradient(
     to right,
     var(--accent-2) var(--pct, 0%),
     var(--border) var(--pct, 0%)
   );
+  background-size: 100% 5px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .gramo-range:disabled { cursor: default; opacity: 0.6; }
 
@@ -203,10 +253,18 @@
   -webkit-appearance: none;
   width: 14px;
   height: 14px;
-  margin-top: -5px;
+  margin-top: 2px;
   border-radius: 50%;
   background: var(--text);
   border: 2px solid var(--accent-2);
+  box-shadow: 0 0 0 0 rgba(156, 44, 68, 0);
+  transition: box-shadow 0.25s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.gramo-range:hover::-webkit-slider-thumb,
+.gramo-range:focus-visible::-webkit-slider-thumb {
+  background: #fff;
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 4px rgba(156, 44, 68, 0.16), 0 0 14px rgba(156, 44, 68, 0.55);
 }
 .gramo-range::-moz-range-thumb {
   width: 14px;
@@ -214,44 +272,92 @@
   border-radius: 50%;
   background: var(--text);
   border: 2px solid var(--accent-2);
+  transition: box-shadow 0.25s ease, background 0.2s ease;
+}
+.gramo-range:hover::-moz-range-thumb,
+.gramo-range:focus-visible::-moz-range-thumb {
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(156, 44, 68, 0.16), 0 0 14px rgba(156, 44, 68, 0.55);
 }
 .gramo-range::-moz-range-track { background: transparent; }
+
+.gramo-range:focus-visible,
+.gramo-vol:focus-visible {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 5px;
+  border-radius: 100px;
+}
 
 .gramo-time {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  margin-top: 1px;
   font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.6px;
 }
+.gramo-elapsed { color: var(--text-dim); }
 
 /* --- ویژوالایزر --- */
 .gramo-viz {
+  position: relative;
   display: flex;
   align-items: flex-end;
   gap: 3px;
-  height: 44px;
-  margin-top: 18px;
+  height: 46px;
+  margin-top: 20px;
+  padding-top: 2px;
 }
+
+/* هاله‌ی گرم پشت میله‌ها */
+.gramo-viz::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 -4px;
+  height: 70%;
+  background: radial-gradient(75% 100% at 50% 100%, rgba(156, 44, 68, 0.2), rgba(156, 44, 68, 0) 72%);
+  pointer-events: none;
+}
+
 .gramo-viz span {
+  position: relative;
   flex: 1;
   height: 100%;
   border-radius: 3px 3px 1px 1px;
-  background: linear-gradient(180deg, var(--accent-2) 0%, var(--accent) 78%);
-  opacity: 0.85;
-  transform: scaleY(0.06);
+  background: linear-gradient(180deg, #d8738a 0%, var(--accent-2) 40%, var(--accent) 100%);
+  opacity: 0.9;
+  transform: scaleY(0.14);
   transform-origin: bottom;
-  transition: transform 0.07s linear;
+  transition: transform 0.07s linear, opacity 0.45s ease;
+}
+
+/* در حالت توقف: یک موج آرام و کم‌رنگ به‌جای خط صاف */
+.gramo:not(.is-playing) .gramo-viz span { opacity: 0.34; }
+.gramo:not(.is-playing) .gramo-viz span:nth-child(3n) {
+  transform: scaleY(0.22);
+  opacity: 0.42;
+}
+.gramo:not(.is-playing) .gramo-viz span:nth-child(4n + 1) {
+  transform: scaleY(0.32);
+  opacity: 0.5;
+}
+.gramo:not(.is-playing) .gramo-viz span:nth-child(7n) {
+  transform: scaleY(0.46);
+  opacity: 0.6;
 }
 
 .gramo-controls {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-top: 26px;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 22px;
 }
 
 .gramo-btn {
-  width: 54px;
-  height: 54px;
+  width: 56px;
+  height: 56px;
   flex-shrink: 0;
   display: grid;
   place-items: center;
@@ -261,19 +367,34 @@
   color: #fff;
   font-size: 13px;
   background: radial-gradient(circle at 32% 26%, var(--accent-2) 0%, var(--accent) 62%, #561325 100%);
-  box-shadow: 0 10px 24px rgba(122, 31, 53, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 10px 24px rgba(122, 31, 53, 0.38),
+    0 0 0 6px rgba(122, 31, 53, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
 }
 .gramo-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 14px 30px rgba(122, 31, 53, 0.45);
+  transform: scale(1.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 14px 32px rgba(122, 31, 53, 0.5),
+    0 0 0 8px rgba(122, 31, 53, 0.1);
+}
+.gramo-btn:active { transform: scale(0.97); }
+
+.gramo-note {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
 }
 
-.gramo-hint { font-size: 12.5px; line-height: 1.7; }
+.gramo-hint { font-size: 12px; line-height: 1.5; }
 
 .gramo-plays {
-  font-size: 11.5px;
+  font-size: 11px;
   letter-spacing: 0.3px;
+  color: var(--accent-2);
 }
 
 /* --- ابزارهای کنار کنترل‌ها --- */
@@ -281,59 +402,73 @@
   margin-inline-start: auto;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
+  padding: 5px 6px 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.018);
 }
 
 .gramo-mini {
-  width: 36px;
-  height: 36px;
+  width: 30px;
+  height: 30px;
   display: grid;
   place-items: center;
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
   border-radius: 50%;
   background: transparent;
   color: var(--text-dim);
   cursor: pointer;
-  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 .gramo-mini:hover {
-  border-color: var(--accent-border);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text);
 }
 .gramo-mini.is-on {
-  border-color: var(--accent-border);
   background: var(--accent-soft);
   color: var(--accent-2);
+  box-shadow: inset 0 0 0 1px var(--accent-border);
 }
 
 .gramo-vol-ic {
   display: grid;
   place-items: center;
   color: var(--text-faint);
+  transition: color 0.25s ease;
 }
+.gramo-tools:hover .gramo-vol-ic { color: var(--text-dim); }
 
 .gramo-vol {
   -webkit-appearance: none;
   appearance: none;
   direction: ltr;
-  width: 78px;
-  height: 4px;
-  border-radius: 4px;
+  width: 74px;
+  height: 16px;
   cursor: pointer;
-  background: linear-gradient(
+  background-image: linear-gradient(
     to right,
     var(--text-dim) var(--pct, 100%),
     var(--border) var(--pct, 100%)
   );
+  background-size: 100% 4px;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .gramo-vol::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 12px;
   height: 12px;
-  margin-top: -4px;
+  margin-top: 2px;
   border-radius: 50%;
   background: var(--text);
   border: 2px solid var(--text-faint);
+  transition: box-shadow 0.25s ease, border-color 0.2s ease;
+}
+.gramo-vol:hover::-webkit-slider-thumb,
+.gramo-vol:focus-visible::-webkit-slider-thumb {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 4px rgba(156, 44, 68, 0.16);
 }
 .gramo-vol::-moz-range-thumb {
   width: 12px;
@@ -341,6 +476,12 @@
   border-radius: 50%;
   background: var(--text);
   border: 2px solid var(--text-faint);
+  transition: box-shadow 0.25s ease, border-color 0.2s ease;
+}
+.gramo-vol:hover::-moz-range-thumb,
+.gramo-vol:focus-visible::-moz-range-thumb {
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 4px rgba(156, 44, 68, 0.16);
 }
 .gramo-vol::-moz-range-track { background: transparent; }
 
@@ -634,6 +775,16 @@
   .gramo.is-playing .gramo-dot,
   .band-slot:hover .band-grooves { animation: none; }
   .gramo-viz { display: none; }
+  .gramo-btn,
+  .gramo-mini,
+  .gramo-vol-ic,
+  .gramo-viz span,
+  .gramo-range::-webkit-slider-thumb,
+  .gramo-range::-moz-range-thumb,
+  .gramo-vol::-webkit-slider-thumb,
+  .gramo-vol::-moz-range-thumb { transition: none; }
+  .gramo-btn:hover { transform: none; }
+  .gramo-btn:active { transform: none; }
 }
 
 @media (max-width: 720px) {
@@ -645,8 +796,15 @@
   }
   .gramo-deck { width: min(232px, 64vw); }
   .gramo-info { width: 100%; max-width: none; text-align: center; }
+  .gramo-head { justify-content: center; gap: 10px; }
+  .gramo-leader { display: none; }
+  .gramo-title { font-size: 28px; letter-spacing: -0.8px; }
+  .gramo-artist { justify-content: center; }
   .gramo-state,
   .gramo-controls { justify-content: center; }
+  .gramo-controls { gap: 12px; }
+  .gramo-note { align-items: center; }
+  .gramo-tools { margin-inline-start: 0; }
   .gramo-hint { display: none; }
 
   .crate-head { margin-top: 54px; }

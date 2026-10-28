@@ -78,7 +78,7 @@ export default function Home() {
           <Reveal delay={280} className="home-card">
             <div className="home-card-head">
               <span className="home-card-mark" aria-hidden="true">✦</span>
-              <span className="mono faint">status.txt</span>
+              <span className="mono faint home-card-file">status.txt</span>
             </div>
 
             <div className="home-card-live">

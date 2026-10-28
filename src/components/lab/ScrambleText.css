@@ -1,4 +1,18 @@
+/* جعبه رو متن واقعی (ghost) تعیین می‌کنه و متن در حال اسکرامبل روش شناوره،
+   برای همین عرض/ارتفاع هیچ‌وقت وسط انیمیشن عوض نمی‌شه و صفحه نمی‌پره. */
 .scramble {
+  position: relative;
+  display: inline-grid;
   unicode-bidi: isolate;
   cursor: default;
+}
+
+.scramble-ghost {
+  visibility: hidden;
+}
+
+.scramble-live {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
 }

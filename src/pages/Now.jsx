@@ -206,8 +206,8 @@ export default function Now() {
 
         <Reveal delay={180} className="now-live mono faint">
           <span className="now-dot" aria-hidden="true" />
-          آخرین آپدیت {NOW.updatedAt}
-          <span className="now-ago">— {timeAgo(NOW.updatedAtISO)}</span>
+          <span className="now-date">آخرین آپدیت {NOW.updatedAt}</span>
+          <span className="now-ago">- {timeAgo(NOW.updatedAtISO)}</span>
         </Reveal>
 
         {/* کتابخانه‌ی روز — فهرست کتاب‌ها */}
@@ -357,7 +357,10 @@ export default function Now() {
           </Reveal>
 
           <Reveal delay={220} className="cal-legend">
-            <h3 className="cal-legend-title">✦ ماه الان چه حالیه؟</h3>
+            <h3 className="cal-legend-title">
+              <span className="cal-legend-mark" aria-hidden="true">✦</span>
+              ماه الان چه حالیه؟
+            </h3>
 
             <div className="cal-legend-body">
               <ul className="cal-legend-list">

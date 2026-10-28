@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Reveal from "../components/Reveal";
 import Icon from "../components/Icon";
 import { prefersReducedMotion } from "../hooks/useTyped";
@@ -191,6 +191,12 @@ export default function Music() {
   const pct = duration ? (time / duration) * 100 : 0;
   const track = MUSIC.favorite;
 
+  // کال‌بک ریف میله‌ها یک‌بار ساخته می‌شه؛ وگرنه هر رندر ۲۸ ریف رو جدا/دوباره وصل می‌کنه
+  const barSetters = useMemo(
+    () => Array.from({ length: VIZ_BARS }, (_, i) => (el) => { barsRef.current[i] = el; }),
+    []
+  );
+
   // گراف صدا برای ویژوالایزر — فقط یکبار و بعد از اولین پخش (سیاست autoplay)
   const ensureGraph = () => {
     if (ctxRef.current || !audioRef.current) return;
@@ -233,6 +239,7 @@ export default function Music() {
   useEffect(() => {
     if (!playing || !analyserRef.current || prefersReducedMotion()) return undefined;
     const analyser = analyserRef.current;
+    const bars = barsRef.current;
     const data = new Uint8Array(analyser.frequencyBinCount);
     const usable = Math.max(8, Math.floor(data.length * 0.62));
     let raf = 0;
@@ -242,14 +249,18 @@ export default function Music() {
       for (let i = 0; i < VIZ_BARS; i += 1) {
         const idx = Math.floor((i / VIZ_BARS) * usable);
         const v = data[idx] / 255;
-        const el = barsRef.current[i];
+        const el = bars[i];
         if (el) el.style.transform = `scaleY(${Math.max(0.06, v)})`;
       }
       raf = requestAnimationFrame(loop);
     };
 
     raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      // برگشت میله‌ها به حالت استراحت، وگرنه روی ارتفاعِ لحظه‌ی توقف فریز می‌شن
+      bars.forEach((el) => { if (el) el.style.transform = ""; });
+    };
   }, [playing]);
 
   // پاک‌سازی موقع خروج
@@ -306,46 +317,50 @@ export default function Music() {
           </div>
 
           <div className="gramo-info">
-            <div className="gramo-state mono">
-              <span className="gramo-dot" aria-hidden="true" />
-              {playing ? "در حال پخش" : "آماده‌ی پخش"}
+            <div className="gramo-head mono">
+              <span className="gramo-state">
+                <span className="gramo-dot" aria-hidden="true" />
+                <span aria-live="polite">{playing ? "در حال پخش" : "آماده‌ی پخش"}</span>
+              </span>
+              <span className="gramo-leader" aria-hidden="true" />
+              {(track.year || track.album) && (
+                <span className="gramo-meta faint">
+                  {[track.album, track.year].filter(Boolean).join(" · ")}
+                </span>
+              )}
             </div>
 
             <div className="gramo-title">{track.title}</div>
             <div className="gramo-artist dim">{track.artist}</div>
-            {(track.year || track.album) && (
-              <div className="gramo-meta mono faint">
-                {[track.album, track.year].filter(Boolean).join(" · ")}
-              </div>
-            )}
 
-            <input
-              type="range"
-              className="gramo-range"
-              min={0}
-              max={duration || 0}
-              step={0.1}
-              value={time}
-              style={{ "--pct": `${pct}%` }}
-              onChange={(e) => {
-                const a = audioRef.current;
-                if (a) a.currentTime = Number(e.target.value);
-              }}
-              aria-label="پیشرفت آهنگ"
-              disabled={!duration}
-            />
-            <div className="gramo-time mono faint">
-              <span>{fmt(time)}</span>
-              <span>{fmt(duration)}</span>
+            <div className="gramo-progress">
+              <input
+                type="range"
+                className="gramo-range"
+                min={0}
+                max={duration || 0}
+                step={0.1}
+                value={time}
+                style={{ "--pct": `${pct}%` }}
+                onChange={(e) => {
+                  const a = audioRef.current;
+                  if (a) a.currentTime = Number(e.target.value);
+                }}
+                aria-label="پیشرفت آهنگ"
+                aria-valuetext={`${fmt(time)} از ${fmt(duration)}`}
+                disabled={!duration}
+              />
+              <div className="gramo-time mono">
+                <span className="gramo-elapsed">{fmt(time)}</span>
+                <span className="faint">{fmt(duration)}</span>
+              </div>
             </div>
 
             <div className="gramo-viz" aria-hidden="true">
               {Array.from({ length: VIZ_BARS }, (_, i) => (
                 <span
                   key={i}
-                  ref={(el) => {
-                    barsRef.current[i] = el;
-                  }}
+                  ref={barSetters[i]}
                 />
               ))}
             </div>
@@ -360,10 +375,13 @@ export default function Music() {
               >
                 {playing ? <Icon name="pause" size={16} /> : <Icon name="play" size={16} />}
               </button>
-              {plays > 0 && (
-                <span className="gramo-plays mono faint">{faNum(plays)} بار گوش دادی</span>
-              )}
-              <span className="gramo-hint faint">یه ضربه بزن، خودش پخش می‌شه</span>
+
+              <div className="gramo-note">
+                <span className="gramo-hint faint">یه ضربه بزن، خودش پخش می‌شه</span>
+                {plays > 0 && (
+                  <span className="gramo-plays mono">{faNum(plays)} بار گوش دادی</span>
+                )}
+              </div>
 
               <div className="gramo-tools">
                 <button

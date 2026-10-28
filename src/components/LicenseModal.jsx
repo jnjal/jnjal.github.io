@@ -365,6 +365,7 @@ export default function LicenseModal({ onClose }) {
   return createPortal(
     <div
       className="lic-overlay"
+      data-lenis-prevent
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}

@@ -2,6 +2,7 @@ import { Suspense, lazy, useEffect, useState } from "react";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import Cursor from "./Cursor";
+import SmoothScroll from "./SmoothScroll";
 
 const Archive = lazy(() => import("./Archive"));
 
@@ -42,6 +43,7 @@ export default function Layout({ children }) {
     <div style={{ cursor: "inherit", display: "flex", flexDirection: "column", minHeight: "100svh" }}>
       <a href="#main-content" className="skip-link">برو سراغ محتوای اصلی</a>
       <Cursor />
+      <SmoothScroll />
       <div className="boot" aria-hidden="true" />
       <div className="bg-fx" aria-hidden="true">
         <div className="noise">

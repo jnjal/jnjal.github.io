@@ -53,7 +53,8 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+/* وقتی Lenis فعاله خودش اسکرول رو انیمیت می‌کنه؛ smooth نیتیو فقط برای حالت خاموش */
+html:not(.lenis) { scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -197,8 +198,6 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
   transition: border-color 0.2s, color 0.2s, background 0.2s;
   text-decoration: none;
 }
-/* دکمه‌های عادی: بازگشت مغناطیسی نرم — دکمه‌های Motion (data-no-magnet) مستثنی‌ان */
-.btn:not([data-no-magnet]) { transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.3s cubic-bezier(0.16, 0.84, 0.28, 1); }
 .btn:hover { border-color: var(--accent-border); color: #fff; }
 .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn-primary:hover { background: var(--accent-2); border-color: var(--accent-2); }
@@ -217,7 +216,8 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 }
 @keyframes title-mask {
   0% { clip-path: inset(100% 0 0 0); transform: translateY(12px); opacity: 0.35; }
-  100% { clip-path: inset(0 0 0 0); transform: translateY(0); opacity: 1; }
+  /* پایین (و کناره‌ها) با مقدار منفی باز می‌مونه؛ وگرنه سایه‌ی آواتار روی لبه‌ی h1 بریده می‌شه */
+  100% { clip-path: inset(0 -60px -60px -60px); transform: translateY(0); opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   .reveal.in .home-title,

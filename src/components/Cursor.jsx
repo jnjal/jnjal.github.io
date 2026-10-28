@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 
 const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
 
+// هر چیزی که رفتار دکمه‌ای داره: خودِ button و لینک‌هایی که شکل دکمه‌ان
+const MAGNET_SELECTOR = "button, .btn, .to-top, .social-dot, .home-scroll, [data-magnet]";
+
 function canUseCursor() {
   if (typeof window === "undefined") return false;
   const coarse = window.matchMedia("(pointer: coarse)").matches;
@@ -14,7 +17,6 @@ export default function Cursor() {
   const [enabled] = useState(canUseCursor);
   const ringRef = useRef(null);
   const dotRef = useRef(null);
-  const magnetRef = useRef(null);
   const target = useRef({ x: -100, y: -100 });
   const pressedRef = useRef(false);
 
@@ -23,37 +25,61 @@ export default function Cursor() {
 
     if (dotRef.current) dotRef.current.style.transform = "translate(-100px, -100px)";
 
-    // دکمه با transition خودش برمی‌گرده، نه با پرش یک‌باره
-    const resetMagnet = () => {
-      if (magnetRef.current) {
-        magnetRef.current.style.transform = "translate(0px, 0px)";
-        magnetRef.current = null;
-      }
+    // آهنربا: هر دکمه‌ای که موس روشه به سمت موس کشیده می‌شه و با ease برمی‌گرده.
+    // از پراپرتی translate استفاده می‌کنیم تا transform خودِ دکمه (هاور/موشن) دست‌نخورده بمونه.
+    const magnets = new Map(); // el → { x, y, tx, ty }
+    let current = null;
+
+    const releaseAll = () => {
+      current = null;
+      magnets.forEach((m) => { m.tx = 0; m.ty = 0; });
     };
 
     const move = (e) => {
       target.current = { x: e.clientX, y: e.clientY };
 
-      // فقط دکمه‌های عادی کشیده می‌شن؛ دکمه‌های Motion خودشون فنر دارن (data-no-magnet)
-      let el = e.target instanceof Element ? e.target.closest(".btn, [data-magnet]") : null;
-      if (el && el.hasAttribute("data-no-magnet")) el = null;
+      // دکمه‌های Motion فنر خودشون رو دارن (data-no-magnet)
+      const hit = e.target instanceof Element ? e.target.closest(MAGNET_SELECTOR) : null;
+      let el = hit && !hit.hasAttribute("data-no-magnet") ? hit : null;
 
-      if (el !== magnetRef.current) {
-        resetMagnet();
-        magnetRef.current = el;
-      }
+      let tx = 0;
+      let ty = 0;
 
       if (el) {
         const r = el.getBoundingClientRect();
-        const dx = clamp(e.clientX - (r.left + r.width / 2), -60, 60);
-        const dy = clamp(e.clientY - (r.top + r.height / 2), -60, 60);
-        el.style.transform = `translate(${(dx * 0.18).toFixed(1)}px, ${(dy * 0.18).toFixed(1)}px)`;
+        // ردیف‌ها و پنل‌های بزرگ کشیده نمی‌شن؛ آهنربا فقط برای کنترل‌های جمع‌وجوره
+        if (r.width > 460 || r.height > 140) {
+          el = null;
+        } else {
+          tx = clamp(e.clientX - (r.left + r.width / 2), -60, 60) * 0.18;
+          ty = clamp(e.clientY - (r.top + r.height / 2), -60, 60) * 0.18;
+        }
+      }
+
+      if (el !== current) {
+        current = el;
+        magnets.forEach((m, node) => {
+          if (node !== el) { m.tx = 0; m.ty = 0; }
+        });
+      }
+
+      if (el) {
+        let m = magnets.get(el);
+        if (!m) {
+          m = { x: 0, y: 0, tx: 0, ty: 0 };
+          el.style.willChange = "translate";
+          magnets.set(el, m);
+        }
+        m.tx = tx;
+        m.ty = ty;
       }
     };
 
     const over = (e) => setHover(Boolean(e.target instanceof Element && e.target.closest("a,button,[data-hover]")));
     const down = () => { pressedRef.current = true; };
     const up = () => { pressedRef.current = false; };
+    // موس از پنجره بیرون رفت → دکمه‌ها سر جاشون برگردن
+    const out = (e) => { if (!e.relatedTarget) releaseAll(); };
 
     let raf = 0;
     let x = -100;
@@ -74,6 +100,23 @@ export default function Cursor() {
       if (dotRef.current) {
         dotRef.current.style.transform = `translate(${target.current.x}px, ${target.current.y}px) scale(${dotPress.toFixed(3)})`;
       }
+
+      // دکمه‌ها نرم به سمت هدف (یا صفر) می‌رن و وقتی رسیدن، از لیست درمی‌رن
+      magnets.forEach((m, el) => {
+        m.x += (m.tx - m.x) * 0.22;
+        m.y += (m.ty - m.y) * 0.22;
+        if (Math.abs(m.x - m.tx) < 0.04) m.x = m.tx;
+        if (Math.abs(m.y - m.ty) < 0.04) m.y = m.ty;
+
+        if (!m.tx && !m.ty && !m.x && !m.y) {
+          el.style.translate = "";
+          el.style.willChange = "";
+          magnets.delete(el);
+          return;
+        }
+        el.style.translate = `${m.x.toFixed(2)}px ${m.y.toFixed(2)}px`;
+      });
+
       raf = requestAnimationFrame(loop);
     };
 
@@ -81,8 +124,9 @@ export default function Cursor() {
     window.addEventListener("mouseover", over);
     window.addEventListener("mousedown", down);
     window.addEventListener("mouseup", up);
-    window.addEventListener("blur", up);
-    window.addEventListener("scroll", resetMagnet, { passive: true });
+    window.addEventListener("mouseout", out);
+    window.addEventListener("blur", releaseAll);
+    window.addEventListener("scroll", releaseAll, { passive: true });
     raf = requestAnimationFrame(loop);
 
     return () => {
@@ -90,10 +134,15 @@ export default function Cursor() {
       window.removeEventListener("mouseover", over);
       window.removeEventListener("mousedown", down);
       window.removeEventListener("mouseup", up);
-      window.removeEventListener("blur", up);
-      window.removeEventListener("scroll", resetMagnet);
+      window.removeEventListener("mouseout", out);
+      window.removeEventListener("blur", releaseAll);
+      window.removeEventListener("scroll", releaseAll);
       cancelAnimationFrame(raf);
-      resetMagnet();
+      magnets.forEach((m, el) => {
+        el.style.translate = "";
+        el.style.willChange = "";
+      });
+      magnets.clear();
     };
   }, [enabled]);
 

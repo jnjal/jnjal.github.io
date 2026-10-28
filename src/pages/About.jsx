@@ -353,9 +353,19 @@ export default function About() {
 
             <div>
               <h3 className="section-h">ابزارایی که دستم می‌گیرم</h3>
-              <div className="tools-wrap">
-                {TOOLS.map((t) => <span key={t} className="tool-chip mono">{t}</span>)}
-              </div>
+              {/* فهرست خط‌کشی‌شده — عمداً بدون چیپ، تا با هدر خودِ stack.toml هم‌خانواده باشه */}
+              <ol className="tools-ledger">
+                {TOOLS.map((t, i) => (
+                  <li key={t} className="tool-row">
+                    <span className="tool-no mono" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="tool-name mono">{t}</span>
+                    <span className="tool-dots" aria-hidden="true" />
+                    <span className="tool-tick" aria-hidden="true">✦</span>
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
               </div>

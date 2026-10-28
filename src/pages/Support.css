@@ -19,18 +19,26 @@
 .support-card::before {
   content: "";
   position: absolute;
-  inset: 0;
+  /* یک دوره کامل بیرون‌زدگی، تا موقع حرکت لبه‌های راه‌راه داخل کارت پیدا نشن */
+  inset: -48px;
   background: repeating-linear-gradient(
     -45deg,
     rgba(255, 255, 255, 0.022) 0 10px,
     transparent 10px 20px
   );
   pointer-events: none;
-  animation: support-stripes 16s linear infinite;
+  /* جابه‌جایی به اندازهٔ دقیقاً یک دورهٔ راه‌راه (۲۰px روی محور عمود بر خط‌ها)
+     تا لوپ بدون پرشِ انتهای انیمیشن بسته بشه */
+  animation: support-stripes 11.3s linear infinite;
+  will-change: transform;
 }
 
 @keyframes support-stripes {
-  to { background-position: 40px 0; }
+  to { transform: translate(14.1421px, -14.1421px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support-card::before { animation: none; }
 }
 
 .support-body {

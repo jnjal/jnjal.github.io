@@ -14,6 +14,7 @@ export const PROFILE = {
 export const NAV_ITEMS = [
   { id: "home", label: "خانه" },
   { id: "about", label: "درباره" },
+  { id: "contact", label: "تماس" },
   { id: "projects", label: "پروژه‌ها" },
   { id: "now", label: "الان" },
   { id: "notes", label: "یادداشت‌ها" },
@@ -157,7 +158,7 @@ export const SKILLS = [
 ];
 
 export const TOOLS = [
-  "Cloudflare Workers", "D1", "JavaScript", "TypeScript", "React",
+  "Cloudflare Workers", "JavaScript", "TypeScript", "React",
   "Vite", "CSS", "Rust", "Telegram Bot API", "Git", "VS Code",
 ];
 

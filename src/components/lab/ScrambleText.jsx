@@ -54,6 +54,8 @@ export default function ScrambleText({
 
   useEffect(() => stop, [stop]);
 
+  // متن نهایی نامرئی می‌مونه تا اندازه‌ی جعبه رو قفل کنه؛ متن در حال اسکرامبل
+  // روش شناوره. بدون این، کاراکترهای تصادفی عرض رو عوض می‌کنن و ارتفاع صفحه می‌پره.
   return (
     <Tag
       ref={ref}
@@ -62,7 +64,8 @@ export default function ScrambleText({
       onMouseLeave={reset}
       aria-label={text}
     >
-      {display}
+      <span className="scramble-ghost" aria-hidden="true">{text}</span>
+      <span className="scramble-live" aria-hidden="true">{display}</span>
     </Tag>
   );
 }
