@@ -4,7 +4,7 @@ import { prefersReducedMotion } from "../hooks/useTyped";
 import { SUPPORT } from "../data/content";
 import "./Support.css";
 
-const SUPPORT_URL = SUPPORT.url && SUPPORT.url !== "#" ? SUPPORT.url : "https://daramet.com/jnjal";
+const SUPPORT_URL = SUPPORT.url && SUPPORT.url !== "#" ? SUPPORT.url : null;
 const ready = Boolean(SUPPORT_URL);
 
 const CONFETTI_COLORS = ["#9c2c44", "#e0556f", "#f2e9e4", "#d9a05b", "#7a1f35"];

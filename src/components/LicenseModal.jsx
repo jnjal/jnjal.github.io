@@ -1,20 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { PROJECTS, DARINO, PROFILE, WORKER_URL } from "../data/content";
+import { LICENSE_PRODUCTS, PROFILE, WORKER_URL } from "../data/content";
 import { prefersReducedMotion } from "../hooks/useTyped";
 import "./LicenseModal.css";
 
-const ITEM = PROJECTS.find((p) => p.license) || PROJECTS[1];
-const SUBJECT = "خرید لایسنس دارینو";
 const fa = (n) => String(n).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]);
-
-const STEPS = [
-  { key: "intro", q: "دارینو چیه؟" },
-  { key: "why", q: "چرا دارینو؟" },
-  { key: "features", q: "ویژگی دارینو چیه؟" },
-  { key: "terms", q: "قیمت و شرایط خرید؟" },
-  { key: "buy", q: "چطور بخرم؟" },
-];
 
 const CLAMP = 320;
 
@@ -51,7 +41,24 @@ function Collapsible({ open, children }) {
   );
 }
 
-export default function LicenseModal({ onClose }) {
+export default function LicenseModal({ onClose, project }) {
+  const DATA = LICENSE_PRODUCTS[project?.licenseFor] || LICENSE_PRODUCTS.darino;
+  const TITLE = project?.title || "دارینو";
+  const NAME = DATA.name || TITLE;
+  const SUBJECT = `خرید لایسنس ${NAME}`;
+  const SOURCE = project?.licenseFor || "darino";
+
+  const STEPS = useMemo(
+    () => [
+      { key: "intro", q: `${NAME} چیه؟` },
+      { key: "why", q: `چرا ${NAME}؟` },
+      { key: "features", q: `ویژگی ${NAME} چیه؟` },
+      { key: "terms", q: "قیمت و شرایط خرید؟" },
+      { key: "buy", q: "چطور بخرم؟" },
+    ],
+    [NAME]
+  );
+
   const [step, setStep] = useState(0);
   const [phase, setPhase] = useState("in");
   const [typed, setTyped] = useState(STEPS[0].q);
@@ -116,7 +123,7 @@ export default function LicenseModal({ onClose }) {
     }, 22);
 
     return () => window.clearInterval(interval);
-  }, [step]);
+  }, [step, STEPS]);
 
   const animating = typed !== STEPS[step].q;
   const last = step === STEPS.length - 1;
@@ -140,8 +147,8 @@ export default function LicenseModal({ onClose }) {
     .filter(Boolean)
     .join("\n\n");
 
-  const body = details || `سلام، درباره‌ی «${ITEM.title}» می‌خوام بدونم.`;
-  const tagged = `مربوط به دارینو:\n\n${body}`;
+  const body = details || `سلام، درباره‌ی «${NAME}» می‌خوام بدونم.`;
+  const tagged = `مربوط به ${NAME}:\n\n${body}`;
 
   const mailtoHref = `mailto:${PROFILE.email}?subject=${encodeURIComponent(SUBJECT)}&body=${encodeURIComponent(body)}`;
   const telegramHref = `https://t.me/share/url?url=${encodeURIComponent("https://jnjal.github.io")}&text=${encodeURIComponent(tagged)}`;
@@ -161,7 +168,7 @@ export default function LicenseModal({ onClose }) {
           email: form.contact.trim(),
           phone: form.phone.trim(),
           message: form.message.trim(),
-          source: "darino",
+          source: SOURCE,
         }),
       });
       if (!res.ok) throw new Error();
@@ -177,13 +184,13 @@ export default function LicenseModal({ onClose }) {
       case "intro":
         return (
           <>
-            <div className="lic-subtitle mono">{DARINO.subtitle}</div>
+            <div className="lic-subtitle mono">{DATA.subtitle}</div>
             <div className="lic-story">
-              {ITEM.story.map((p) => (
+              {(project?.story ?? []).map((p) => (
                 <p key={p}>{p}</p>
               ))}
             </div>
-            <blockquote className="lic-quote">{DARINO.tagline}</blockquote>
+            <blockquote className="lic-quote">{DATA.tagline}</blockquote>
           </>
         );
 
@@ -191,12 +198,12 @@ export default function LicenseModal({ onClose }) {
         return (
           <>
             <div className="lic-section-head">
-              <span className="mono faint">why darino</span>
-              <span className="lic-count mono">{fa(DARINO.why.length)} تا دلیل</span>
+              <span className="mono faint">why {SOURCE}</span>
+              <span className="lic-count mono">{fa(DATA.why.length)} تا دلیل</span>
             </div>
             <Collapsible open={openWhy}>
               <div className="lic-why-grid">
-                {DARINO.why.map((w, i) => (
+                {DATA.why.map((w, i) => (
                   <div className="why" key={w.title}>
                     <span className="why-no mono">{fa(i + 1)}</span>
                     <div className="why-body">
@@ -226,11 +233,11 @@ export default function LicenseModal({ onClose }) {
           <>
             <div className="lic-section-head">
               <span className="mono faint">features</span>
-              <span className="lic-count mono">{fa(DARINO.specs.length)} تا بخش</span>
+              <span className="lic-count mono">{fa(DATA.specs.length)} تا بخش</span>
             </div>
             <Collapsible open={openFeat}>
               <div className="lic-specs-grid">
-                {DARINO.specs.map((s, i) => (
+                {DATA.specs.map((s, i) => (
                   <div className="spec" key={s.title}>
                     <div className="spec-head">
                       <span className="spec-no mono">{String(i + 1).padStart(2, "0")}</span>
@@ -264,16 +271,16 @@ export default function LicenseModal({ onClose }) {
           <>
             <div className="lic-price">
               <span className="mono faint">price</span>
-              <strong>{DARINO.price}</strong>
+              <strong>{DATA.price}</strong>
             </div>
 
             <div className="lic-section-head">
               <span className="mono faint">terms</span>
-              <span className="lic-count mono">{fa(DARINO.terms.length)} بند</span>
+              <span className="lic-count mono">{fa(DATA.terms.length)} بند</span>
             </div>
 
             <div className="lic-contract">
-              {DARINO.terms.map((t, i) => (
+              {DATA.terms.map((t, i) => (
                 <div className="clause" key={t.title}>
                   <span className="clause-no mono">{fa(i + 1)}</span>
                   <div className="clause-body">
@@ -324,7 +331,7 @@ export default function LicenseModal({ onClose }) {
               <textarea
                 rows={3}
                 className="lic-input"
-                placeholder="پیامت درباره‌ی دارینو..."
+                placeholder={`پیامت درباره‌ی ${NAME}...`}
                 value={form.message}
                 onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
               />
@@ -372,7 +379,7 @@ export default function LicenseModal({ onClose }) {
     >
       <div className="lic-card" role="dialog" aria-modal="true" aria-labelledby="lic-title">
         <div className="lic-bar">
-          <span className="mono">darino — license.txt</span>
+          <span className="mono">{DATA.bar || `${NAME} — license.txt`}</span>
           <button type="button" className="lic-close" onClick={onClose} aria-label="بستن" data-hover>
             ×
           </button>

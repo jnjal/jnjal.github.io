@@ -26,36 +26,39 @@ function StoryCard({ project: p, index, onLicense }) {
       }}
     >
       <article className="story">
-        <span className="story-ghost mono" aria-hidden="true">
-          {String(index + 1).padStart(2, "0")}
-        </span>
-
-        <div className="story-meta">
-          <span className="tag">{p.category}</span>
-          <span className="mono faint" style={{ fontSize: 11 }}>{p.year}</span>
-          {p.badge && <span className="story-badge">{p.badge}</span>}
+        <div className="story-rail">
+          <span className="story-rail-num mono" aria-hidden="true">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <span className="story-rail-cat">{p.category}</span>
         </div>
 
-        <h3 className="story-title">{p.title}</h3>
+        <div className="story-main">
+          <div className="story-meta">
+            <span className="mono faint" style={{ fontSize: 11 }}>{p.year}</span>
+            {p.badge && <span className="story-badge">{p.badge}</span>}
+          </div>
 
-        <div className="story-text">
-          {p.story.map((para, j) => (
-            <p key={j}>{para}</p>
-          ))}
-        </div>
+          <h3 className="story-title" dir="auto">{p.title}</h3>
 
-        <div className="story-foot">
+          <div className="story-text">
+            {p.story.map((para, j) => (
+              <p key={j}>{para}</p>
+            ))}
+          </div>
+
+          <div className="story-foot">
           <div className="project-tags">
             {p.tags.map((t) => <span key={t} className="tag">{t}</span>)}
           </div>
 
-          {p.license ? (
+          {p.licenseFor ? (
             <motion.button
               type="button"
               className="btn btn-primary"
               data-hover
               data-no-magnet
-              onClick={onLicense}
+              onClick={() => onLicense(p)}
               whileHover={reduced ? undefined : { scale: 1.04 }}
               whileTap={reduced ? undefined : { scale: 0.96 }}
               transition={SPRING}
@@ -77,6 +80,7 @@ function StoryCard({ project: p, index, onLicense }) {
               {p.cta} {p.external ? "↗" : ""}
             </motion.a>
           )}
+          </div>
         </div>
       </article>
     </motion.div>
@@ -84,7 +88,7 @@ function StoryCard({ project: p, index, onLicense }) {
 }
 
 export default function Projects() {
-  const [licenseOpen, setLicenseOpen] = useState(false);
+  const [licenseProject, setLicenseProject] = useState(null);
 
   return (
     <section id="projects" className="section">
@@ -101,14 +105,14 @@ export default function Projects() {
               key={p.id}
               project={p}
               index={i}
-              onLicense={() => setLicenseOpen(true)}
+              onLicense={setLicenseProject}
             />
           ))}
         </div>
 
-        {licenseOpen && (
+        {licenseProject && (
           <Suspense fallback={null}>
-            <LicenseModal onClose={() => setLicenseOpen(false)} />
+            <LicenseModal project={licenseProject} onClose={() => setLicenseProject(null)} />
           </Suspense>
         )}
       </div>

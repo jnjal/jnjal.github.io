@@ -13,7 +13,7 @@
 .story {
   position: relative;
   overflow: hidden;
-  padding: 34px 34px 30px;
+  display: flex;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -25,23 +25,48 @@
   box-shadow: 0 26px 56px rgba(0, 0, 0, 0.35);
 }
 
-/* شماره‌ی فصل به‌شکل واترمارک دورخطی */
-.story-ghost {
-  position: absolute;
-  top: -26px;
-  inset-inline-end: 22px;
-  font-size: clamp(96px, 15vw, 150px);
-  font-weight: 700;
-  line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px rgba(156, 44, 68, 0.45);
-  opacity: 0.55;
-  pointer-events: none;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+/* ستون سمت راست (شروع خط در RTL): شماره فصل + دسته عمودی */
+.story-rail {
+  flex: 0 0 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 0;
+  background: #101013;
+  border-inline-end: 1px solid var(--border);
+  transition: background 0.35s ease;
 }
-.story:hover .story-ghost {
-  opacity: 1;
-  transform: translateY(6px);
+.story:hover .story-rail {
+  background: rgba(156, 44, 68, 0.12);
+}
+
+.story-rail-num {
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent-2);
+  transition: color 0.35s ease, transform 0.35s ease;
+}
+.story:hover .story-rail-num {
+  color: var(--text);
+  transform: translateY(3px);
+}
+
+.story-rail-cat {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.story-main {
+  flex: 1;
+  min-width: 0;
+  padding: 30px 30px 26px;
 }
 
 .story-meta {
@@ -93,12 +118,17 @@
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   gap: 16px;
   margin-top: 30px;
   padding-top: 22px;
   border-top: 1px solid var(--border);
+}
+
+/* دکمه‌ی خرید/لینک سمت چپ (انتهای خط در RTL) */
+.story-foot .btn {
+  margin-inline-start: auto;
 }
 
 .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -112,7 +142,9 @@
 }
 
 @media (max-width: 640px) {
-  .story { padding: 26px 20px 24px; }
-  .story-ghost { top: -16px; inset-inline-end: 12px; }
+  .story-rail { flex-basis: 58px; gap: 14px; padding: 22px 0; }
+  .story-rail-num { font-size: 21px; }
+  .story-rail-cat { font-size: 10px; letter-spacing: 1.5px; }
+  .story-main { padding: 22px 18px 20px; }
   .story-title { letter-spacing: -0.6px; }
 }
