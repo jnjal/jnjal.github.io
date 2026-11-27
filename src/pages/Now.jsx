@@ -227,7 +227,6 @@ export default function Now() {
                 key={b.label}
                 delay={i * 70}
                 className="book-row"
-                style={{ "--color": b.color }}
               >
                 <span className="book-row-spine" aria-hidden="true" />
                 <div className="book-row-top">

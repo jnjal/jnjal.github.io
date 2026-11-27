@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { NAV_ITEMS, PROFILE } from "../data/content";
+import { NAV_ITEMS, PROFILE, SOCIAL_LINKS } from "../data/content";
 import { scrollToY } from "../lib/smooth";
 import Clock from "./Clock";
+import Icon from "./Icon";
 import "./Nav.css";
+
+const pad = (n) => String(n).padStart(2, "0");
 
 export default function Nav({ onSecret }) {
   const [open, setOpen] = useState(false);
@@ -16,6 +19,11 @@ export default function Nav({ onSecret }) {
   const progressRef = useRef(null);
   const menuRef = useRef(null);
   const hamburgerRef = useRef(null);
+
+  const activeIndex = Math.max(
+    0,
+    NAV_ITEMS.findIndex((item) => item.id === active)
+  );
 
   // کدوم بخش توی دیده‌ست
   useEffect(() => {
@@ -152,10 +160,23 @@ export default function Nav({ onSecret }) {
   };
 
   return (
-    <nav ref={navRef} className="nav">
+    <nav ref={navRef} className={`nav${open ? " is-open" : ""}`}>
       <div className="container nav-inner">
-        <button className="nav-logo" data-hover data-no-magnet onClick={handleLogoClick} aria-label="جنجال">
-          <span className="mono">✦</span> {PROFILE.name}
+        <button
+          className="nav-logo"
+          data-hover
+          data-no-magnet
+          onClick={handleLogoClick}
+          aria-label={PROFILE.name}
+        >
+          <span className="nav-mark mono" aria-hidden="true">✦</span>
+          <span className="nav-brand">
+            <span className="nav-word">
+              {PROFILE.name}
+              <span className="nav-word-dot" aria-hidden="true" />
+            </span>
+            <span className="nav-tag mono" aria-hidden="true">dev · tehran</span>
+          </span>
         </button>
 
         <div className="nav-links desktop-only" ref={linksRef}>
@@ -179,20 +200,25 @@ export default function Nav({ onSecret }) {
         </div>
 
         <div className="nav-right desktop-only">
-          <Clock />
+          <span className="nav-chapter" key={active} aria-hidden="true">
+            <span className="nav-chapter-no mono">{pad(activeIndex + 1)}</span>
+            <span className="nav-chapter-sep mono">/</span>
+            <span className="nav-chapter-label">{NAV_ITEMS[activeIndex]?.label}</span>
+          </span>
+          <Clock className="nav-clock" />
         </div>
 
         <button
           ref={hamburgerRef}
-          className="hamburger mobile-only"
+          className={`hamburger mobile-only${open ? " is-open" : ""}`}
           onClick={() => setOpen((o) => !o)}
           aria-label="منو"
           aria-expanded={open}
           data-hover
         >
-          <span style={{ transform: open ? "rotate(45deg) translate(5px, 5px)" : "none" }} />
-          <span style={{ opacity: open ? 0 : 1 }} />
-          <span style={{ transform: open ? "rotate(-45deg) translate(5px, -5px)" : "none" }} />
+          <span />
+          <span />
+          <span />
         </button>
       </div>
 
@@ -200,22 +226,45 @@ export default function Nav({ onSecret }) {
 
       {open && (
         <div className="nav-mobile" ref={menuRef} data-lenis-prevent>
-          {NAV_ITEMS.map((item, i) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className={linkClass(item.id)}
-              aria-current={active === item.id ? "true" : undefined}
-              onClick={(e) => goToSection(e, item.id)}
-              style={{ animationDelay: `${i * 45}ms` }}
-            >
-              <span className="nav-mobile-no mono" aria-hidden="true">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              {item.label}
-            </a>
-          ))}
+          <div className="nav-mobile-head">
+            <span className="nav-mobile-kicker">فهرست</span>
+            <span className="nav-mobile-count mono">
+              {pad(activeIndex + 1)} <span className="faint">/ {pad(NAV_ITEMS.length)}</span>
+            </span>
+          </div>
+
+          <div className="nav-mobile-list">
+            {NAV_ITEMS.map((item, i) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className={linkClass(item.id)}
+                aria-current={active === item.id ? "true" : undefined}
+                onClick={(e) => goToSection(e, item.id)}
+                style={{ animationDelay: `${i * 45}ms` }}
+              >
+                <span className="nav-mobile-no mono" aria-hidden="true">{pad(i + 1)}</span>
+                <span className="nav-mobile-label">{item.label}</span>
+                <span className="nav-mobile-star mono" aria-hidden="true">✦</span>
+              </a>
+            ))}
+          </div>
+
           <div className="nav-mobile-foot">
+            <div className="nav-mobile-socials">
+              {SOCIAL_LINKS.map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  aria-label={s.label}
+                  title={s.label}
+                  target={s.href.startsWith("http") ? "_blank" : undefined}
+                  rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                >
+                  <Icon name={s.icon} size={16} />
+                </a>
+              ))}
+            </div>
             <Clock />
           </div>
         </div>

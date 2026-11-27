@@ -1,5 +1,9 @@
 .anime-inner { position: relative; }
 
+/* متن تزئینی ژاپنی در حالت عمودی کمی به بیرون سرریز می‌کند؛
+   کلیپ افقی جلوی اسکرول جانبی صفحه را می‌گیرد */
+.anime { overflow-x: clip; }
+
 .anime-jp {
   position: absolute;
   top: 48px;

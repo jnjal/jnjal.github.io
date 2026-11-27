@@ -47,6 +47,8 @@
   --radius-sm: 6px;
   --radius: 10px;
   --container: 1080px;
+  /* ارتفاع هدر در حالت اسکرول‌شده — برای چسبیدن دقیق المان‌های sticky زیر هدر */
+  --nav-h: 51px;
 
   --sans: 'Vazirmatn', system-ui, sans-serif;
   --mono: 'IBM Plex Mono', 'Vazirmatn', ui-monospace, monospace;
@@ -332,4 +334,9 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, input:focus-vis
 
 @media (prefers-reduced-motion: reduce) {
   .bg-fx .noise span { animation: none; }
+}
+
+/* هدر موبایل بلندتر است (همبرگری ۴۲px) */
+@media (max-width: 860px) {
+  :root { --nav-h: 61px; }
 }

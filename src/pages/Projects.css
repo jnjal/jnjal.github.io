@@ -1,3 +1,85 @@
+/* سربرگ بخش: عنوان + فهرست فصل‌ها (مثل فهرست یک کتاب) */
+.projects-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  align-items: end;
+  gap: 56px;
+  margin-bottom: 48px;
+}
+
+.projects-head-main { min-width: 0; }
+.projects-head .page-lede { margin-bottom: 0; }
+
+/* جلوگیری از پهن‌شدن فهرست فصل‌ها به اندازه‌ی محتوایش (سرریز افقی در موبایل) */
+.projects-index { min-width: 0; }
+
+.projects-index-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+  font-size: 10.5px;
+  letter-spacing: 1.6px;
+  color: var(--text-faint);
+}
+
+.projects-index ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chapter-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 0;
+  border: 0;
+  background: none;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: start;
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+.chapter-link:hover { color: var(--text); }
+
+.chapter-link-no {
+  font-size: 10.5px;
+  color: var(--text-faint);
+  transition: color 0.25s ease;
+}
+
+.chapter-link-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chapter-link-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.chapter-link.is-active { color: var(--text); }
+.chapter-link.is-active .chapter-link-no { color: var(--accent-2); }
+.chapter-link.is-active .chapter-link-dot {
+  background: var(--accent-2);
+  box-shadow: 0 0 0 4px rgba(156, 44, 68, 0.16);
+  transform: scale(1.15);
+}
+
 .stories {
   display: flex;
   flex-direction: column;
@@ -10,8 +92,26 @@
   position: relative;
 }
 
+/* خط‌چین اتصال فصل‌ها بین کارت‌ها (هم‌راستا با ستون شماره) */
+.story-slot:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: 41.5px;
+  bottom: -22px;
+  width: 1px;
+  height: 22px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--accent-border) 0 3px,
+    transparent 3px 6px
+  );
+  opacity: 0.55;
+  pointer-events: none;
+}
+
 .story {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   display: flex;
   background: var(--surface);
@@ -25,14 +125,47 @@
   box-shadow: 0 26px 56px rgba(0, 0, 0, 0.35);
 }
 
+/* درخشش نرمی که موقع هاور روی کارت رد می‌شه */
+.story::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.045) 48%,
+    transparent 62%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.story:hover::before { transform: translateX(130%); }
+
+/* محصولات خریدنی: هاله‌ی ملایم + خط باریک بالای کارت */
+.story[data-buy="true"] {
+  background: linear-gradient(180deg, rgba(156, 44, 68, 0.06), var(--surface) 42%);
+}
+.story[data-buy="true"]::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  inset-inline: 0;
+  z-index: 4;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.75;
+}
+
 /* ستون سمت راست (شروع خط در RTL): شماره فصل + دسته عمودی */
 .story-rail {
   flex: 0 0 84px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  padding: 28px 0;
+  gap: 14px;
+  padding: 24px 0 26px;
   background: #101013;
   border-inline-end: 1px solid var(--border);
   transition: background 0.35s ease;
@@ -40,6 +173,17 @@
 .story:hover .story-rail {
   background: rgba(156, 44, 68, 0.12);
 }
+.story[data-buy="true"] .story-rail {
+  background: linear-gradient(180deg, rgba(156, 44, 68, 0.16), #101013 65%);
+}
+
+.story-rail-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-faint);
+  transition: color 0.35s ease;
+}
+.story:hover .story-rail-label { color: var(--accent-2); }
 
 .story-rail-num {
   font-size: 30px;
@@ -53,6 +197,20 @@
   transform: translateY(3px);
 }
 
+/* خط عمودی داخل ستون — مثل عطف کتاب */
+.story-rail-line {
+  flex: 1;
+  width: 1px;
+  min-height: 40px;
+  background: linear-gradient(to bottom, var(--accent-border), transparent 85%);
+  opacity: 0.45;
+  transition: opacity 0.35s ease, background 0.35s ease;
+}
+.story:hover .story-rail-line {
+  opacity: 1;
+  background: linear-gradient(to bottom, var(--accent-2), transparent 85%);
+}
+
 .story-rail-cat {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
@@ -61,7 +219,9 @@
   letter-spacing: 2.5px;
   color: var(--text-faint);
   white-space: nowrap;
+  transition: color 0.35s ease;
 }
+.story:hover .story-rail-cat { color: var(--text-dim); }
 
 .story-main {
   flex: 1;
@@ -78,6 +238,15 @@
   margin-bottom: 20px;
 }
 
+/* خط نازکی که متا رو به عرض کارت وصل می‌کنه */
+.story-meta::after {
+  content: "";
+  flex: 1;
+  min-width: 24px;
+  height: 1px;
+  background: linear-gradient(to left, var(--border), transparent);
+}
+
 .story-badge {
   display: inline-block;
   padding: 3px 10px;
@@ -90,11 +259,19 @@
 
 .story-title {
   position: relative;
+  width: fit-content;
   font-size: clamp(28px, 4.2vw, 42px);
   font-weight: 900;
   letter-spacing: -1.2px;
-  margin-bottom: 24px;
+  padding-bottom: 6px;
+  margin-bottom: 20px;
+  background-image: linear-gradient(var(--accent-2), var(--accent-2));
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+  background-size: 0% 2px;
+  transition: background-size 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.story:hover .story-title { background-size: 100% 2px; }
 
 .story-text {
   position: relative;
@@ -141,10 +318,50 @@
   transform: translateY(-2px);
 }
 
+/* تبلت: فهرست فصل‌ها می‌ره زیر عنوان و به چیپ‌های افقی تبدیل می‌شه */
+@media (max-width: 900px) {
+  .projects-head {
+    grid-template-columns: 1fr;
+    gap: 26px;
+    margin-bottom: 34px;
+  }
+
+  .projects-index-head {
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+  }
+
+  .projects-index ol {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .projects-index ol::-webkit-scrollbar { display: none; }
+
+  .chapter-link {
+    width: auto;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+  .chapter-link.is-active {
+    border-color: var(--accent-border);
+    background: rgba(156, 44, 68, 0.12);
+  }
+  .chapter-link-title { flex: none; }
+  .chapter-link-dot { display: none; }
+}
+
 @media (max-width: 640px) {
-  .story-rail { flex-basis: 58px; gap: 14px; padding: 22px 0; }
+  .story-rail { flex-basis: 58px; gap: 10px; padding: 20px 0 22px; }
   .story-rail-num { font-size: 21px; }
+  .story-rail-label { font-size: 8px; letter-spacing: 1.5px; }
   .story-rail-cat { font-size: 10px; letter-spacing: 1.5px; }
   .story-main { padding: 22px 18px 20px; }
   .story-title { letter-spacing: -0.6px; }
+  .story-slot:not(:last-child)::after { inset-inline-end: 28.5px; }
 }

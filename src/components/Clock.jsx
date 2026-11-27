@@ -23,8 +23,8 @@ export default function Clock({ className = "" }) {
   }, []);
 
   return (
-    <span className={`mono ${className}`} style={{ fontSize: 11, color: "var(--text-faint)", display: "inline-flex", gap: 8, alignItems: "center" }}>
-      <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#5fbf6e", display: "inline-block" }} />
+    <span className={`clock mono${className ? ` ${className}` : ""}`}>
+      <span className="clock-dot" aria-hidden="true" />
       {/* کلید هر رقم بر اساس جایگاه + خودِ رقمه؛ فقط رقمِ عوض‌شده دوباره mount می‌شه و roll می‌خوره */}
       <span className="clock-time">
         {time.split("").map((ch, i) => (
@@ -33,7 +33,7 @@ export default function Clock({ className = "" }) {
           </span>
         ))}
       </span>
-      · {PROFILE.gmtLabel}
+      <span className="clock-zone">· {PROFILE.gmtLabel}</span>
     </span>
   );
 }

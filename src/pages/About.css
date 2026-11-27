@@ -19,7 +19,7 @@
 
 .file-head {
   position: sticky;
-  top: 56px;
+  top: var(--nav-h, 51px);
   z-index: 3;
   display: flex;
   align-items: center;

@@ -1,3 +1,29 @@
+.clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.clock-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5fbf6e;
+  box-shadow: 0 0 0 0 rgba(95, 191, 110, 0.5);
+  animation: clock-pulse 2.6s ease-out infinite;
+}
+
+@keyframes clock-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(95, 191, 110, 0.45); }
+  70% { box-shadow: 0 0 0 5px rgba(95, 191, 110, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(95, 191, 110, 0); }
+}
+
+.clock-zone { opacity: 0.8; }
+
 .clock-time {
   display: inline-flex;
   direction: ltr;
@@ -27,4 +53,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .clock-digit { animation: none; }
+  .clock-dot { animation: none; }
 }
